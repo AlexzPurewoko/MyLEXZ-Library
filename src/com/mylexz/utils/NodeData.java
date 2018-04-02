@@ -2,6 +2,7 @@ package com.mylexz.utils;
 import java.util.*;
 import android.content.*;
 import java.io.*;
+import javax.crypto.EncryptedPrivateKeyInfo;
 
 public class NodeData
 {	
@@ -63,12 +64,12 @@ public class NodeData
 	public native void clearContents(String fullpath);
 	public native String[] listContents(String fullpath);
 	
-	public native void addIntData(String path, String elem, int content);
-	public native void addLongData(String path, String elem, long content);
-	public native void addCharData(String path, String elem, char content);
-	public native void addBoolData(String path, String elem, boolean content);
-	public native void addStrData(String path, String elem, String content);
-	public native void addDoubleData(String path, String elem, double content);
+	public native void addIntData(String path, String elem, int content, boolean encrypted);
+	public native void addLongData(String path, String elem, long content, boolean encrypted);
+	public native void addCharData(String path, String elem, char content, boolean encrypted);
+	public native void addBoolData(String path, String elem, boolean content, boolean encrypted);
+	public native void addStrData(String path, String elem, String content, boolean encrypted);
+	public native void addDoubleData(String path, String elem, double content, boolean encrypted);
 	public native int getIntData(String fullpath);
 	public native boolean getBooleanData(String fullpath);
 	public native long getLongData(String fullpath);
