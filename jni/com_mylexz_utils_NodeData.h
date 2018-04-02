@@ -80,50 +80,50 @@ JNIEXPORT jobjectArray JNICALL Java_com_mylexz_utils_NodeData_listContents
 /*
  * Class:     com_mylexz_utils_NodeData
  * Method:    addIntData
- * Signature: (Ljava/lang/String;Ljava/lang/String;I)V
+ * Signature: (Ljava/lang/String;Ljava/lang/String;IZ)V
  */
 JNIEXPORT void JNICALL Java_com_mylexz_utils_NodeData_addIntData
-  (JNIEnv *, jobject, jstring, jstring, jint);
+  (JNIEnv *, jobject, jstring, jstring, jint, jboolean);
 
 /*
  * Class:     com_mylexz_utils_NodeData
  * Method:    addLongData
- * Signature: (Ljava/lang/String;Ljava/lang/String;J)V
+ * Signature: (Ljava/lang/String;Ljava/lang/String;JZ)V
  */
 JNIEXPORT void JNICALL Java_com_mylexz_utils_NodeData_addLongData
-  (JNIEnv *, jobject, jstring, jstring, jlong);
+  (JNIEnv *, jobject, jstring, jstring, jlong, jboolean);
 
 /*
  * Class:     com_mylexz_utils_NodeData
  * Method:    addCharData
- * Signature: (Ljava/lang/String;Ljava/lang/String;C)V
+ * Signature: (Ljava/lang/String;Ljava/lang/String;CZ)V
  */
 JNIEXPORT void JNICALL Java_com_mylexz_utils_NodeData_addCharData
-  (JNIEnv *, jobject, jstring, jstring, jchar);
+  (JNIEnv *, jobject, jstring, jstring, jchar, jboolean);
 
 /*
  * Class:     com_mylexz_utils_NodeData
  * Method:    addBoolData
- * Signature: (Ljava/lang/String;Ljava/lang/String;Z)V
+ * Signature: (Ljava/lang/String;Ljava/lang/String;ZZ)V
  */
 JNIEXPORT void JNICALL Java_com_mylexz_utils_NodeData_addBoolData
-  (JNIEnv *, jobject, jstring, jstring, jboolean);
+  (JNIEnv *, jobject, jstring, jstring, jboolean, jboolean);
 
 /*
  * Class:     com_mylexz_utils_NodeData
  * Method:    addStrData
- * Signature: (Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;)V
+ * Signature: (Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;Z)V
  */
 JNIEXPORT void JNICALL Java_com_mylexz_utils_NodeData_addStrData
-  (JNIEnv *, jobject, jstring, jstring, jstring);
+  (JNIEnv *, jobject, jstring, jstring, jstring, jboolean);
 
 /*
  * Class:     com_mylexz_utils_NodeData
  * Method:    addDoubleData
- * Signature: (Ljava/lang/String;Ljava/lang/String;D)V
+ * Signature: (Ljava/lang/String;Ljava/lang/String;DZ)V
  */
 JNIEXPORT void JNICALL Java_com_mylexz_utils_NodeData_addDoubleData
-  (JNIEnv *, jobject, jstring, jstring, jdouble);
+  (JNIEnv *, jobject, jstring, jstring, jdouble, jboolean);
 
 /*
  * Class:     com_mylexz_utils_NodeData
