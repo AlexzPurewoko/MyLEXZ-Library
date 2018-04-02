@@ -25,3 +25,53 @@ ifeq ($(TARGET_ARCH_ABI),x86)
 endif
 
 include $(BUILD_SHARED_LIBRARY)
+
+# sandi
+include $(CLEAR_VARS)
+
+LOCAL_C_EXTENSION := .c
+LOCAL_MODULE    := msandi
+LOCAL_SRC_FILES := morse.c component.c
+ifeq ($(TARGET_ARCH_ABI),x86)
+    LOCAL_CFLAGS += -ffast-math -mtune=atom -mssse3 -mfpmath=sse
+endif
+
+include $(BUILD_SHARED_LIBRARY)
+
+#logger
+include $(CLEAR_VARS)
+
+LOCAL_C_EXTENSION := .c
+LOCAL_MODULE    := mlogger
+LOCAL_SRC_FILES := logger.c component.c
+LOCAL_LDLIBS 	:= -llog
+ifeq ($(TARGET_ARCH_ABI),x86)
+    LOCAL_CFLAGS += -ffast-math -mtune=atom -mssse3 -mfpmath=sse
+endif
+
+include $(BUILD_SHARED_LIBRARY)
+
+#Primitive Data
+include $(CLEAR_VARS)
+
+LOCAL_C_EXTENSION := .c
+LOCAL_MODULE    := mPDATA
+LOCAL_SRC_FILES := com_mylexz_utils_PrimitiveData.c PrimitiveData.c component.c
+ifeq ($(TARGET_ARCH_ABI),x86)
+    LOCAL_CFLAGS += -ffast-math -mtune=atom -mssse3 -mfpmath=sse
+endif
+
+include $(BUILD_SHARED_LIBRARY)
+
+#NDATA
+include $(CLEAR_VARS)
+
+LOCAL_C_EXTENSION := .c
+LOCAL_MODULE    := mNDATA
+LOCAL_LDLIBS 	:= -llog
+LOCAL_SRC_FILES := com_mylexz_utils_NodeData.c NodeData.c cstring.c component.c
+ifeq ($(TARGET_ARCH_ABI),x86)
+    LOCAL_CFLAGS += -ffast-math -mtune=atom -mssse3 -mfpmath=sse
+endif
+
+include $(BUILD_SHARED_LIBRARY)
