@@ -2,4 +2,5 @@ bin/
 gen/
 obj/
 libs/*/*.so
+jni/com*NodeData1.c
 
