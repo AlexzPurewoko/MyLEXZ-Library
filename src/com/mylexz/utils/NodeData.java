@@ -70,12 +70,12 @@ public class NodeData
 	public native void addBoolData(String path, String elem, boolean content, boolean encrypted);
 	public native void addStrData(String path, String elem, String content, boolean encrypted);
 	public native void addDoubleData(String path, String elem, double content, boolean encrypted);
-	public native int getIntData(String fullpath);
-	public native boolean getBooleanData(String fullpath);
-	public native long getLongData(String fullpath);
-	public native double getDoubleData(String fullpath);
-	public native char getCharData(String fullpath);
-	public native String getStringData(String fullpath);
+	public native int getIntData(String fullpath, int defaultValue);
+	public native boolean getBooleanData(String fullpath, boolean defaultValue);
+	public native long getLongData(String fullpath, long defaultValue);
+	public native double getDoubleData(String fullpath, double defaultValue);
+	public native char getCharData(String fullpath, char defaultValue);
+	public native String getStringData(String fullpath, String defaultValue);
 	public native void setContentData(String fullpath, int content);
 	public native void setContentData(String fullpath, long content);
 	public native void setContentData(String fullpath, double content);
