@@ -159,6 +159,101 @@ JNIEXPORT jobjectArray JNICALL Java_com_mylexz_utils_NodeData_listContents(JNIEn
 	return p;
 }
 
+JNIEXPORT void JNICALL Java_com_mylexz_utils_NodeData_addIntData(JNIEnv *env, jobject thiz, jstring path, jstring elem, jint data, jboolean encrypt_flags){
+	jint __desc = __getNDesc(env, thiz);
+	if(__desc == -1)return;
+	const char *elm;
+	const char *dt;
+	if(elem == NULL)return;
+	if(path == NULL) dt = NULL;
+	else dt = (*env)->GetStringUTFChars(env, path, 0);
+	elm = (*env)->GetStringUTFChars(env, elem, 0);
+	NDATA *d = __lNcont(__lncurr, __desc);
+	int val = (int) data;
+	nadd_data(d, dt, elm, INT, &val, ((encrypt_flags)?1:0));
+	if(dt) (*env)->ReleaseStringUTFChars(env, path, dt);
+	(*env)->ReleaseStringUTFChars(env, elem, elm);
+ }
+
+JNIEXPORT void JNICALL Java_com_mylexz_utils_NodeData_addLongData(JNIEnv *env, jobject thiz, jstring path, jstring elem, jlong data, jboolean encrypt_flags){
+	jint __desc = __getNDesc(env, thiz);
+	if(__desc == -1)return;
+	const char *elm;
+	const char *dt;
+	if(elem == NULL)return;
+	if(path == NULL) dt = NULL;
+	else dt = (*env)->GetStringUTFChars(env, path, 0);
+	elm = (*env)->GetStringUTFChars(env, elem, 0);
+	NDATA *d = __lNcont(__lncurr, __desc);
+	nadd_data(d, dt, elm, LONG, &data, ((encrypt_flags)?1:0));
+	if(dt) (*env)->ReleaseStringUTFChars(env, path, dt);
+	(*env)->ReleaseStringUTFChars(env, elem, elm);
+}
+
+JNIEXPORT void JNICALL Java_com_mylexz_utils_NodeData_addCharData(JNIEnv *env, jobject thiz, jstring path, jstring elem, jchar data, jboolean encrypt_flags){
+	jint __desc = __getNDesc(env, thiz);
+	if(__desc == -1)return;
+	const char *elm;
+	const char *dt;
+	if(elem == NULL)return;
+	if(path == NULL) dt = NULL;
+	else dt = (*env)->GetStringUTFChars(env, path, 0);
+	elm = (*env)->GetStringUTFChars(env, elem, 0);
+	NDATA *d = __lNcont(__lncurr, __desc);
+	char val = (char) data;
+	nadd_data(d, dt, elm, CHR, &val, ((encrypt_flags)?1:0));
+	if(dt) (*env)->ReleaseStringUTFChars(env, path, dt);
+	(*env)->ReleaseStringUTFChars(env, elem, elm);
+}
+
+JNIEXPORT void JNICALL Java_com_mylexz_utils_NodeData_addBoolData(JNIEnv *env, jobject thiz, jstring path, jstring elem, jboolean data, jboolean encrypt_flags){
+	jint __desc = __getNDesc(env, thiz);
+	if(__desc == -1)return;
+	const char *elm;
+	const char *dt;
+	if(elem == NULL)return;
+	if(path == NULL) dt = NULL;
+	else dt = (*env)->GetStringUTFChars(env, path, 0);
+	elm = (*env)->GetStringUTFChars(env, elem, 0);
+	NDATA *d = __lNcont(__lncurr, __desc);
+	short val =  (data)?1:0;
+	nadd_data(d, dt, elm, BOOL, &val, ((encrypt_flags)?1:0));
+	if(dt) (*env)->ReleaseStringUTFChars(env, path, dt);
+	(*env)->ReleaseStringUTFChars(env, elem, elm);
+}
+
+JNIEXPORT void JNICALL Java_com_mylexz_utils_NodeData_addStrData(JNIEnv *env, jobject thiz, jstring path, jstring elem, jstring data, jboolean encrypt_flags){
+	jint __desc = __getNDesc(env, thiz);
+	if(__desc == -1)return;
+	const char *elm;
+	const char *dt;
+	if(elem == NULL)return;
+	if(path == NULL) dt = NULL;
+	else dt = (*env)->GetStringUTFChars(env, path, 0);
+	elm = (*env)->GetStringUTFChars(env, elem, 0);
+	NDATA *d = __lNcont(__lncurr, __desc);
+	const char *cstr = (data!=NULL)?(*env) -> GetStringUTFChars(env, data, 0):NULL;
+	nadd_data(d, dt, elm, STR, cstr, ((encrypt_flags)?1:0));
+	if(dt) (*env)->ReleaseStringUTFChars(env, path, dt);
+	(*env)->ReleaseStringUTFChars(env, elem, elm);
+	if(cstr) (*env)->ReleaseStringUTFChars(env, data, cstr);
+}
+
+JNIEXPORT void JNICALL Java_com_mylexz_utils_NodeData_addDoubleData(JNIEnv *env, jobject thiz, jstring path, jstring elem, jdouble data, jboolean encrypt_flags){
+	jint __desc = __getNDesc(env, thiz);
+	if(__desc == -1)return;
+	const char *elm;
+	const char *dt;
+	if(elem == NULL)return;
+	if(path == NULL) dt = NULL;
+	else dt = (*env)->GetStringUTFChars(env, path, 0);
+	elm = (*env)->GetStringUTFChars(env, elem, 0);
+	NDATA *d = __lNcont(__lncurr, __desc);
+	nadd_data(d, dt, elm, DOUBLE, &data, ((encrypt_flags)?1:0));
+	if(dt) (*env)->ReleaseStringUTFChars(env, path, dt);
+	(*env)->ReleaseStringUTFChars(env, elem, elm);
+}
+
 
 
 /******/
