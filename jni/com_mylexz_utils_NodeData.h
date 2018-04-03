@@ -128,50 +128,50 @@ JNIEXPORT void JNICALL Java_com_mylexz_utils_NodeData_addDoubleData
 /*
  * Class:     com_mylexz_utils_NodeData
  * Method:    getIntData
- * Signature: (Ljava/lang/String;)I
+ * Signature: (Ljava/lang/String;I)I
  */
 JNIEXPORT jint JNICALL Java_com_mylexz_utils_NodeData_getIntData
-  (JNIEnv *, jobject, jstring);
+  (JNIEnv *, jobject, jstring, jint);
 
 /*
  * Class:     com_mylexz_utils_NodeData
  * Method:    getBooleanData
- * Signature: (Ljava/lang/String;)Z
+ * Signature: (Ljava/lang/String;Z)Z
  */
 JNIEXPORT jboolean JNICALL Java_com_mylexz_utils_NodeData_getBooleanData
-  (JNIEnv *, jobject, jstring);
+  (JNIEnv *, jobject, jstring, jboolean);
 
 /*
  * Class:     com_mylexz_utils_NodeData
  * Method:    getLongData
- * Signature: (Ljava/lang/String;)J
+ * Signature: (Ljava/lang/String;J)J
  */
 JNIEXPORT jlong JNICALL Java_com_mylexz_utils_NodeData_getLongData
-  (JNIEnv *, jobject, jstring);
+  (JNIEnv *, jobject, jstring, jlong);
 
 /*
  * Class:     com_mylexz_utils_NodeData
  * Method:    getDoubleData
- * Signature: (Ljava/lang/String;)D
+ * Signature: (Ljava/lang/String;D)D
  */
 JNIEXPORT jdouble JNICALL Java_com_mylexz_utils_NodeData_getDoubleData
-  (JNIEnv *, jobject, jstring);
+  (JNIEnv *, jobject, jstring, jdouble);
 
 /*
  * Class:     com_mylexz_utils_NodeData
  * Method:    getCharData
- * Signature: (Ljava/lang/String;)C
+ * Signature: (Ljava/lang/String;C)C
  */
 JNIEXPORT jchar JNICALL Java_com_mylexz_utils_NodeData_getCharData
-  (JNIEnv *, jobject, jstring);
+  (JNIEnv *, jobject, jstring, jchar);
 
 /*
  * Class:     com_mylexz_utils_NodeData
  * Method:    getStringData
- * Signature: (Ljava/lang/String;)Ljava/lang/String;
+ * Signature: (Ljava/lang/String;Ljava/lang/String;)Ljava/lang/String;
  */
 JNIEXPORT jstring JNICALL Java_com_mylexz_utils_NodeData_getStringData
-  (JNIEnv *, jobject, jstring);
+  (JNIEnv *, jobject, jstring, jstring);
 
 /*
  * Class:     com_mylexz_utils_NodeData
