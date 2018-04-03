@@ -254,6 +254,90 @@ JNIEXPORT void JNICALL Java_com_mylexz_utils_NodeData_addDoubleData(JNIEnv *env,
 	(*env)->ReleaseStringUTFChars(env, elem, elm);
 }
 
+JNIEXPORT jint JNICALL Java_com_mylexz_utils_NodeData_getIntData(JNIEnv *env, jobject thiz, jstring fullpath, jint defV){
+	jint __desc = __getNDesc(env, thiz);
+	if(__desc == -1)return defV;
+	const char *fp;
+	if(fullpath == NULL)return defV;
+	fp = (*env)->GetStringUTFChars(env, fullpath, 0);
+	NDATA *d = __lNcont(__lncurr, __desc);
+	void *val = nget_data(d, fp);
+	(*env)->ReleaseStringUTFChars(env, fullpath, fp);
+	if(val)
+		return (jint) *((int *)val);
+	return defV;
+}
+
+JNIEXPORT jboolean JNICALL Java_com_mylexz_utils_NodeData_getBooleanData(JNIEnv *env, jobject thiz, jstring fullpath, jboolean defV){
+	jint __desc = __getNDesc(env, thiz);
+	if(__desc == -1)return defV;
+	const char *fp;
+	if(fullpath == NULL)return defV;
+	fp = (*env)->GetStringUTFChars(env, fullpath, 0);
+	NDATA *d = __lNcont(__lncurr, __desc);
+	void *val = nget_data(d, fp);
+	(*env)->ReleaseStringUTFChars(env, fullpath, fp);
+	if(val)
+		return (jboolean) (((short) *((short *)val))?TRUE:FALSE);
+	return defV;
+}
+
+JNIEXPORT jlong JNICALL Java_com_mylexz_utils_NodeData_getLongData(JNIEnv *env, jobject thiz, jstring fullpath, jlong defV){
+	jint __desc = __getNDesc(env, thiz);
+	if(__desc == -1)return defV;
+	const char *fp;
+	if(fullpath == NULL)return defV;
+	fp = (*env)->GetStringUTFChars(env, fullpath, 0);
+	NDATA *d = __lNcont(__lncurr, __desc);
+	void *val = nget_data(d, fp);
+	(*env)->ReleaseStringUTFChars(env, fullpath, fp);
+	if(val)
+		return (jlong) *((long long int *) val);
+	return defV;
+}
+
+JNIEXPORT jdouble JNICALL Java_com_mylexz_utils_NodeData_getDoubleData(JNIEnv *env, jobject thiz, jstring fullpath, jdouble defV){
+	jint __desc = __getNDesc(env, thiz);
+	if(__desc == -1)return defV;
+	const char *fp;
+	if(fullpath == NULL)return defV;
+	fp = (*env)->GetStringUTFChars(env, fullpath, 0);
+	NDATA *d = __lNcont(__lncurr, __desc);
+	void *val = nget_data(d, fp);
+	(*env)->ReleaseStringUTFChars(env, fullpath, fp);
+	if(val)
+		return (jdouble) *((double *)val);
+	return defV;
+}
+
+JNIEXPORT jchar JNICALL Java_com_mylexz_utils_NodeData_getCharData(JNIEnv *env, jobject thiz, jstring fullpath, jchar defV){
+	jint __desc = __getNDesc(env, thiz);
+	if(__desc == -1)return defV;
+	const char *fp;
+	if(fullpath == NULL)return defV;
+	fp = (*env)->GetStringUTFChars(env, fullpath, 0);
+	NDATA *d = __lNcont(__lncurr, __desc);
+	void *val = nget_data(d, fp);
+	(*env)->ReleaseStringUTFChars(env, fullpath, fp);
+	if(val)
+		return (jchar) *((char *)val);
+	return defV;
+}
+
+JNIEXPORT jstring JNICALL Java_com_mylexz_utils_NodeData_getStringData(JNIEnv *env, jobject thiz, jstring fullpath, jstring defV){
+	jint __desc = __getNDesc(env, thiz);
+	if(__desc == -1)return defV;
+	const char *fp;
+	if(fullpath == NULL)return defV;
+	fp = (*env)->GetStringUTFChars(env, fullpath, 0);
+	NDATA *d = __lNcont(__lncurr, __desc);
+	void *val = nget_data(d, fp);
+	(*env)->ReleaseStringUTFChars(env, fullpath, fp);
+	if(val)
+		return (*env) -> NewStringUTF(env, ((char *)val));
+	return defV;
+}
+
 
 
 /******/
