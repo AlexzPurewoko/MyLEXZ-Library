@@ -1831,7 +1831,7 @@ void nnext_cats(NDATA * data, const char *s)
 	return;
 }
 
-void nempty_el(NDATA * data, const char *fullpath)
+void nempty_data(NDATA * data, const char *fullpath)
 {
 	nset_data(data, fullpath, NULL);
 }
