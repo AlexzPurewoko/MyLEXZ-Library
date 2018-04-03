@@ -81,27 +81,25 @@ public class NodeData
 	public native void setContentData(String fullpath, double content);
 	public native void setContentData(String fullpath, String content);
 	public native void setContentData(String fullpath, boolean content);
-	public native void setContentData(String fullpath, char content);
-	
+	public native void setContentData(String fullpath, char content);	
 	public native boolean isAnyErrors();
 	public native void deleteData(String fullpath);
 	public native void clearDataValue(String fullpath);
 	public native boolean isEmptyData(String fullpath);
+
+	public native void addIntArray(String path, String name_arr, int[] content, boolean encrypt_flags);
+	public native void addStringArray(String path, String name_arr, String[] content, boolean encrypt_flags);
+	public native void addCharArray(String path, String name_arr, char[] content, boolean encrypt_flags);
+	public native void addDoubleArray(String path, String name_arr, double[] content, boolean encrypt_flags);
+	public native void addLongArray(String path, String name_arr, long[] content, boolean encrypt_flags);
+	public native void addBooleanArray(String path, String name_arr, boolean[] content, boolean encrypt_flags);
+	public native int getOccurences(String fullpath, int data);
+	public native int getOccurences(String fullpath, long data);
+	public native int getOccurences(String fullpath, double data);
+	public native int getOccurences(String fullpath, String data);
+	public native int getOccurences(String fullpath, boolean data);
+	public native int getOccurences(String fullpath, char data);
 	/*
-	public native void addIntArray(String path, String name_arr, int[] content);
-	public native void addStringArray(String path, String name_arr, String[] content);
-	public native void addCharArray(String path, String name_arr, char[] content);
-	public native void addDoubleArray(String path, String name_arr, double[] content);
-	public native void addLongArray(String path, String name_arr, long[] content);
-	public native void addBooleanArray(String path, String name_arr, boolean[] content);
-	 public native int getOccurences(String fullpath, int data);
-	 public native int getOccurences(String fullpath, long data);
-	 public native int getOccurences(String fullpath, double data);
-	 public native int getOccurences(String fullpath, String data);
-	 public native int getOccurences(String fullpath, boolean data);
-	 public native int getOccurences(String fullpath, char data);
-	 
-	
 	public native int[] getIntArray(String fullpath);
 	public String[] getStringArray(String fullpath){
 		int length = getArrayLength(fullpath);
