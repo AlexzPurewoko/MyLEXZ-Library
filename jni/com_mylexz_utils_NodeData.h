@@ -253,6 +253,102 @@ JNIEXPORT void JNICALL Java_com_mylexz_utils_NodeData_clearDataValue
 JNIEXPORT jboolean JNICALL Java_com_mylexz_utils_NodeData_isEmptyData
   (JNIEnv *, jobject, jstring);
 
+/*
+ * Class:     com_mylexz_utils_NodeData
+ * Method:    addIntArray
+ * Signature: (Ljava/lang/String;Ljava/lang/String;[IZ)V
+ */
+JNIEXPORT void JNICALL Java_com_mylexz_utils_NodeData_addIntArray
+  (JNIEnv *, jobject, jstring, jstring, jintArray, jboolean);
+
+/*
+ * Class:     com_mylexz_utils_NodeData
+ * Method:    addStringArray
+ * Signature: (Ljava/lang/String;Ljava/lang/String;[Ljava/lang/String;Z)V
+ */
+JNIEXPORT void JNICALL Java_com_mylexz_utils_NodeData_addStringArray
+  (JNIEnv *, jobject, jstring, jstring, jobjectArray, jboolean);
+
+/*
+ * Class:     com_mylexz_utils_NodeData
+ * Method:    addCharArray
+ * Signature: (Ljava/lang/String;Ljava/lang/String;[CZ)V
+ */
+JNIEXPORT void JNICALL Java_com_mylexz_utils_NodeData_addCharArray
+  (JNIEnv *, jobject, jstring, jstring, jcharArray, jboolean);
+
+/*
+ * Class:     com_mylexz_utils_NodeData
+ * Method:    addDoubleArray
+ * Signature: (Ljava/lang/String;Ljava/lang/String;[DZ)V
+ */
+JNIEXPORT void JNICALL Java_com_mylexz_utils_NodeData_addDoubleArray
+  (JNIEnv *, jobject, jstring, jstring, jdoubleArray, jboolean);
+
+/*
+ * Class:     com_mylexz_utils_NodeData
+ * Method:    addLongArray
+ * Signature: (Ljava/lang/String;Ljava/lang/String;[JZ)V
+ */
+JNIEXPORT void JNICALL Java_com_mylexz_utils_NodeData_addLongArray
+  (JNIEnv *, jobject, jstring, jstring, jlongArray, jboolean);
+
+/*
+ * Class:     com_mylexz_utils_NodeData
+ * Method:    addBooleanArray
+ * Signature: (Ljava/lang/String;Ljava/lang/String;[ZZ)V
+ */
+JNIEXPORT void JNICALL Java_com_mylexz_utils_NodeData_addBooleanArray
+  (JNIEnv *, jobject, jstring, jstring, jbooleanArray, jboolean);
+
+/*
+ * Class:     com_mylexz_utils_NodeData
+ * Method:    getOccurences
+ * Signature: (Ljava/lang/String;I)I
+ */
+JNIEXPORT jint JNICALL Java_com_mylexz_utils_NodeData_getOccurences__Ljava_lang_String_2I
+  (JNIEnv *, jobject, jstring, jint);
+
+/*
+ * Class:     com_mylexz_utils_NodeData
+ * Method:    getOccurences
+ * Signature: (Ljava/lang/String;J)I
+ */
+JNIEXPORT jint JNICALL Java_com_mylexz_utils_NodeData_getOccurences__Ljava_lang_String_2J
+  (JNIEnv *, jobject, jstring, jlong);
+
+/*
+ * Class:     com_mylexz_utils_NodeData
+ * Method:    getOccurences
+ * Signature: (Ljava/lang/String;D)I
+ */
+JNIEXPORT jint JNICALL Java_com_mylexz_utils_NodeData_getOccurences__Ljava_lang_String_2D
+  (JNIEnv *, jobject, jstring, jdouble);
+
+/*
+ * Class:     com_mylexz_utils_NodeData
+ * Method:    getOccurences
+ * Signature: (Ljava/lang/String;Ljava/lang/String;)I
+ */
+JNIEXPORT jint JNICALL Java_com_mylexz_utils_NodeData_getOccurences__Ljava_lang_String_2Ljava_lang_String_2
+  (JNIEnv *, jobject, jstring, jstring);
+
+/*
+ * Class:     com_mylexz_utils_NodeData
+ * Method:    getOccurences
+ * Signature: (Ljava/lang/String;Z)I
+ */
+JNIEXPORT jint JNICALL Java_com_mylexz_utils_NodeData_getOccurences__Ljava_lang_String_2Z
+  (JNIEnv *, jobject, jstring, jboolean);
+
+/*
+ * Class:     com_mylexz_utils_NodeData
+ * Method:    getOccurences
+ * Signature: (Ljava/lang/String;C)I
+ */
+JNIEXPORT jint JNICALL Java_com_mylexz_utils_NodeData_getOccurences__Ljava_lang_String_2C
+  (JNIEnv *, jobject, jstring, jchar);
+
 #ifdef __cplusplus
 }
 #endif

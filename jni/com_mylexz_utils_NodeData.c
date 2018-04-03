@@ -417,7 +417,7 @@ JNIEXPORT void JNICALL Java_com_mylexz_utils_NodeData_deleteData(JNIEnv *env, jo
 	if(fullpath == NULL)return;
 	fp = (*env)->GetStringUTFChars(env, fullpath, 0);
 	NDATA *d = __lNcont(__lncurr, __desc);
-	ndelElem(d, fp);
+	ndel_data(d, fp);
 	(*env)->ReleaseStringUTFChars(env, fullpath, fp);
 }
 
@@ -425,7 +425,7 @@ JNIEXPORT jboolean JNICALL Java_com_mylexz_utils_NodeData_isAnyErrors(JNIEnv *en
 	jint __desc = __getNDesc(env, thiz);
 	if(__desc == -1)return FALSE;
 	NDATA *d = __lNcont(__lncurr, __desc);
-	short a = ngetErrors(d);
+	short a = nget_error(d);
 	return (jboolean) ((a)?TRUE:FALSE);
 }
 
@@ -440,11 +440,6 @@ JNIEXPORT void JNICALL Java_com_mylexz_utils_NodeData_clearDataValue(JNIEnv *env
 	(*env)->ReleaseStringUTFChars(env, fullpath, fp);
 }
 
-/*
- * Class:     com_mylexz_utils_NodeData
- * Method:    isEmptyData
- * Signature: (Ljava/lang/String;)Z
- */
 JNIEXPORT jboolean JNICALL Java_com_mylexz_utils_NodeData_isEmptyData(JNIEnv *env, jobject thiz, jstring fullpath){
 	jint __desc = __getNDesc(env, thiz);
 	if(__desc == -1)return;
@@ -455,6 +450,341 @@ JNIEXPORT jboolean JNICALL Java_com_mylexz_utils_NodeData_isEmptyData(JNIEnv *en
 	short is_e = nis_empty(d, fp);
 	(*env)->ReleaseStringUTFChars(env, fullpath, fp);
 	return (is_e)?TRUE:FALSE;
+}
+JNIEXPORT void JNICALL Java_com_mylexz_utils_NodeData_addIntArray(JNIEnv *env, jobject thiz, jstring path, jstring name, jintArray data, jboolean encrypt_flags){
+	jint __desc = __getNDesc(env, thiz);
+	if(__desc == -1)return;
+	const char *elm;
+	const char *dt;
+	if(name == NULL)return;
+	if(path == NULL) dt = NULL;
+	else dt = (*env)->GetStringUTFChars(env, path, 0);
+	elm = (*env)->GetStringUTFChars(env, name, 0);
+	NDATA *d = __lNcont(__lncurr, __desc);
+	if(data){
+		jsize len = (*env)->GetArrayLength(env, data);
+		jint *a = (*env)->GetIntArrayElements(env, data, 0);
+		nadd_arr(d, dt, elm, INT, a, len, ((encrypt_flags)?1:0));
+		(*env)->ReleaseIntArrayElements(env, data, a, 0);
+	}
+	else 
+		nadd_arr(d, dt, elm, INT, NULL, 0, ((encrypt_flags)?1:0));
+	if(dt) (*env)->ReleaseStringUTFChars(env, path, dt);
+	(*env)->ReleaseStringUTFChars(env, name, elm);
+
+}
+
+JNIEXPORT void JNICALL Java_com_mylexz_utils_NodeData_addStringArray(JNIEnv *env, jobject thiz, jstring path, jstring name, jobjectArray data, jboolean encrypt_flags){
+	jint __desc = __getNDesc(env, thiz);
+	if(__desc == -1)return;
+	const char *elm;
+	const char *dt;
+	if(name == NULL)return;
+	if(path == NULL) dt = NULL;
+	else dt = (*env)->GetStringUTFChars(env, path, 0);
+	elm = (*env)->GetStringUTFChars(env, name, 0);
+	NDATA *d = __lNcont(__lncurr, __desc);
+	
+	jsize size = ((data)? (*env)->GetArrayLength(env, data): 0);
+	if(!d)return;
+	if(nisLocked(d)){d -> __errnum = EDL;return;}
+	char *_temp = d -> __temp; 
+	struct __nodeName__ *__lastPath = d -> __lastPath; 
+	FILE *_open = (d -> __fop).__op1; 
+	char *_filepath = d -> __filePath; 
+	short *_errnum = &(d -> __errnum); 
+	off_t *_sigPos = &(d -> __sigPos); 
+	off_t *_lastNodeLoc = &(d -> __lastNodeLoc); 
+	short *_lock = &(d -> __lock);
+
+	struct __nodeName__ *__con_pathNode__(const char *);
+	off_t __check_and_pointE__(NDATA *, struct __nodeName__ * , const char *);
+	void __edStr__(char *, short );
+	int __encStr__(int);
+	
+	struct __nodeName__ *__path = (dt)?__con_pathNode__(dt):NULL;
+	if(__check_and_pointE__(d, __path, elm)){
+		fseek(_open, *_sigPos, 0);
+		*_errnum = EEEx;
+		return;
+	}
+	strcpy(_temp, elm);
+	__edStr__(_temp, ENC);
+	register int z, _y, x;
+	off_t offset = ftell(_open);
+	const char *_cstr = NULL;
+	jstring jstr = NULL;
+	if(!dt){
+		fprintf(_open, "%c%c%c%s%c%d", _ARR_ID_, STR, encrypt_flags, _temp, _LEN_, size);
+		if(size > 0)
+			putc(_LEN_, _open);
+		z = 0;
+		// PASS_SLEN
+		for(_y = 0; _y < size; _y++){ 
+			sprintf(_temp, "%d", (*env) -> GetStringUTFLength(env, (jstring) (*env) -> GetObjectArrayElement(env, data, _y)));
+			while(_temp[z] != '\0'){ 
+				putc(_temp[z], _open);
+				z++;
+			}
+			z = 0;
+			if(_y+1 != size)putc(_LEN_SEP_, _open);
+		}
+		putc(_C_BUKA_, _open);
+		for(_y = 0; _y < size; _y++){
+			jstr = (jstring) (*env) -> GetObjectArrayElement(env, data, _y);
+			_cstr = (*env) -> GetStringUTFChars(env, jstr, 0);
+			if(encrypt_flags){
+				z = strlen(_cstr) - 1;
+				while(z >= 0){
+					x = __encStr__(_cstr[z]);
+					putc(x, _open);
+					z--;
+				}
+			}
+			else 
+				for(z = 0; (x = _cstr[z]) != '\0'; z++) putc(x, _open);
+			(*env) -> ReleaseStringUTFChars(env, jstr, _cstr);
+			if(_y+1 != size)putc(_ARR_SEP_, _open);
+		}
+		putc(_C_TUTUP_, _open);
+	}
+	else {
+		char *__tpath = _temp;
+		char *__stmp = (_temp + (strlen(_filepath)+5));
+		sprintf(__tpath, "%s.tmp", _filepath);
+		FILE *_op1 = fopen(__tpath, "w+");
+		fseek(_open, 0, 0);
+		off_t t = 0;
+		//write all contents 
+		for(; t < offset; t++) putc(getc(_open), _op1);
+		// the header
+		putc(_ARR_ID_, _op1);
+		putc(STR, _op1);
+		putc((((encrypt_flags)?1:0) + '0'), _op1); // en_flags
+		// write the name array
+		_y = strlen(elm) -1;
+		while(_y >= 0)
+			putc(__encStr__(elm[_y--]), _op1);
+		putc(_LEN_, _op1);
+		sprintf(__stmp, "%d", size);
+		for(_y = 0; __stmp[_y] != '\0'; _y++)putc(__stmp[_y], _op1);
+		if(size > 0)
+			putc(_LEN_, _op1);
+		z = 0;
+		// PASS_SLEN
+		for(_y = 0; _y < size; _y++){ 
+			sprintf(__stmp, "%d", (*env) -> GetStringUTFLength(env, (jstring) (*env) -> GetObjectArrayElement(env, data, _y)));
+			while(__stmp[z] != '\0'){ 
+				putc(__stmp[z], _op1);
+				z++;
+			}
+			z = 0;
+			if(_y+1 != size)putc(_LEN_SEP_, _op1);
+		}
+		putc(_C_BUKA_, _op1);
+		
+		for(_y = 0; _y < size; _y++){
+			jstr = (jstring) (*env) -> GetObjectArrayElement(env, data, _y);
+			_cstr = (*env) -> GetStringUTFChars(env, jstr, 0);
+			z = strlen(_cstr) - 1;
+			while(z >= 0){
+				x = __encStr__(_cstr[z]);
+				putc(x, _op1);
+				z--;
+			}
+			(*env) -> ReleaseStringUTFChars(env, jstr, _cstr);
+			if(_y+1 != size)putc(_ARR_SEP_, _op1);
+		}
+		putc(_C_TUTUP_, _op1);
+		while((_y = getc(_open))!=-1)putc(_y, _op1);
+		fclose(_op1);
+		fclose(_open);
+		rename(__tpath, _filepath);
+		(d -> __fop).__op1 = _open = fopen(_filepath, "r+");
+	}
+	if(dt) (*env)->ReleaseStringUTFChars(env, path, dt);
+	(*env)->ReleaseStringUTFChars(env, name, elm);
+}
+
+JNIEXPORT void JNICALL Java_com_mylexz_utils_NodeData_addCharArray(JNIEnv *env, jobject thiz, jstring path, jstring name, jcharArray data, jboolean encrypt_flags){
+	jint __desc = __getNDesc(env, thiz);
+	if(__desc == -1)return;
+	const char *elm;
+	const char *dt;
+	if(name == NULL)return;
+	if(path == NULL) dt = NULL;
+	else dt = (*env)->GetStringUTFChars(env, path, 0);
+	elm = (*env)->GetStringUTFChars(env, name, 0);
+	NDATA *d = __lNcont(__lncurr, __desc);
+	if(data){
+		jsize len = (*env)->GetArrayLength(env, data);
+		jchar *a = (*env)->GetCharArrayElements(env, data, 0);
+		nadd_arr(d, dt, elm, CHR, a, len, ((encrypt_flags)?1:0));
+		(*env)->ReleaseCharArrayElements(env, data, a, 0);
+	}
+	else 
+		nadd_arr(d, dt, elm, CHR, NULL, 0, ((encrypt_flags)?1:0));
+	if(dt) (*env)->ReleaseStringUTFChars(env, path, dt);
+	(*env)->ReleaseStringUTFChars(env, name, elm);
+}
+
+JNIEXPORT void JNICALL Java_com_mylexz_utils_NodeData_addDoubleArray(JNIEnv *env, jobject thiz, jstring path, jstring name, jdoubleArray data, jboolean encrypt_flags){
+	jint __desc = __getNDesc(env, thiz);
+	if(__desc == -1)return;
+	const char *elm;
+	const char *dt;
+	if(name == NULL)return;
+	if(path == NULL) dt = NULL;
+	else dt = (*env)->GetStringUTFChars(env, path, 0);
+	elm = (*env)->GetStringUTFChars(env, name, 0);
+	NDATA *d = __lNcont(__lncurr, __desc);
+	if(data){
+		jsize len = (*env)->GetArrayLength(env, data);
+		jdouble *a = (*env)->GetDoubleArrayElements(env, data, 0);
+		nadd_arr(d, dt, elm, DOUBLE, a, len, ((encrypt_flags)?1:0));
+		(*env)->ReleaseDoubleArrayElements(env, data, a, 0);
+	}
+	else 
+		nadd_arr(d, dt, elm, DOUBLE, NULL, 0, ((encrypt_flags)?1:0));
+		
+	if(dt) (*env)->ReleaseStringUTFChars(env, path, dt);
+	(*env)->ReleaseStringUTFChars(env, name, elm);
+}
+
+JNIEXPORT void JNICALL Java_com_mylexz_utils_NodeData_addLongArray(JNIEnv *env, jobject thiz, jstring path, jstring name, jlongArray data, jboolean encrypt_flags){
+	jint __desc = __getNDesc(env, thiz);
+	if(__desc == -1)return;
+	const char *elm;
+	const char *dt;
+	if(name == NULL)return;
+	if(path == NULL) dt = NULL;
+	else dt = (*env)->GetStringUTFChars(env, path, 0);
+	elm = (*env)->GetStringUTFChars(env, name, 0);
+	NDATA *d = __lNcont(__lncurr, __desc);
+	if(data){
+		jsize len = (*env)->GetArrayLength(env, data);
+		jlong *a = (*env)->GetLongArrayElements(env, data, 0);
+		nadd_arr(d, dt, elm, LONG, a, len, ((encrypt_flags)?1:0));
+		(*env)->ReleaseLongArrayElements(env, data, a, 0);
+	}
+	else
+		nadd_arr(d, dt, elm, LONG, NULL, 0, ((encrypt_flags)?1:0));
+	if(dt) (*env)->ReleaseStringUTFChars(env, path, dt);
+	(*env)->ReleaseStringUTFChars(env, name, elm);
+}
+
+JNIEXPORT void JNICALL Java_com_mylexz_utils_NodeData_addBooleanArray(JNIEnv *env, jobject thiz, jstring path, jstring name, jbooleanArray data, jboolean encrypt_flags){
+	jint __desc = __getNDesc(env, thiz);
+	if(__desc == -1)return;
+	const char *elm;
+	const char *dt;
+	if(name == NULL)return;
+	if(path == NULL) dt = NULL;
+	else dt = (*env)->GetStringUTFChars(env, path, 0);
+	elm = (*env)->GetStringUTFChars(env, name, 0);
+	NDATA *d = __lNcont(__lncurr, __desc);
+	if(data){
+		jsize len = (*env)->GetArrayLength(env, data);
+		jboolean *a = (*env)->GetBooleanArrayElements(env, data, 0);
+		jint i;
+		short bl[len];
+		for(i = 0; i<len; i++)bl[i] = (a[i])?TRUE:FALSE;
+		nadd_arr(d, dt, elm, BOOL, bl, len, ((encrypt_flags)?1:0));
+		(*env)->ReleaseBooleanArrayElements(env, data, a, 0);
+	}
+	else 
+		nadd_arr(d, dt, elm, BOOL, NULL, 0, ((encrypt_flags)?1:0));
+	if(dt) (*env)->ReleaseStringUTFChars(env, path, dt);
+	(*env)->ReleaseStringUTFChars(env, name, elm);
+
+}
+
+JNIEXPORT jint JNICALL Java_com_mylexz_utils_NodeData_getOccurences__Ljava_lang_String_2I(JNIEnv *env, jobject thiz, jstring fullpath, jint data){
+	jint __desc = __getNDesc(env, thiz);
+	if(__desc == -1)return;
+	const char *fp;
+	if(fullpath == NULL)return;
+	fp = (*env)->GetStringUTFChars(env, fullpath, 0);
+	NDATA *d = __lNcont(__lncurr, __desc);
+	int val = (int) data;
+	jint res = nget_occur(d, fp, &val);
+	(*env)->ReleaseStringUTFChars(env, fullpath, fp);
+	return res;
+}
+
+JNIEXPORT jint JNICALL Java_com_mylexz_utils_NodeData_getOccurences__Ljava_lang_String_2J(JNIEnv *env, jobject thiz, jstring fullpath, jlong data){
+	jint __desc = __getNDesc(env, thiz);
+	if(__desc == -1)return;
+	const char *fp;
+	if(fullpath == NULL)return;
+	fp = (*env)->GetStringUTFChars(env, fullpath, 0);
+	NDATA *d = __lNcont(__lncurr, __desc);
+	long long int val = (long long int) data;
+	jint res = nget_occur(d, fp, &val);
+	(*env)->ReleaseStringUTFChars(env, fullpath, fp);
+	return res;
+}
+
+JNIEXPORT jint JNICALL Java_com_mylexz_utils_NodeData_getOccurences__Ljava_lang_String_2D(JNIEnv *env, jobject thiz, jstring fullpath, jdouble data){
+	jint __desc = __getNDesc(env, thiz);
+	if(__desc == -1)return;
+	const char *fp;
+	if(fullpath == NULL)return;
+	fp = (*env)->GetStringUTFChars(env, fullpath, 0);
+	NDATA *d = __lNcont(__lncurr, __desc);
+	double val = (double) data;
+	jint res = nget_occur(d, fp, &val);
+	(*env)->ReleaseStringUTFChars(env, fullpath, fp);
+	return res;
+}
+JNIEXPORT jint JNICALL Java_com_mylexz_utils_NodeData_getOccurences__Ljava_lang_String_2Ljava_lang_String_2(JNIEnv *env, jobject thiz, jstring fullpath, jstring data){
+	jint __desc = __getNDesc(env, thiz);
+	if(__desc == -1)return;
+	const char *fp;
+	if(fullpath == NULL)return;
+	fp = (*env)->GetStringUTFChars(env, fullpath, 0);
+	NDATA *d = __lNcont(__lncurr, __desc);
+	const char *val = (*env) -> GetStringUTFChars(env, data, 0);
+	jint res = nget_occur(d, fp, val);
+	(*env)->ReleaseStringUTFChars(env, fullpath, fp);
+	(*env)->ReleaseStringUTFChars(env, data, val);
+	return res;
+}
+
+/*
+ * Class:     com_mylexz_utils_NodeData
+ * Method:    getOccurences
+ * Signature: (Ljava/lang/String;Z)I
+ */
+JNIEXPORT jint JNICALL Java_com_mylexz_utils_NodeData_getOccurences__Ljava_lang_String_2Z(JNIEnv *env, jobject thiz, jstring fullpath, jboolean data){
+	jint __desc = __getNDesc(env, thiz);
+	if(__desc == -1)return;
+	const char *fp;
+	if(fullpath == NULL)return;
+	fp = (*env)->GetStringUTFChars(env, fullpath, 0);
+	NDATA *d = __lNcont(__lncurr, __desc);
+	short val = (data)?1:0;
+	jint res = nget_occur(d, fp, &val);
+	(*env)->ReleaseStringUTFChars(env, fullpath, fp);
+	return res;
+}
+
+/*
+ * Class:     com_mylexz_utils_NodeData
+ * Method:    getOccurences
+ * Signature: (Ljava/lang/String;C)I
+ */
+JNIEXPORT jint JNICALL Java_com_mylexz_utils_NodeData_getOccurences__Ljava_lang_String_2C(JNIEnv *env, jobject thiz, jstring fullpath, jchar data){
+	jint __desc = __getNDesc(env, thiz);
+	if(__desc == -1)return;
+	const char *fp;
+	if(fullpath == NULL)return;
+	fp = (*env)->GetStringUTFChars(env, fullpath, 0);
+	NDATA *d = __lNcont(__lncurr, __desc);
+	char val = (char) data;
+	jint res = nget_occur(d, fp, &val);
+	(*env)->ReleaseStringUTFChars(env, fullpath, fp);
+	return res;
 }
 
 /******/
