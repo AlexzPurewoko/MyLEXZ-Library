@@ -338,7 +338,124 @@ JNIEXPORT jstring JNICALL Java_com_mylexz_utils_NodeData_getStringData(JNIEnv *e
 	return defV;
 }
 
+JNIEXPORT void JNICALL Java_com_mylexz_utils_NodeData_setContentData__Ljava_lang_String_2I(JNIEnv *env, jobject thiz, jstring fullpath, jint data){
+	jint __desc = __getNDesc(env, thiz);
+	if(__desc == -1)return;
+	const char *fp;
+	if(fullpath == NULL)return;
+	fp = (*env)->GetStringUTFChars(env, fullpath, 0);
+	NDATA *d = __lNcont(__lncurr, __desc);
+	int val = (int) data;
+	nset_data(d, fp, &val);
+	(*env)->ReleaseStringUTFChars(env, fullpath, fp);
+}
 
+JNIEXPORT void JNICALL Java_com_mylexz_utils_NodeData_setContentData__Ljava_lang_String_2J(JNIEnv *env, jobject thiz, jstring fullpath, jlong data){
+	jint __desc = __getNDesc(env, thiz);
+	if(__desc == -1)return;
+	const char *fp;
+	if(fullpath == NULL)return;
+	fp = (*env)->GetStringUTFChars(env, fullpath, 0);
+	NDATA *d = __lNcont(__lncurr, __desc);
+	long long val = (long long) data;
+	nset_data(d, fp, &val);
+	(*env)->ReleaseStringUTFChars(env, fullpath, fp);
+}
+
+JNIEXPORT void JNICALL Java_com_mylexz_utils_NodeData_setContentData__Ljava_lang_String_2D(JNIEnv *env, jobject thiz, jstring fullpath, jdouble data){
+	jint __desc = __getNDesc(env, thiz);
+	if(__desc == -1)return;
+	const char *fp;
+	if(fullpath == NULL)return;
+	fp = (*env)->GetStringUTFChars(env, fullpath, 0);
+	NDATA *d = __lNcont(__lncurr, __desc);
+	double val = (double) data;
+	nset_data(d, fp, &val);
+	(*env)->ReleaseStringUTFChars(env, fullpath, fp);
+}
+
+JNIEXPORT void JNICALL Java_com_mylexz_utils_NodeData_setContentData__Ljava_lang_String_2Ljava_lang_String_2(JNIEnv *env, jobject thiz, jstring fullpath, jstring data){
+	jint __desc = __getNDesc(env, thiz);
+	if(__desc == -1)return;
+	const char *fp;
+	if(fullpath == NULL)return;
+	fp = (*env)->GetStringUTFChars(env, fullpath, 0);
+	NDATA *d = __lNcont(__lncurr, __desc);
+	const char *val = (*env) -> GetStringUTFChars(env, data, 0);
+	nset_data(d, fp, val);
+	(*env)->ReleaseStringUTFChars(env, fullpath, fp);
+	(*env)->ReleaseStringUTFChars(env, data, val);
+}
+
+JNIEXPORT void JNICALL Java_com_mylexz_utils_NodeData_setContentData__Ljava_lang_String_2Z(JNIEnv *env, jobject thiz, jstring fullpath, jboolean data){
+	jint __desc = __getNDesc(env, thiz);
+	if(__desc == -1)return;
+	const char *fp;
+	if(fullpath == NULL)return;
+	fp = (*env)->GetStringUTFChars(env, fullpath, 0);
+	NDATA *d = __lNcont(__lncurr, __desc);
+	short val = (short) ((data)?TRUE:FALSE);
+	nset_data(d, fp, &val);
+	(*env)->ReleaseStringUTFChars(env, fullpath, fp);
+}
+
+JNIEXPORT void JNICALL Java_com_mylexz_utils_NodeData_setContentData__Ljava_lang_String_2C(JNIEnv *env, jobject thiz, jstring fullpath, jchar data){
+	jint __desc = __getNDesc(env, thiz);
+	if(__desc == -1)return;
+	const char *fp;
+	if(fullpath == NULL)return;
+	fp = (*env)->GetStringUTFChars(env, fullpath, 0);
+	NDATA *d = __lNcont(__lncurr, __desc);
+	char val = (char) data;
+	nset_data(d, fp, &val);
+	(*env)->ReleaseStringUTFChars(env, fullpath, fp);
+}
+JNIEXPORT void JNICALL Java_com_mylexz_utils_NodeData_deleteData(JNIEnv *env, jobject thiz, jstring fullpath){
+	jint __desc = __getNDesc(env, thiz);
+	if(__desc == -1)return;
+	const char *fp;
+	if(fullpath == NULL)return;
+	fp = (*env)->GetStringUTFChars(env, fullpath, 0);
+	NDATA *d = __lNcont(__lncurr, __desc);
+	ndelElem(d, fp);
+	(*env)->ReleaseStringUTFChars(env, fullpath, fp);
+}
+
+JNIEXPORT jboolean JNICALL Java_com_mylexz_utils_NodeData_isAnyErrors(JNIEnv *env, jobject thiz){
+	jint __desc = __getNDesc(env, thiz);
+	if(__desc == -1)return FALSE;
+	NDATA *d = __lNcont(__lncurr, __desc);
+	short a = ngetErrors(d);
+	return (jboolean) ((a)?TRUE:FALSE);
+}
+
+JNIEXPORT void JNICALL Java_com_mylexz_utils_NodeData_clearDataValue(JNIEnv *env, jobject thiz, jstring fullpath){
+	jint __desc = __getNDesc(env, thiz);
+	if(__desc == -1)return;
+	const char *fp;
+	if(fullpath == NULL)return;
+	fp = (*env)->GetStringUTFChars(env, fullpath, 0);
+	NDATA *d = __lNcont(__lncurr, __desc);
+	nempty_data(d, fp);
+	(*env)->ReleaseStringUTFChars(env, fullpath, fp);
+}
+
+/*
+ * Class:     com_mylexz_utils_NodeData
+ * Method:    isEmptyData
+ * Signature: (Ljava/lang/String;)Z
+ */
+JNIEXPORT jboolean JNICALL Java_com_mylexz_utils_NodeData_isEmptyData(JNIEnv *env, jobject thiz, jstring fullpath){
+	jint __desc = __getNDesc(env, thiz);
+	if(__desc == -1)return;
+	const char *fp;
+	if(fullpath == NULL)return;
+	fp = (*env)->GetStringUTFChars(env, fullpath, 0);
+	NDATA *d = __lNcont(__lncurr, __desc);
+	short is_e = nis_empty(d, fp);
+	(*env)->ReleaseStringUTFChars(env, fullpath, fp);
+	return (is_e)?TRUE:FALSE;
+}
 
 /******/
   
