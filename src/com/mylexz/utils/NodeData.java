@@ -23,6 +23,7 @@ public class NodeData
 	private int __id = -1;
 	private String __filepath = "";
 	private String __signature = "";
+	private String s_tmp = "";
 	private int type = 0;
 	private List<String> mlist;
 	private List<String> mTemp;
@@ -429,6 +430,10 @@ public class NodeData
 			case 'c':
 				saveIteration();
 				break;
+			case 'd':
+				saveIteration();
+				s_tmp = "";
+				break;
 			default:
 				{
 					proc = type = 0;
@@ -501,5 +506,35 @@ public class NodeData
 		resetArrayIteration();
 		return data;
 	}
-	
+	public native void strCatIter(String fullpath);
+	public NodeData nextCat(int data){
+		if(proc != 'd') return this;
+		s_tmp += String.valueOf(data);
+		return this;
+	}
+	public NodeData nextCat(double data){
+		if(proc != 'd') return this;
+		s_tmp += String.valueOf(data);
+		return this;
+	}
+	public NodeData nextCat(char data){
+		if(proc != 'd') return this;
+		s_tmp += String.valueOf(data);
+		return this;
+	}
+	public NodeData nextCat(boolean data){
+		if(proc != 'd') return this;
+		s_tmp += String.valueOf(data);
+		return this;
+	}
+	public NodeData nextCat(String data){
+		if(proc != 'd') return this;
+		s_tmp += String.valueOf(data);
+		return this;
+	}
+	public NodeData nextCat(long data){
+		if(proc != 'd') return this;
+		s_tmp += String.valueOf(data);
+		return this;
+	}
 }
