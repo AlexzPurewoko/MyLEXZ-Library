@@ -74,7 +74,7 @@ public class NodeData
 	public native void delNode(String fullpath);
 	public native void clearContents(String fullpath);
 	private native String[] listContents(String fullpath);
-	public String[] listContents(String fullpath, Filter filter){
+	public List<String> listContents(String fullpath, Filter filter){
 		String[] list = listContents(fullpath);
 		if(list == null)return null;
 		List<String> lf = new ArrayList<String>();
@@ -85,7 +85,7 @@ public class NodeData
 					if(tmp.charAt(tmp.length() - 1) == ID_NODE)
 						lf.add(tmp);
 				}
-			break;
+				break;
 			case DATA_ONLY:
 				for(int x = 0; x < list.length; x++){
 					String tmp = list[x];
@@ -93,7 +93,7 @@ public class NodeData
 					else if(tmp.charAt(tmp.length() -3) == ID_DATA)
 						lf.add(tmp);
 				}
-			break;
+				break;
 			case ARRAY_ONLY:
 				for(int x = 0; x < list.length; x++){
 					String tmp = list[x];
@@ -101,7 +101,7 @@ public class NodeData
 					else if(tmp.charAt(tmp.length() -3) == ID_ARRAY)
 						lf.add(tmp);
 				}
-			break;
+				break;
 			case ARRAY_AND_NODE:
 				for(int x = 0; x < list.length; x++){
 					String tmp = list[x];
@@ -109,7 +109,7 @@ public class NodeData
 					else if(tmp.charAt(tmp.length() -3) == ID_ARRAY)
 						lf.add(tmp);
 				}
-			break;
+				break;
 			case DATA_AND_NODE:
 				for(int x = 0; x < list.length; x++){
 					String tmp = list[x];
@@ -117,7 +117,7 @@ public class NodeData
 					else if(tmp.charAt(tmp.length() -3) == ID_DATA)
 						lf.add(tmp);
 				}
-			break;
+				break;
 			case ARRAY_AND_DATA:
 				for(int x = 0; x < list.length; x++){
 					String tmp = list[x];
@@ -125,11 +125,12 @@ public class NodeData
 					else if(tmp.charAt(tmp.length() -3) == ID_ARRAY || tmp.charAt(tmp.length() -3) == ID_DATA)
 						lf.add(tmp);
 				}
-			break;
+				break;
 			case NO_FILTERS:
-				return list;
+				for(int x = 0; x < list.length; x++)
+					lf.add(list[x]);
 		}
-		return (String[]) lf.toArray();
+		return lf;
 	}
 	public native void addIntData(String path, String elem, int content, boolean encrypted);
 	public native void addLongData(String path, String elem, long content, boolean encrypted);
