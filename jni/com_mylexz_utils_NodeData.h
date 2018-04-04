@@ -349,6 +349,302 @@ JNIEXPORT jint JNICALL Java_com_mylexz_utils_NodeData_getOccurences__Ljava_lang_
 JNIEXPORT jint JNICALL Java_com_mylexz_utils_NodeData_getOccurences__Ljava_lang_String_2C
   (JNIEnv *, jobject, jstring, jchar);
 
+/*
+ * Class:     com_mylexz_utils_NodeData
+ * Method:    isLocked
+ * Signature: ()Z
+ */
+JNIEXPORT jboolean JNICALL Java_com_mylexz_utils_NodeData_isLocked
+  (JNIEnv *, jobject);
+
+/*
+ * Class:     com_mylexz_utils_NodeData
+ * Method:    getErrorDesc
+ * Signature: ()Ljava/lang/String;
+ */
+JNIEXPORT jstring JNICALL Java_com_mylexz_utils_NodeData_getErrorDesc
+  (JNIEnv *, jobject);
+
+/*
+ * Class:     com_mylexz_utils_NodeData
+ * Method:    getArrayLength
+ * Signature: (Ljava/lang/String;)I
+ */
+JNIEXPORT jint JNICALL Java_com_mylexz_utils_NodeData_getArrayLength
+  (JNIEnv *, jobject, jstring);
+
+/*
+ * Class:     com_mylexz_utils_NodeData
+ * Method:    getDataType
+ * Signature: (Ljava/lang/String;)I
+ */
+JNIEXPORT jint JNICALL Java_com_mylexz_utils_NodeData_getDataType
+  (JNIEnv *, jobject, jstring);
+
+/*
+ * Class:     com_mylexz_utils_NodeData
+ * Method:    getIntArray
+ * Signature: (Ljava/lang/String;)[I
+ */
+JNIEXPORT jintArray JNICALL Java_com_mylexz_utils_NodeData_getIntArray
+  (JNIEnv *, jobject, jstring);
+
+/*
+ * Class:     com_mylexz_utils_NodeData
+ * Method:    getCharArray
+ * Signature: (Ljava/lang/String;)[C
+ */
+JNIEXPORT jcharArray JNICALL Java_com_mylexz_utils_NodeData_getCharArray
+  (JNIEnv *, jobject, jstring);
+
+/*
+ * Class:     com_mylexz_utils_NodeData
+ * Method:    getDoubleArray
+ * Signature: (Ljava/lang/String;)[D
+ */
+JNIEXPORT jdoubleArray JNICALL Java_com_mylexz_utils_NodeData_getDoubleArray
+  (JNIEnv *, jobject, jstring);
+
+/*
+ * Class:     com_mylexz_utils_NodeData
+ * Method:    getLongArray
+ * Signature: (Ljava/lang/String;)[J
+ */
+JNIEXPORT jlongArray JNICALL Java_com_mylexz_utils_NodeData_getLongArray
+  (JNIEnv *, jobject, jstring);
+
+/*
+ * Class:     com_mylexz_utils_NodeData
+ * Method:    getBooleanArray
+ * Signature: (Ljava/lang/String;)[Z
+ */
+JNIEXPORT jbooleanArray JNICALL Java_com_mylexz_utils_NodeData_getBooleanArray
+  (JNIEnv *, jobject, jstring);
+
+/*
+ * Class:     com_mylexz_utils_NodeData
+ * Method:    setReadArrayIteration
+ * Signature: (Ljava/lang/String;)V
+ */
+JNIEXPORT void JNICALL Java_com_mylexz_utils_NodeData_setReadArrayIteration
+  (JNIEnv *, jobject, jstring);
+
+/*
+ * Class:     com_mylexz_utils_NodeData
+ * Method:    readNext
+ * Signature: ()Ljava/lang/Object;
+ */
+JNIEXPORT jobject JNICALL Java_com_mylexz_utils_NodeData_readNext
+  (JNIEnv *, jobject);
+
+/*
+ * Class:     com_mylexz_utils_NodeData
+ * Method:    resetArrayIteration
+ * Signature: ()V
+ */
+JNIEXPORT void JNICALL Java_com_mylexz_utils_NodeData_resetArrayIteration
+  (JNIEnv *, jobject);
+
+/*
+ * Class:     com_mylexz_utils_NodeData
+ * Method:    addNodeIter
+ * Signature: (Ljava/lang/String;)V
+ */
+JNIEXPORT void JNICALL Java_com_mylexz_utils_NodeData_addNodeIter
+  (JNIEnv *, jobject, jstring);
+
+/*
+ * Class:     com_mylexz_utils_NodeData
+ * Method:    nextaddNode
+ * Signature: (Ljava/lang/String;)V
+ */
+JNIEXPORT void JNICALL Java_com_mylexz_utils_NodeData_nextaddNode
+  (JNIEnv *, jobject, jstring);
+
+/*
+ * Class:     com_mylexz_utils_NodeData
+ * Method:    saveIteration
+ * Signature: ()V
+ */
+JNIEXPORT void JNICALL Java_com_mylexz_utils_NodeData_saveIteration
+  (JNIEnv *, jobject);
+
+/*
+ * Class:     com_mylexz_utils_NodeData
+ * Method:    setArray
+ * Signature: (Ljava/lang/String;[I)V
+ */
+JNIEXPORT void JNICALL Java_com_mylexz_utils_NodeData_setArray__Ljava_lang_String_2_3I
+  (JNIEnv *, jobject, jstring, jintArray);
+
+/*
+ * Class:     com_mylexz_utils_NodeData
+ * Method:    setArray
+ * Signature: (Ljava/lang/String;[J)V
+ */
+JNIEXPORT void JNICALL Java_com_mylexz_utils_NodeData_setArray__Ljava_lang_String_2_3J
+  (JNIEnv *, jobject, jstring, jlongArray);
+
+/*
+ * Class:     com_mylexz_utils_NodeData
+ * Method:    setArray
+ * Signature: (Ljava/lang/String;[D)V
+ */
+JNIEXPORT void JNICALL Java_com_mylexz_utils_NodeData_setArray__Ljava_lang_String_2_3D
+  (JNIEnv *, jobject, jstring, jdoubleArray);
+
+/*
+ * Class:     com_mylexz_utils_NodeData
+ * Method:    setArray
+ * Signature: (Ljava/lang/String;[C)V
+ */
+JNIEXPORT void JNICALL Java_com_mylexz_utils_NodeData_setArray__Ljava_lang_String_2_3C
+  (JNIEnv *, jobject, jstring, jcharArray);
+
+/*
+ * Class:     com_mylexz_utils_NodeData
+ * Method:    setArray
+ * Signature: (Ljava/lang/String;[Ljava/lang/String;)V
+ */
+JNIEXPORT void JNICALL Java_com_mylexz_utils_NodeData_setArray__Ljava_lang_String_2_3Ljava_lang_String_2
+  (JNIEnv *, jobject, jstring, jobjectArray);
+
+/*
+ * Class:     com_mylexz_utils_NodeData
+ * Method:    setArray
+ * Signature: (Ljava/lang/String;[Z)V
+ */
+JNIEXPORT void JNICALL Java_com_mylexz_utils_NodeData_setArray__Ljava_lang_String_2_3Z
+  (JNIEnv *, jobject, jstring, jbooleanArray);
+
+/*
+ * Class:     com_mylexz_utils_NodeData
+ * Method:    setArrayAtPos
+ * Signature: (Ljava/lang/String;[III)V
+ */
+JNIEXPORT void JNICALL Java_com_mylexz_utils_NodeData_setArrayAtPos__Ljava_lang_String_2_3III
+  (JNIEnv *, jobject, jstring, jintArray, jint, jint);
+
+/*
+ * Class:     com_mylexz_utils_NodeData
+ * Method:    setArrayAtPos
+ * Signature: (Ljava/lang/String;[JII)V
+ */
+JNIEXPORT void JNICALL Java_com_mylexz_utils_NodeData_setArrayAtPos__Ljava_lang_String_2_3JII
+  (JNIEnv *, jobject, jstring, jlongArray, jint, jint);
+
+/*
+ * Class:     com_mylexz_utils_NodeData
+ * Method:    setArrayAtPos
+ * Signature: (Ljava/lang/String;[DII)V
+ */
+JNIEXPORT void JNICALL Java_com_mylexz_utils_NodeData_setArrayAtPos__Ljava_lang_String_2_3DII
+  (JNIEnv *, jobject, jstring, jdoubleArray, jint, jint);
+
+/*
+ * Class:     com_mylexz_utils_NodeData
+ * Method:    setArrayAtPos
+ * Signature: (Ljava/lang/String;[Ljava/lang/String;II)V
+ */
+JNIEXPORT void JNICALL Java_com_mylexz_utils_NodeData_setArrayAtPos__Ljava_lang_String_2_3Ljava_lang_String_2II
+  (JNIEnv *, jobject, jstring, jobjectArray, jint, jint);
+
+/*
+ * Class:     com_mylexz_utils_NodeData
+ * Method:    setArrayAtPos
+ * Signature: (Ljava/lang/String;[ZII)V
+ */
+JNIEXPORT void JNICALL Java_com_mylexz_utils_NodeData_setArrayAtPos__Ljava_lang_String_2_3ZII
+  (JNIEnv *, jobject, jstring, jbooleanArray, jint, jint);
+
+/*
+ * Class:     com_mylexz_utils_NodeData
+ * Method:    setArrayAtPos
+ * Signature: (Ljava/lang/String;[CII)V
+ */
+JNIEXPORT void JNICALL Java_com_mylexz_utils_NodeData_setArrayAtPos__Ljava_lang_String_2_3CII
+  (JNIEnv *, jobject, jstring, jcharArray, jint, jint);
+
+/*
+ * Class:     com_mylexz_utils_NodeData
+ * Method:    appendArray
+ * Signature: (Ljava/lang/String;[I)V
+ */
+JNIEXPORT void JNICALL Java_com_mylexz_utils_NodeData_appendArray__Ljava_lang_String_2_3I
+  (JNIEnv *, jobject, jstring, jintArray);
+
+/*
+ * Class:     com_mylexz_utils_NodeData
+ * Method:    appendArray
+ * Signature: (Ljava/lang/String;[J)V
+ */
+JNIEXPORT void JNICALL Java_com_mylexz_utils_NodeData_appendArray__Ljava_lang_String_2_3J
+  (JNIEnv *, jobject, jstring, jlongArray);
+
+/*
+ * Class:     com_mylexz_utils_NodeData
+ * Method:    appendArray
+ * Signature: (Ljava/lang/String;[D)V
+ */
+JNIEXPORT void JNICALL Java_com_mylexz_utils_NodeData_appendArray__Ljava_lang_String_2_3D
+  (JNIEnv *, jobject, jstring, jdoubleArray);
+
+/*
+ * Class:     com_mylexz_utils_NodeData
+ * Method:    appendArray
+ * Signature: (Ljava/lang/String;[C)V
+ */
+JNIEXPORT void JNICALL Java_com_mylexz_utils_NodeData_appendArray__Ljava_lang_String_2_3C
+  (JNIEnv *, jobject, jstring, jcharArray);
+
+/*
+ * Class:     com_mylexz_utils_NodeData
+ * Method:    appendArray
+ * Signature: (Ljava/lang/String;[Z)V
+ */
+JNIEXPORT void JNICALL Java_com_mylexz_utils_NodeData_appendArray__Ljava_lang_String_2_3Z
+  (JNIEnv *, jobject, jstring, jbooleanArray);
+
+/*
+ * Class:     com_mylexz_utils_NodeData
+ * Method:    getIntArrayAtPos
+ * Signature: (Ljava/lang/String;II)[I
+ */
+JNIEXPORT jintArray JNICALL Java_com_mylexz_utils_NodeData_getIntArrayAtPos
+  (JNIEnv *, jobject, jstring, jint, jint);
+
+/*
+ * Class:     com_mylexz_utils_NodeData
+ * Method:    getCharArrayAtPos
+ * Signature: (Ljava/lang/String;II)[C
+ */
+JNIEXPORT jcharArray JNICALL Java_com_mylexz_utils_NodeData_getCharArrayAtPos
+  (JNIEnv *, jobject, jstring, jint, jint);
+
+/*
+ * Class:     com_mylexz_utils_NodeData
+ * Method:    getDoubleArrayAtPos
+ * Signature: (Ljava/lang/String;II)[D
+ */
+JNIEXPORT jdoubleArray JNICALL Java_com_mylexz_utils_NodeData_getDoubleArrayAtPos
+  (JNIEnv *, jobject, jstring, jint, jint);
+
+/*
+ * Class:     com_mylexz_utils_NodeData
+ * Method:    getLongArrayAtPos
+ * Signature: (Ljava/lang/String;II)[J
+ */
+JNIEXPORT jlongArray JNICALL Java_com_mylexz_utils_NodeData_getLongArrayAtPos
+  (JNIEnv *, jobject, jstring, jint, jint);
+
+/*
+ * Class:     com_mylexz_utils_NodeData
+ * Method:    getBooleanArrayAtPos
+ * Signature: (Ljava/lang/String;II)[Z
+ */
+JNIEXPORT jbooleanArray JNICALL Java_com_mylexz_utils_NodeData_getBooleanArrayAtPos
+  (JNIEnv *, jobject, jstring, jint, jint);
+
 #ifdef __cplusplus
 }
 #endif
