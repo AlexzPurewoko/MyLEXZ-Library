@@ -3363,6 +3363,7 @@ void nreadarr_iter(NDATA * data, const char *fullpath)
 		free(_type);
 		free(_id);
 		free(_name);
+		free(_en_flags);
 		*_errnum = EIAT;
 		fseek(_open, *_sigPos, 0);
 		return;
@@ -3375,6 +3376,16 @@ void nreadarr_iter(NDATA * data, const char *fullpath)
 	_temp[_y] = '\0';
 	data->__arrpos = 0;
 	data->__lenarr = atoi(_temp);
+	if(data -> __lenarr < 1){
+		data -> __lenarr = 0;
+		free(_type);
+		free(_id);
+		free(_name);
+		free(_en_flags);
+		*_errnum = ECN;
+		fseek(_open, *_sigPos, 0);
+		return;
+	}
 	if (*_id == STR)
 	{
 		_x = _y = _z = 0;
