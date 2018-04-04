@@ -3704,7 +3704,7 @@ void nnext_appendarr(NDATA * data, void *content)
 	else
 	{
 		char *e = malloc(strlen(__isi));
-		sprintf(e, "%s\0", __isi);
+		sprintf(e, "%s", __isi);
 		__ctmp = __create_n();
 		__ctmp->__name = e;
 		// printf("\na\t %d", __ctmp -> __name[strlen(__ctmp -> __name) -1]);
@@ -3830,7 +3830,7 @@ void nnext_addarr(NDATA * data, void *content)
 		__ENCRYPT_DATA__(data->__id, __isi)
 		// write !!
 	char *e = malloc(strlen(__isi));
-	sprintf(e, "%s\0", __isi);
+	sprintf(e, "%s", __isi);
 	__ctmp = __create_n();
 	__ctmp->__name = e;
 	// printf("\na\t %d", __ctmp -> __name[strlen(__ctmp -> __name) -1]);
