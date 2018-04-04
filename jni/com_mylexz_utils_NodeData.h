@@ -645,6 +645,14 @@ JNIEXPORT jlongArray JNICALL Java_com_mylexz_utils_NodeData_getLongArrayAtPos
 JNIEXPORT jbooleanArray JNICALL Java_com_mylexz_utils_NodeData_getBooleanArrayAtPos
   (JNIEnv *, jobject, jstring, jint, jint);
 
+/*
+ * Class:     com_mylexz_utils_NodeData
+ * Method:    strCatIter
+ * Signature: (Ljava/lang/String;)V
+ */
+JNIEXPORT void JNICALL Java_com_mylexz_utils_NodeData_strCatIter
+  (JNIEnv *, jobject, jstring);
+
 #ifdef __cplusplus
 }
 #endif
