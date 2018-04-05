@@ -3,4 +3,7 @@ gen/
 obj/
 libs/*/*.so
 jni/com*NodeData1.c
-
+res/layout
+res/layout/*
+src/com/mylexz/utils/example
+src/com/mylexz/utils/example/*
