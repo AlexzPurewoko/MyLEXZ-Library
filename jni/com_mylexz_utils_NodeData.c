@@ -665,7 +665,11 @@ JNIEXPORT void JNICALL Java_com_mylexz_utils_NodeData_addLongArray(JNIEnv *env, 
 	if(data){
 		jsize len = (*env)->GetArrayLength(env, data);
 		jlong *a = (*env)->GetLongArrayElements(env, data, 0);
-		nadd_arr(d, dt, elm, LONG, a, len, ((encrypt_flags)?1:0));
+		long long int sss[len];
+		jint x;
+		for(x = 0; x < len; x++)
+			sss[x] = (long long int) a[x];
+		nadd_arr(d, dt, elm, LONG, sss, len, ((encrypt_flags)?1:0));
 		(*env)->ReleaseLongArrayElements(env, data, a, 0);
 	}
 	else
@@ -699,6 +703,124 @@ JNIEXPORT void JNICALL Java_com_mylexz_utils_NodeData_addBooleanArray(JNIEnv *en
 	(*env)->ReleaseStringUTFChars(env, name, elm);
 
 }
+JNIEXPORT jintArray JNICALL Java_com_mylexz_utils_NodeData_getIntArray(JNIEnv *env, jobject thiz, jstring fullpath){
+	jint __desc = __getNDesc(env, thiz);
+	if(__desc == -1)return NULL;
+	const char *fp;
+	if(fullpath == NULL)return NULL;
+	fp = (*env)->GetStringUTFChars(env, fullpath, 0);
+
+	NDATA *d = __lNcont(__lncurr, __desc);
+	jint size = nget_arrlen(d, fp);
+	jintArray arr = (*env) -> NewIntArray(env, size);
+	int *marr = nget_arr(d, fp);
+	(*env) -> SetIntArrayRegion(env, arr, 0, size, marr);
+	(*env)->ReleaseStringUTFChars(env, fullpath, fp);
+	return arr;
+}
+/*
+ * Class:     com_mylexz_utils_NodeData
+ * Method:    getCharArray
+ * Signature: (Ljava/lang/String;)[C
+ */
+JNIEXPORT jcharArray JNICALL Java_com_mylexz_utils_NodeData_getCharArray
+(JNIEnv *env, jobject thiz, jstring fullpath){
+	jint __desc = __getNDesc(env, thiz);
+	if(__desc == -1)return NULL;
+	const char *fp;
+	if(fullpath == NULL)return NULL;
+	fp = (*env)->GetStringUTFChars(env, fullpath, 0);
+
+	NDATA *d = __lNcont(__lncurr, __desc);
+	jint size = nget_arrlen(d, fp);
+	if(!size)return NULL;
+	jcharArray arr = (*env) -> NewCharArray(env, size);
+	char *marr = (char *)nget_arr(d, fp);
+	jchar om[size];
+	jint x = 0;
+	for(; x < size; x++) om[x] = (jchar) ((int)marr[x]);
+	(*env) -> SetCharArrayRegion(env, arr, 0, size, om);
+	(*env)->ReleaseStringUTFChars(env, fullpath, fp);
+	return arr;
+}
+
+/*
+ * Class:     com_mylexz_utils_NodeData
+ * Method:    getDoubleArray
+ * Signature: (Ljava/lang/String;)[D
+ */
+JNIEXPORT jdoubleArray JNICALL Java_com_mylexz_utils_NodeData_getDoubleArray
+(JNIEnv *env, jobject thiz, jstring fullpath){
+	jint __desc = __getNDesc(env, thiz);
+	if(__desc == -1)return NULL;
+	const char *fp;
+	if(fullpath == NULL)return NULL;
+	fp = (*env)->GetStringUTFChars(env, fullpath, 0);
+
+	NDATA *d = __lNcont(__lncurr, __desc);
+	jint size = nget_arrlen(d, fp);
+	if(!size)return NULL;
+	jdoubleArray arr = (*env) -> NewDoubleArray(env, size);
+	double *marr = (void *)nget_arr(d, fp);
+	jint x = 0;
+	jdouble kk[size];
+	for(; x < size; x++)kk[x] = (jdouble) marr[x];
+	(*env) -> SetDoubleArrayRegion(env, arr, 0, size, kk);
+	(*env)->ReleaseStringUTFChars(env, fullpath, fp);
+	return arr;
+}
+
+/*
+ * Class:     com_mylexz_utils_NodeData
+ * Method:    getLongArray
+ * Signature: (Ljava/lang/String;)[J
+ */
+JNIEXPORT jlongArray JNICALL Java_com_mylexz_utils_NodeData_getLongArray
+(JNIEnv *env, jobject thiz, jstring fullpath){
+	jint __desc = __getNDesc(env, thiz);
+	if(__desc == -1)return NULL;
+	const char *fp;
+	if(fullpath == NULL)return NULL;
+	fp = (*env)->GetStringUTFChars(env, fullpath, 0);
+
+	NDATA *d = __lNcont(__lncurr, __desc);
+	jint size = nget_arrlen(d, fp);
+	if(!size)return NULL;
+	jlongArray arr = (*env) -> NewLongArray(env, size);
+	long long *marr = nget_arr(d, fp);
+	(*env) -> SetLongArrayRegion(env, arr, 0, size, marr);
+	(*env)->ReleaseStringUTFChars(env, fullpath, fp);
+	return arr;
+}
+
+/*
+ * Class:     com_mylexz_utils_NodeData
+ * Method:    getBooleanArray
+ * Signature: (Ljava/lang/String;)[Z
+ */
+JNIEXPORT jbooleanArray JNICALL Java_com_mylexz_utils_NodeData_getBooleanArray
+(JNIEnv *env, jobject thiz, jstring fullpath){
+	jint __desc = __getNDesc(env, thiz);
+	if(__desc == -1)return NULL;
+	const char *fp;
+	if(fullpath == NULL)return NULL;
+	fp = (*env)->GetStringUTFChars(env, fullpath, 0);
+
+	NDATA *d = __lNcont(__lncurr, __desc);
+	jint size = nget_arrlen(d, fp);
+	if(!size)return NULL;
+	jbooleanArray arr = (*env) -> NewBooleanArray(env, size);
+	short *marr = nget_arr(d, fp);
+	jboolean cn[size];
+	jint n;
+	for(n = 0; n < size; n++)
+		cn[n] = (marr[n])?TRUE:FALSE;
+	(*env) -> SetBooleanArrayRegion(env, arr, 0, size, cn);
+	(*env)->ReleaseStringUTFChars(env, fullpath, fp);
+	return arr;
+}
+
+
 
 JNIEXPORT jint JNICALL Java_com_mylexz_utils_NodeData_getOccurences__Ljava_lang_String_2I(JNIEnv *env, jobject thiz, jstring fullpath, jint data){
 	jint __desc = __getNDesc(env, thiz);
