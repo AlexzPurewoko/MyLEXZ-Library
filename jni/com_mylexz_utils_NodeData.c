@@ -516,7 +516,7 @@ JNIEXPORT void JNICALL Java_com_mylexz_utils_NodeData_addStringArray(JNIEnv *env
 	const char *_cstr = NULL;
 	jstring jstr = NULL;
 	if(!dt){
-		fprintf(_open, "%c%c%c%s%c%d", _ARR_ID_, STR, encrypt_flags, _temp, _LEN_, size);
+		fprintf(_open, "%c%c%d%s%c%d", _ARR_ID_, STR, encrypt_flags, _temp, _LEN_, size);
 		if(size > 0)
 			putc(_LEN_, _open);
 		z = 0;
