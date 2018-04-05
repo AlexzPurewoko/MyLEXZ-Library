@@ -537,4 +537,7 @@ public class NodeData
 		s_tmp += String.valueOf(data);
 		return this;
 	}
+	public native boolean isElementExists(String fullpath);
+	public native void clearArrayValue(String fullpath);
+	public native void deleteArrAtPos(String fullpath, int start, int end);
 }

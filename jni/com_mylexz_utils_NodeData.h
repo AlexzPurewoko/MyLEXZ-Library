@@ -653,6 +653,30 @@ JNIEXPORT jbooleanArray JNICALL Java_com_mylexz_utils_NodeData_getBooleanArrayAt
 JNIEXPORT void JNICALL Java_com_mylexz_utils_NodeData_strCatIter
   (JNIEnv *, jobject, jstring);
 
+/*
+ * Class:     com_mylexz_utils_NodeData
+ * Method:    isElementExists
+ * Signature: (Ljava/lang/String;)Z
+ */
+JNIEXPORT jboolean JNICALL Java_com_mylexz_utils_NodeData_isElementExists
+  (JNIEnv *, jobject, jstring);
+
+/*
+ * Class:     com_mylexz_utils_NodeData
+ * Method:    clearArrayValue
+ * Signature: (Ljava/lang/String;)V
+ */
+JNIEXPORT void JNICALL Java_com_mylexz_utils_NodeData_clearArrayValue
+  (JNIEnv *, jobject, jstring);
+
+/*
+ * Class:     com_mylexz_utils_NodeData
+ * Method:    deleteArrAtPos
+ * Signature: (Ljava/lang/String;II)V
+ */
+JNIEXPORT void JNICALL Java_com_mylexz_utils_NodeData_deleteArrAtPos
+  (JNIEnv *, jobject, jstring, jint, jint);
+
 #ifdef __cplusplus
 }
 #endif

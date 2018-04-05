@@ -1901,6 +1901,37 @@ JNIEXPORT void JNICALL Java_com_mylexz_utils_NodeData_strCatIter(JNIEnv *env, jo
 	(*env) -> ReleaseStringUTFChars(env, fullpath, fp);
 	return;
 }
+
+JNIEXPORT jboolean JNICALL Java_com_mylexz_utils_NodeData_isElementExists(JNIEnv *env, jobject thiz, jstring fullpath){
+	jint __desc = __getNDesc(env, thiz);
+	if(__desc == -1)return FALSE;
+	if(!fullpath)return FALSE;
+	const char *pth = (*env) -> GetStringUTFChars(env, fullpath, 0);
+	NDATA *d = __lNcont(__lncurr, __desc);
+	short tp = nis_exists(d, pth);
+	(*env) -> ReleaseStringUTFChars(env, fullpath, pth);
+	return (tp)?TRUE:FALSE;
+}
+
+JNIEXPORT void JNICALL Java_com_mylexz_utils_NodeData_clearArrayValue(JNIEnv *env, jobject thiz, jstring fullpath){
+	jint __desc = __getNDesc(env, thiz);
+	if(__desc == -1)return;
+	if(!fullpath)return;
+	const char *pth = (*env) -> GetStringUTFChars(env, fullpath, 0);
+	NDATA *d = __lNcont(__lncurr, __desc);
+	nempty_arr(d, pth);
+	(*env) -> ReleaseStringUTFChars(env, fullpath, pth);
+}
+
+JNIEXPORT void JNICALL Java_com_mylexz_utils_NodeData_deleteArrAtPos(JNIEnv *env, jobject thiz, jstring fullpath, jint start, jint end){
+	jint __desc = __getNDesc(env, thiz);
+	if(__desc == -1)return;
+	if(!fullpath)return;
+	const char *pth = (*env) -> GetStringUTFChars(env, fullpath, 0);
+	NDATA *d = __lNcont(__lncurr, __desc);
+	ndel_ap(d, pth, (int)start, (int)end);
+	(*env) -> ReleaseStringUTFChars(env, fullpath, pth);
+}
 /******/
   
 jint __getNDesc(JNIEnv *env, jobject thiz){
