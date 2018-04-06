@@ -620,7 +620,12 @@ JNIEXPORT void JNICALL Java_com_mylexz_utils_NodeData_addCharArray(JNIEnv *env, 
 	if(data){
 		jsize len = (*env)->GetArrayLength(env, data);
 		jchar *a = (*env)->GetCharArrayElements(env, data, 0);
-		nadd_arr(d, dt, elm, CHR, a, len, ((encrypt_flags)?1:0));
+		char elmn[len];
+		jint x = 0;
+		for(; x < len; x++)
+			elmn[x] = (char) a[x];
+		elmn[x] = '\0';
+		nadd_arr(d, dt, elm, CHR, (void *) elmn, len, ((encrypt_flags)?1:0));
 		(*env)->ReleaseCharArrayElements(env, data, a, 0);
 	}
 	else 
@@ -718,31 +723,6 @@ JNIEXPORT jintArray JNICALL Java_com_mylexz_utils_NodeData_getIntArray(JNIEnv *e
 	(*env)->ReleaseStringUTFChars(env, fullpath, fp);
 	return arr;
 }
-/*
- * Class:     com_mylexz_utils_NodeData
- * Method:    getCharArray
- * Signature: (Ljava/lang/String;)[C
- */
-JNIEXPORT jcharArray JNICALL Java_com_mylexz_utils_NodeData_getCharArray
-(JNIEnv *env, jobject thiz, jstring fullpath){
-	jint __desc = __getNDesc(env, thiz);
-	if(__desc == -1)return NULL;
-	const char *fp;
-	if(fullpath == NULL)return NULL;
-	fp = (*env)->GetStringUTFChars(env, fullpath, 0);
-
-	NDATA *d = __lNcont(__lncurr, __desc);
-	jint size = nget_arrlen(d, fp);
-	if(!size)return NULL;
-	jcharArray arr = (*env) -> NewCharArray(env, size);
-	char *marr = (char *)nget_arr(d, fp);
-	jchar om[size];
-	jint x = 0;
-	for(; x < size; x++) om[x] = (jchar) ((int)marr[x]);
-	(*env) -> SetCharArrayRegion(env, arr, 0, size, om);
-	(*env)->ReleaseStringUTFChars(env, fullpath, fp);
-	return arr;
-}
 
 /*
  * Class:     com_mylexz_utils_NodeData
@@ -765,7 +745,7 @@ JNIEXPORT jdoubleArray JNICALL Java_com_mylexz_utils_NodeData_getDoubleArray
 	jint x = 0;
 	jdouble kk[size];
 	for(; x < size; x++)kk[x] = (jdouble) marr[x];
-	(*env) -> SetDoubleArrayRegion(env, arr, 0, size, kk);
+	(*env) -> SetDoubleArrayRegion(env, arr, 0, size, (const jdouble *) kk);
 	(*env)->ReleaseStringUTFChars(env, fullpath, fp);
 	return arr;
 }
@@ -1020,6 +1000,7 @@ JNIEXPORT jobject JNICALL Java_com_mylexz_utils_NodeData_readNext(JNIEnv *env, j
 	void __edStr__(char *, short );
 	void __edNum__(char *, short );
 	int __encStr__(int);
+	int __decStr__(int);
 	void __mem_rel__(NDATA *);
 	if(*_lock != 0) (*env) -> ThrowNew(env, Except, "You must call setReadArrayIteration()! or Index is reaching the end of array");
 	register int _x, _y, _z = 0;
@@ -1048,11 +1029,11 @@ JNIEXPORT jobject JNICALL Java_com_mylexz_utils_NodeData_readNext(JNIEnv *env, j
 		if(*_en_f)
 			if(d -> __id == CHR) {
 				_y = _temp[0];
-				_temp[0] = __encStr__(_y);
+				_temp[0] = __decStr__(_y);
 				_y = 0;
 			}
 			else __edNum__(_temp, DEC);
-		_x = 0;
+		_y = 0;
 		switch(d -> __id){
 			case INT:{
 				cls = (*env) -> FindClass(env, "java/lang/Integer");
@@ -1068,7 +1049,8 @@ JNIEXPORT jobject JNICALL Java_com_mylexz_utils_NodeData_readNext(JNIEnv *env, j
 			case CHR:{
 				cls = (*env) -> FindClass(env, "java/lang/Character");
 				mID = (*env) -> GetMethodID(env, cls, "<init>", "(C)V");
-				res = (*env) -> NewObject(env, cls, mID, (jchar)((char)_temp[0]));}
+				res = (*env) -> NewObject(env, cls, mID, (jchar)((char)_temp[0]));
+				}
 				break;
 			case LONG:{
 				cls = (*env) -> FindClass(env, "java/lang/Long");

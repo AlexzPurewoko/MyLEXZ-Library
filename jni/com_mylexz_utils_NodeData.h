@@ -391,14 +391,6 @@ JNIEXPORT jintArray JNICALL Java_com_mylexz_utils_NodeData_getIntArray
 
 /*
  * Class:     com_mylexz_utils_NodeData
- * Method:    getCharArray
- * Signature: (Ljava/lang/String;)[C
- */
-JNIEXPORT jcharArray JNICALL Java_com_mylexz_utils_NodeData_getCharArray
-  (JNIEnv *, jobject, jstring);
-
-/*
- * Class:     com_mylexz_utils_NodeData
  * Method:    getDoubleArray
  * Signature: (Ljava/lang/String;)[D
  */
