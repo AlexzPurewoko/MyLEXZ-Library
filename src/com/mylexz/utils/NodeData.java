@@ -193,7 +193,24 @@ public class NodeData
 		return data;
 
 	}
-	public native char[] getCharArray(String fullpath);
+	public char[] getCharArray(String fullpath){
+		int length = getArrayLength(fullpath);
+		if(length <= 0)return null;
+		char[] data = new char[length];
+		setReadArrayIteration(fullpath);
+		try
+		{
+			for (int x = 0; x < length; x++)
+				data[x] = ((Character)readNext()).charValue();
+		}
+		catch (Exception e)
+		{
+			System.out.println(e.toString());
+			return null;
+		}
+		resetArrayIteration();
+		return data;
+	}
 	public native double[] getDoubleArray(String fullpath);
 	public native long[] getLongArray(String fullpath);
 	public native boolean[] getBooleanArray(String fullpath);
