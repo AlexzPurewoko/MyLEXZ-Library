@@ -1281,7 +1281,12 @@ JNIEXPORT void JNICALL Java_com_mylexz_utils_NodeData_setArray__Ljava_lang_Strin
 	fp = (*env)->GetStringUTFChars(env, fullpath, 0);
 	jsize len = (*env)->GetArrayLength(env, data);
 	jchar *a = (*env)->GetCharArrayElements(env, data, 0);
-	nset_arr(d, fp, a, len);
+	char elmn[len];
+	jint x = 0;
+	for(; x < len; x++)
+		elmn[x] = (char) a[x];
+	elmn[x] = '\0';
+	nset_arr(d, fp, (void *) elmn, len);
 	(*env)->ReleaseCharArrayElements(env, data, a, 0);
 	(*env)->ReleaseStringUTFChars(env, fullpath, fp);
 }
@@ -1766,7 +1771,12 @@ JNIEXPORT void JNICALL Java_com_mylexz_utils_NodeData_appendArray__Ljava_lang_St
 	if(!len)return;
 	jchar *a = (*env)->GetCharArrayElements(env, data, 0);
 	NDATA *d = __lNcont(__lncurr, __desc);
-	nappend_arr(d, fp, a, len);
+	char elmn[len];
+	jint x = 0;
+	for(; x < len; x++)
+		elmn[x] = (char) a[x];
+	elmn[x] = '\0';
+	nappend_arr(d, fp, (void *) elmn, len);
 	(*env)->ReleaseCharArrayElements(env, data, a, 0);
 	(*env)->ReleaseStringUTFChars(env, fullpath, fp);
 }
@@ -1845,7 +1855,7 @@ JNIEXPORT jcharArray JNICALL Java_com_mylexz_utils_NodeData_getCharArrayAtPos(JN
 	char *nArr = (char *) nARrr;
 	jchar cArr[size];
 	int z = 0;
-	for(; z < size; z++) cArr[z] = nArr[z];
+	for(; z < size; z++) cArr[z] = (jchar) nArr[z];
 	const jchar *tyt = (const jchar *) cArr;
 	jcharArray arr = (*env) -> NewCharArray(env, size);
 	(*env) -> SetCharArrayRegion(env, arr, 0, size, tyt);
