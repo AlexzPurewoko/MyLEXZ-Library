@@ -2080,7 +2080,7 @@ void *nget_arr(NDATA * data, const char *fullpath)
 		case DOUBLE:
 			{
 				double *content = _result;
-				content[_z++] = atof(__tr);
+				content[_z++] = strtod(__tr, (char **) NULL);
 				// if(_x == _C_TUTUP_)content[_z] = NULL;
 			}
 			break;
