@@ -599,6 +599,14 @@ JNIEXPORT void JNICALL Java_com_mylexz_utils_NodeData_appendArray__Ljava_lang_St
 
 /*
  * Class:     com_mylexz_utils_NodeData
+ * Method:    appendArray
+ * Signature: (Ljava/lang/String;[Ljava/lang/String;)V
+ */
+JNIEXPORT void JNICALL Java_com_mylexz_utils_NodeData_appendArray__Ljava_lang_String_2_3Ljava_lang_String_2
+  (JNIEnv *, jobject, jstring, jobjectArray);
+
+/*
+ * Class:     com_mylexz_utils_NodeData
  * Method:    getIntArrayAtPos
  * Signature: (Ljava/lang/String;II)[I
  */

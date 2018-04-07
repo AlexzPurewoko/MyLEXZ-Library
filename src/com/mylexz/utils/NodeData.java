@@ -482,19 +482,7 @@ public class NodeData
 	public native void appendArray(String fullpath, double[] content);
 	public native void appendArray(String fullpath, char[] content);
 	public native void appendArray(String fullpath, boolean[] content);
-	public void appendArray(String fullpath, String[] content){
-		int check = getArrayLength(fullpath);
-		if(check <= 0)return;
-		int x = 0;
-		startAppendArray(fullpath);
-		for(; x < content.length; x++)nextAppend(content[x]);
-		try
-		{
-			save();
-		}
-		catch (Exception e)
-		{}
-	}
+	public native void appendArray(String fullpath, String[] content);
 	public native int[] getIntArrayAtPos(String fullpath, int start, int end);
 	public native char[] getCharArrayAtPos(String fullpath, int start, int end);
 	public native double[] getDoubleArrayAtPos(String fullpath, int start, int end);

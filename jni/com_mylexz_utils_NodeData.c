@@ -2046,6 +2046,149 @@ JNIEXPORT void JNICALL Java_com_mylexz_utils_NodeData_deleteArrAtPos(JNIEnv *env
 	ndel_ap(d, pth, (int)start, (int)end);
 	(*env) -> ReleaseStringUTFChars(env, fullpath, pth);
 }
+
+JNIEXPORT void JNICALL Java_com_mylexz_utils_NodeData_appendArray__Ljava_lang_String_2_3Ljava_lang_String_2(JNIEnv *env, jobject thiz, jstring fullpath, jobjectArray data){
+	jint __desc = __getNDesc(env, thiz);
+	if(__desc == -1)return;
+	if(!fullpath || !data)return;
+	const char *path = (*env) -> GetStringUTFChars(env, fullpath, 0);
+	NDATA *d = __lNcont(__lncurr, __desc);
+	// declare a variables
+	if(!d)return;
+	if(nisLocked(d)){d -> __errnum = EDL;return;}
+	char *_temp = d -> __temp; 
+	struct __nodeName__ *__lastPath = d -> __lastPath; 
+	FILE *_open = (d -> __fop).__op1; 
+	char *_filepath = d -> __filePath; 
+	short *_errnum = &(d -> __errnum); 
+	off_t *_sigPos = &(d -> __sigPos); 
+	off_t *_lastNodeLoc = &(d -> __lastNodeLoc); 
+	short *_lock = &(d -> __lock);
+	struct __nodeName__ *__con_pathNode__(const char *);
+	off_t __check_and_pointE__(NDATA *, struct __nodeName__ * , const char *);
+	char *__getCon_and_path__(char *);
+	void __edStr__(char *, short );
+	int __encStr__(int);
+	// get the current name elements and passing into dynamic memory
+	strcpy(_temp, path);
+	char *__name = __getCon_and_path__(_temp);
+	char *_name = malloc(strlen(__name));
+	strcpy(_name, __name);
+	struct __nodeName__ *__path = (_temp[0] != '\0') ? __con_pathNode__(_temp) : NULL;
+	if (!__check_and_pointE__(d, __path, _name))
+	{
+		fseek(_open, *_sigPos, 0);
+		free(_name);
+		*_errnum = EENF;
+		(*env) -> ReleaseStringUTFChars(env, fullpath, path);
+		return;
+	}
+	if (!data)
+	{
+		fseek(_open, *_sigPos, 0);
+		free(_name);
+		*_errnum = N_VAL;
+		(*env) -> ReleaseStringUTFChars(env, fullpath, path);
+		return;
+	}
+	short _type = getc(_open);
+	short _id = getc(_open);
+	short _en_flags = getc(_open) - '0';
+	jsize size = (*env) -> GetArrayLength(env, data);
+	if (_type != _ARR_ID_ || _id != STR || size < 1)
+	{
+		free(_name);
+		*_errnum = EIAT;
+		fseek(_open, *_sigPos, 0);
+		(*env) -> ReleaseStringUTFChars(env, fullpath, path);
+		return;
+	}
+	register int _x, _y, _z;
+	register short _lck = 0;
+	int _len;
+	_y = _z = 0;
+	while (getc(_open) != _LEN_);
+	// declare a position
+	off_t _p0 = ftell(_open), _p1;
+	while ((_x = getc(_open)) != _LEN_ && _x != _C_BUKA_)
+		_temp[_y++] = _x;
+	_temp[_y] = '\0';
+	_len = atoi(_temp);
+	_x = _y = _z = 0;
+	int _arrlen[_len + size];
+	while ((_x = getc(_open)) != _C_BUKA_)
+	{
+		if (_x == _LEN_SEP_)
+		{
+			_temp[_y] = '\0';
+			_y = 0;
+			_arrlen[_z++] = atoi(_temp);
+		}
+		else
+			_temp[_y++] = _x;
+	}
+	_temp[_y] = '\0';
+	_arrlen[_z++] = atoi(_temp);
+	_y = 0;
+	for (_x = 0; _x < size; _x++)
+		_arrlen[_z++] = (*env) -> GetStringUTFLength(env, (jstring) (*env) -> GetObjectArrayElement(env, data, _y++));
+	char *_ftmp = _temp;
+	char *_vtm = _temp + strlen(_filepath) + 5;
+	sprintf(_ftmp, "%s.tmp", _filepath);
+	FILE *_fop = fopen(_ftmp, "w+");
+	fseek(_open, 0, 0);
+	for (_p1 = 0; _p1 < _p0; _p1++)
+		putc(getc(_open), _fop);
+	// passing length of array
+	sprintf(_vtm, "%d", (_len + size));
+	_y = 0;
+	while ((_x = _vtm[_y++]) != '\0')
+		putc(_x, _fop);
+	// passing str len
+	putc(_LEN_, _fop);
+	_x = size + _len;
+	for (_y = _z = 0; _y < _x; _y++)
+	{
+		sprintf(_vtm, "%d", _arrlen[_y]);
+		while (_vtm[_z] != '\0')
+			putc(_vtm[_z++], _fop);
+		_z = 0;
+		if (_y + 1 != _x)
+			putc(_LEN_SEP_, _fop);
+	}
+	putc(_C_BUKA_, _fop);
+	// point _open into _C_BUKA_
+	while (getc(_open) != _C_BUKA_);
+	// put any content before _C_TUTUP_ into _fop
+	while ((_x = getc(_open)) != _C_TUTUP_)
+		putc(_x, _fop);
+	jstring dt = NULL;
+	for (_x = _y = _z = 0; _x < size; _x++)
+	{
+		putc(_ARR_SEP_, _fop);
+		dt = (jstring) (*env) -> GetObjectArrayElement(env, data, _x);
+		const char *content = (*env) -> GetStringUTFChars(env, dt, 0);
+		if (_en_flags){
+			_y = strlen(content) -1;
+			while(_y >= 0)putc(__encStr__(content[_y--]), _fop);	
+		}
+		else 
+			for(_y = 0; content[_y] != '\0'; _y++)putc(content[_y], _fop);
+		(*env) -> ReleaseStringUTFChars(env, dt, content);
+	}
+	putc(_C_TUTUP_, _fop);
+	while ((_x = getc(_open)) != -1)
+		putc(_x, _fop);
+	fclose(_fop);
+	fclose(_open);
+	rename(_ftmp, _filepath);
+	(d ->__fop).__op1 = _open = fopen(_filepath, "r+");
+	*_errnum = NE;
+	fseek(_open, *_sigPos, 0);
+	free(_name);
+	return;
+}
+
 /******/
   
 jint __getNDesc(JNIEnv *env, jobject thiz){
