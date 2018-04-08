@@ -1814,10 +1814,7 @@ JNIEXPORT jintArray JNICALL Java_com_mylexz_utils_NodeData_getIntArrayAtPos(JNIE
 	if(fullpath == NULL)return NULL;
 	fp = (*env)->GetStringUTFChars(env, fullpath, 0);
 	NDATA *d = __lNcont(__lncurr, __desc);
-	jint size = nget_arrlen(d, fp);
-	if(!size || (end-start)+1 >= size)return NULL;
-	size = (end - start) + 1;
-
+	jsize size = (end - start) + 1;
 	void *nARrr = nget_ap(d, fp, start, end);
 	if(!nARrr){
 		(*env)->ReleaseStringUTFChars(env, fullpath, fp);
@@ -1830,11 +1827,6 @@ JNIEXPORT jintArray JNICALL Java_com_mylexz_utils_NodeData_getIntArrayAtPos(JNIE
 	return arr;
 }
 
-/*
- * Class:     com_mylexz_utils_NodeData
- * Method:    getCharArrayAtPos
- * Signature: (Ljava/lang/String;II)[C
- */
 JNIEXPORT jcharArray JNICALL Java_com_mylexz_utils_NodeData_getCharArrayAtPos(JNIEnv *env, jobject thiz, jstring fullpath, jint start, jint end){
 	jint __desc = __getNDesc(env, thiz);
 	if(__desc == -1)return NULL;
@@ -1843,10 +1835,7 @@ JNIEXPORT jcharArray JNICALL Java_com_mylexz_utils_NodeData_getCharArrayAtPos(JN
 	if(fullpath == NULL)return NULL;
 	fp = (*env)->GetStringUTFChars(env, fullpath, 0);
 	NDATA *d = __lNcont(__lncurr, __desc);
-	jint size = nget_arrlen(d, fp);
-	if(!size || (end-start)+1 >= size)return NULL;
-	size = (end - start) + 1;
-
+	jsize size = (end - start) + 1;
 	void *nARrr = nget_ap(d, fp, start, end);
 	if(!nARrr){
 		(*env)->ReleaseStringUTFChars(env, fullpath, fp);
@@ -1863,11 +1852,6 @@ JNIEXPORT jcharArray JNICALL Java_com_mylexz_utils_NodeData_getCharArrayAtPos(JN
 	return arr;
 }
 
-/*
- * Class:     com_mylexz_utils_NodeData
- * Method:    getDoubleArrayAtPos
- * Signature: (Ljava/lang/String;II)[D
- */
 JNIEXPORT jdoubleArray JNICALL Java_com_mylexz_utils_NodeData_getDoubleArrayAtPos(JNIEnv *env, jobject thiz, jstring fullpath, jint start, jint end){
 	jint __desc = __getNDesc(env, thiz);
 	if(__desc == -1)return NULL;
@@ -1876,10 +1860,7 @@ JNIEXPORT jdoubleArray JNICALL Java_com_mylexz_utils_NodeData_getDoubleArrayAtPo
 	if(fullpath == NULL)return NULL;
 	fp = (*env)->GetStringUTFChars(env, fullpath, 0);
 	NDATA *d = __lNcont(__lncurr, __desc);
-	jint size = nget_arrlen(d, fp);
-	if(!size || (end-start)+1 >= size)return NULL;
-	size = (end - start) + 1;
-
+	jsize size = (end - start) + 1;
 	void *nARrr = nget_ap(d, fp, start, end);
 	if(!nARrr){
 		(*env)->ReleaseStringUTFChars(env, fullpath, fp);
@@ -1892,11 +1873,6 @@ JNIEXPORT jdoubleArray JNICALL Java_com_mylexz_utils_NodeData_getDoubleArrayAtPo
 	return arr;
 }
 
-/*
- * Class:     com_mylexz_utils_NodeData
- * Method:    getLongArrayAtPos
- * Signature: (Ljava/lang/String;II)[J
- */
 JNIEXPORT jlongArray JNICALL Java_com_mylexz_utils_NodeData_getLongArrayAtPos(JNIEnv *env, jobject thiz, jstring fullpath, jint start, jint end){
 	jint __desc = __getNDesc(env, thiz);
 	if(__desc == -1)return NULL;
@@ -1905,9 +1881,7 @@ JNIEXPORT jlongArray JNICALL Java_com_mylexz_utils_NodeData_getLongArrayAtPos(JN
 	if(fullpath == NULL)return NULL;
 	fp = (*env)->GetStringUTFChars(env, fullpath, 0);
 	NDATA *d = __lNcont(__lncurr, __desc);
-	jint size = nget_arrlen(d, fp);
-	if(!size || (end-start)+1 >= size)return NULL;
-	size = (end - start) + 1;
+	jsize size = (end - start) + 1;
 	void *nARrr = nget_ap(d, fp, start, end);
 	if(!nARrr){
 		(*env)->ReleaseStringUTFChars(env, fullpath, fp);
@@ -1920,11 +1894,6 @@ JNIEXPORT jlongArray JNICALL Java_com_mylexz_utils_NodeData_getLongArrayAtPos(JN
 	return arr;
 }
 
-/*
- * Class:     com_mylexz_utils_NodeData
- * Method:    getBooleanArrayAtPos
- * Signature: (Ljava/lang/String;II)[Z
- */
 JNIEXPORT jbooleanArray JNICALL Java_com_mylexz_utils_NodeData_getBooleanArrayAtPos(JNIEnv *env, jobject thiz, jstring fullpath, jint start, jint end){
 	jint __desc = __getNDesc(env, thiz);
 	if(__desc == -1)return NULL;
@@ -1933,9 +1902,7 @@ JNIEXPORT jbooleanArray JNICALL Java_com_mylexz_utils_NodeData_getBooleanArrayAt
 	if(fullpath == NULL)return NULL;
 	fp = (*env)->GetStringUTFChars(env, fullpath, 0);
 	NDATA *d = __lNcont(__lncurr, __desc);
-	jint size = nget_arrlen(d, fp);
-	if(!size || (end-start)+1 >= size)return NULL;
-	size = (end - start) + 1;
+	jsize size = (end - start) + 1;
 	void *nARrr = nget_ap(d, fp, start, end);
 	if(!nARrr){
 		(*env)->ReleaseStringUTFChars(env, fullpath, fp);
