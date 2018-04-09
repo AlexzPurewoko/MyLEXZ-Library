@@ -2147,7 +2147,6 @@ size_t nget_occur(NDATA * data, const char *fullpath, void *data_comp){
 	strcpy(_name, __name);
 	__nname__ __path = (_temp[0] != '\0') ? __con_pathNode__(_temp) : NULL;
 	register int _w, _x, _y, _z;
-	register size_t count_res = 0;
 	if (!__check_and_pointE__(data, __path, _name))
 	{
 		fseek(_open, *_sigPos, 0);
@@ -2217,6 +2216,7 @@ size_t nget_occur(NDATA * data, const char *fullpath, void *data_comp){
 	// ///////// for non - string array 
 	if (*_id != STR)
 		__tr = _temp;
+	size_t count_res = 0;
 	while (_x != _C_TUTUP_)
 	{
 		if (*_id == STR)
@@ -2231,7 +2231,15 @@ size_t nget_occur(NDATA * data, const char *fullpath, void *data_comp){
 		__tr[_y] = '\0';
 		if (*_en_flags)
 		{
-		__DECRYPT_CONTENT__(*_id, __tr)}
+			if(*_id != CHR){
+				__DECRYPT_CONTENT__(*_id, __tr)
+			}
+			else {
+				__tr[1] = __tr[0];
+				__tr[0] = __decStr__(__tr[1]);
+				__tr[1] = '\0';
+			}
+		}
 		switch (*_id)
 		{
 		case INT:
@@ -2243,7 +2251,7 @@ size_t nget_occur(NDATA * data, const char *fullpath, void *data_comp){
 			break;
 		case DOUBLE:
 			{
-				double a = atof(__tr);
+				double a = strtod(__tr, (char **)NULL);
 				double dc = *((double *)data_comp);
 				if(a == dc)count_res++;
 			}
@@ -2265,14 +2273,15 @@ size_t nget_occur(NDATA * data, const char *fullpath, void *data_comp){
 		case STR:
 			{
 				char *dc = (char *)data_comp;
-				if(!strcmp(dc, __tr))count_res++;
+				//printf("__tr : %s, dc : %s\n", __tr, dc);
+				if(cmp(dc, __tr))count_res++;
 				free(__tr);
 				__tr = NULL;
 			}
 			break;
 		case CHR:
 			{
-				int dc = *((char *)data_comp);
+				char dc = (char) *((char *)data_comp);
 				if(__tr[0] == dc)count_res++;
 			}
 			break;
@@ -3215,7 +3224,7 @@ void ndel_ap(NDATA * data, const char *fullpath, int start, int end)
 			if (_w <= end)
 				if (_w >= start)
 				{
-					while ((_x = getc(_open)) != _LEN_SEP_);
+					while ((_x = getc(_open)) != _LEN_SEP_ && _x != _C_BUKA_);
 					_w++;
 					continue;
 				}
