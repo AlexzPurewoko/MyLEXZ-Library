@@ -1439,7 +1439,6 @@ JNIEXPORT void JNICALL Java_com_mylexz_utils_NodeData_setArrayAtPos__Ljava_lang_
 	if(data == NULL)return;
 	fp = (*env)->GetStringUTFChars(env, fullpath, 0);
 	jsize len = (*env)->GetArrayLength(env, data);
-	if(!len || end < len)return;
 	jint *a = (*env)->GetIntArrayElements(env, data, 0);
 	NDATA *d = __lNcont(__lncurr, __desc);
 	nset_ap(d, fp, a, len, start, end);
@@ -1447,11 +1446,6 @@ JNIEXPORT void JNICALL Java_com_mylexz_utils_NodeData_setArrayAtPos__Ljava_lang_
 	(*env)->ReleaseStringUTFChars(env, fullpath, fp);
 }
 
-/*
- * Class:     com_mylexz_utils_NodeData
- * Method:    setArrayAtPos
- * Signature: (Ljava/lang/String;[JII)V
- */
 JNIEXPORT void JNICALL Java_com_mylexz_utils_NodeData_setArrayAtPos__Ljava_lang_String_2_3JII(JNIEnv *env, jobject thiz, jstring fullpath, jlongArray data, jint start, jint end){
 	jint __desc = __getNDesc(env, thiz);
 	if(__desc == -1)return;
@@ -1461,7 +1455,6 @@ JNIEXPORT void JNICALL Java_com_mylexz_utils_NodeData_setArrayAtPos__Ljava_lang_
 	if(data == NULL)return;
 	fp = (*env)->GetStringUTFChars(env, fullpath, 0);
 	jsize len = (*env)->GetArrayLength(env, data);
-	if(!len || end < len)return;
 	jlong *a = (*env)->GetLongArrayElements(env, data, 0);
 	NDATA *d = __lNcont(__lncurr, __desc);
 	nset_ap(d, fp, a, len, start, end);
@@ -1469,11 +1462,6 @@ JNIEXPORT void JNICALL Java_com_mylexz_utils_NodeData_setArrayAtPos__Ljava_lang_
 	(*env)->ReleaseStringUTFChars(env, fullpath, fp);
 }
 
-/*
- * Class:     com_mylexz_utils_NodeData
- * Method:    setArrayAtPos
- * Signature: (Ljava/lang/String;[DII)V
- */
 JNIEXPORT void JNICALL Java_com_mylexz_utils_NodeData_setArrayAtPos__Ljava_lang_String_2_3DII(JNIEnv *env, jobject thiz, jstring fullpath, jdoubleArray data, jint start, jint end){
 	jint __desc = __getNDesc(env, thiz);
 	if(__desc == -1)return;
@@ -1483,7 +1471,6 @@ JNIEXPORT void JNICALL Java_com_mylexz_utils_NodeData_setArrayAtPos__Ljava_lang_
 	if(data == NULL)return;
 	fp = (*env)->GetStringUTFChars(env, fullpath, 0);
 	jsize len = (*env)->GetArrayLength(env, data);
-	if(!len || end < len)return;
 	jdouble *a = (*env)->GetDoubleArrayElements(env, data, 0);
 	NDATA *d = __lNcont(__lncurr, __desc);
 	nset_ap(d, fp, a, len, start, end);
@@ -1491,36 +1478,24 @@ JNIEXPORT void JNICALL Java_com_mylexz_utils_NodeData_setArrayAtPos__Ljava_lang_
 	(*env)->ReleaseStringUTFChars(env, fullpath, fp);
 }
 
-/*
- * Class:     com_mylexz_utils_NodeData
- * Method:    setArrayAtPos
- * Signature: (Ljava/lang/String;[ZII)V
- */
 JNIEXPORT void JNICALL Java_com_mylexz_utils_NodeData_setArrayAtPos__Ljava_lang_String_2_3ZII(JNIEnv *env, jobject thiz, jstring fullpath, jbooleanArray data, jint start, jint end){
 	jint __desc = __getNDesc(env, thiz);
 	if(__desc == -1)return;
-	if(start > end)return;
 	const char *fp;
 	if(fullpath == NULL)return;
 	if(data == NULL)return;
 	fp = (*env)->GetStringUTFChars(env, fullpath, 0);
 	jsize len = (*env)->GetArrayLength(env, data);
-	if(!len || end < len)return;
 	jboolean *a = (*env)->GetBooleanArrayElements(env, data, 0);
 	NDATA *d = __lNcont(__lncurr, __desc);
 	short res[len];
 	jint x;
-	for(x=0; x<len; x++)res[x] = (a[x])?TRUE:FALSE;
+	for(x=0; x<len; x++)res[x] = (short) (a[x])?TRUE:FALSE;
 	nset_ap(d, fp, res, len, start, end);
 	(*env)->ReleaseBooleanArrayElements(env, data, a, 0);
 	(*env)->ReleaseStringUTFChars(env, fullpath, fp);
 }
 
-/*
- * Class:     com_mylexz_utils_NodeData
- * Method:    setArrayAtPos
- * Signature: (Ljava/lang/String;[CII)V
- */
 JNIEXPORT void JNICALL Java_com_mylexz_utils_NodeData_setArrayAtPos__Ljava_lang_String_2_3CII(JNIEnv *env, jobject thiz, jstring fullpath, jcharArray data, jint start, jint end){
 	jint __desc = __getNDesc(env, thiz);
 	if(__desc == -1)return;
@@ -1530,7 +1505,6 @@ JNIEXPORT void JNICALL Java_com_mylexz_utils_NodeData_setArrayAtPos__Ljava_lang_
 	if(data == NULL)return;
 	fp = (*env)->GetStringUTFChars(env, fullpath, 0);
 	jsize len = (*env)->GetArrayLength(env, data);
-	if(!len || end < len)return;
 	jchar *a = (*env)->GetCharArrayElements(env, data, 0);
 	NDATA *d = __lNcont(__lncurr, __desc);
 	char res[len];
@@ -1583,7 +1557,7 @@ JNIEXPORT void JNICALL Java_com_mylexz_utils_NodeData_setArrayAtPos__Ljava_lang_
 	short _id = getc(_open);
 	short _en_f = getc(_open) -'0';
 	jint size = (*env) -> GetArrayLength(env, data);
-	if(_type != _ARR_ID_ || _id != STR || start > end || ((end - start)+1) != size || end >= size){
+	if(_type != _ARR_ID_ || _id != STR || start > end || ((end - start)+1) != size ){
 		free(_name);
 		*_errnum = EIAT;
 		fseek(_open, *_sigPos, 0);
@@ -1601,7 +1575,7 @@ JNIEXPORT void JNICALL Java_com_mylexz_utils_NodeData_setArrayAtPos__Ljava_lang_
 	while((_x = getc(_open)) != _LEN_ && _x != _C_BUKA_)_temp[_y++] = _x;
 	_temp[_y] = '\0';
 	_len = atoi(_temp);
-	if(((end - start)+1) > _len || end > _len){
+	if(((end - start)+1) > _len || end >= _len){
 		free(_name);
 		*_errnum = ESZ;
 		fseek(_open, *_sigPos, 0);
@@ -1911,7 +1885,8 @@ JNIEXPORT jbooleanArray JNICALL Java_com_mylexz_utils_NodeData_getBooleanArrayAt
 	short *nArr = (short *) nARrr;
 	jbooleanArray arr = (*env) -> NewBooleanArray(env, size);
 	jboolean res[size];
-	for(; start <= end; start++)res[start] = nArr[start];
+	jint x = 0;
+	for(; x < size; x++)res[x] = (nArr[x])?TRUE:FALSE;
 	(*env) -> SetBooleanArrayRegion(env, arr, 0, size, res);
 	(*env)->ReleaseStringUTFChars(env, fullpath, fp);
 	return arr;
