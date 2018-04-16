@@ -1287,11 +1287,13 @@ void nadd_data(NDATA * data, const char *path, const char *elem, const short typ
 			{
 				if (encrypt_flags)
 				{
-					_temp[0] = __encStr__((char)*((char *)content));
+					_temp[0] = __encStr__(((char *)content)[0]);
 					_temp[1] = '\0';
 				}
-				_temp[0] = ((char)*((char *)content));
-				_temp[1] = '\0';
+				else {
+					_temp[0] = ((char)*((char *)content));
+					_temp[1] = '\0';
+				}
 				__isi = _temp;
 				*__len = 1;
 				break;
@@ -1477,7 +1479,7 @@ void *nget_data(NDATA * data, const char *fullpath)
 	}
 	else
 	{
-		__isi = malloc(*_len);
+		__isi = __mem_alc__(data, STR, 0, *_len);
 		_y = 0;
 		while ((_x = getc(_open)) != _C_TUTUP_)
 			__isi[_y++] = _x;
@@ -1486,7 +1488,15 @@ void *nget_data(NDATA * data, const char *fullpath)
 	}
 	if (*_en_flags)
 	{
-	__DECRYPT_CONTENT__(*_id, __isi)}
+		if(*_id != CHR){
+			__DECRYPT_CONTENT__(*_id, __isi)
+		}
+		else {
+			__isi[1] = __isi[0];
+			__isi[0] = __decStr__(__isi[1]);
+			__isi[1] = '\0';
+		}
+	}
 	// returning result
 	void *__result;
 	if (*_id != STR)
@@ -1502,7 +1512,7 @@ void *nget_data(NDATA * data, const char *fullpath)
 	case DOUBLE:
 		{
 			double *res = (double *)__result;
-			*res = atof(__isi);
+			*res = strtod(__isi, (char **) NULL);
 		}
 		break;
 	case BOOL:
