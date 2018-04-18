@@ -1678,8 +1678,10 @@ void nset_data(NDATA * data, const char *fullpath, void *content)
 					_temp[0] = __encStr__((char)*((char *)content));
 					_temp[1] = '\0';
 				}
-				_temp[0] = ((char)*((char *)content));
-				_temp[1] = '\0';
+				else {
+					_temp[0] = ((char)*((char *)content));
+					_temp[1] = '\0';
+				}
 				break;
 			}
 		case DOUBLE:
