@@ -1249,9 +1249,7 @@ void nadd_data(NDATA * data, const char *path, const char *elem, const short typ
 	}
 	// printf("\niiiiii");
 	char *__elem = malloc(strlen(elem));
-	short *__type = malloc(sizeof(short));
-	int *__len = malloc(sizeof(int));
-	*__type = type;
+	int __len = 0;
 	strcpy(__elem, elem);
 #ifdef _ENC_
 	__edStr__(__elem, ENC);
@@ -1266,21 +1264,21 @@ void nadd_data(NDATA * data, const char *path, const char *elem, const short typ
 			{
 				sprintf(_temp, "%d", (int)*((int *)content));
 				__isi = _temp;
-				*__len = 1;
+				__len = 1;
 				break;
 			}
 		case BOOL:
 			{
 				sprintf(_temp, "%d", (short)*((short *)content));
 				__isi = _temp;
-				*__len = 1;
+				__len = 1;
 				break;
 			}
 		case LONG:
 			{
 				sprintf(_temp, "%lld", (long long int)*((long long int *)content));
 				__isi = _temp;
-				*__len = 1;
+				__len = 1;
 				break;
 			}
 		case CHR:
@@ -1295,20 +1293,20 @@ void nadd_data(NDATA * data, const char *path, const char *elem, const short typ
 					_temp[1] = '\0';
 				}
 				__isi = _temp;
-				*__len = 1;
+				__len = 1;
 				break;
 			}
 		case DOUBLE:
 			{
 				sprintf(_temp, "%lf", (double)*((double *)content));
 				__isi = _temp;
-				*__len = 1;
+				__len = 1;
 				break;
 			}
 		case STR:
 			{
-				*__len = strlen((char *)content);
-				__isi = malloc(*__len);
+				__len = strlen((char *)content);
+				__isi = malloc(__len);
 				strcpy(__isi, (char *)content);
 			}
 			break;
@@ -1317,8 +1315,6 @@ void nadd_data(NDATA * data, const char *path, const char *elem, const short typ
 				*_errnum = EUT;
 				fseek(_open, *_sigPos, 0);
 				free(__elem);
-				free(__type);
-				free(__len);
 				return;
 			}
 		}
@@ -1340,26 +1336,24 @@ void nadd_data(NDATA * data, const char *path, const char *elem, const short typ
 	else
 	{
 		__isi = NULL;
-		*__len = 0;
+		__len = 0;
 	}
 	// writing
 	off_t offset = ftell(_open);
-	/* for(int ss = 0; __isi[ss] != '\0'; ss++){ printf("%d. %d\n", ss,
-	   (int)__isi[ss]); } */
 	if (!__path)
 	{
 		// printf("%s\n", (__isi)?__isi:"NULL");
 		if (__isi)
 			fprintf(_open, "%c%c%c%s%c%d%c%s%c", _C_ID_, type, ((encrypt_flags) ? '1' : '0'),
-					__elem, _LEN_, *__len, _C_BUKA_, __isi, _C_TUTUP_);
+					__elem, _LEN_, __len, _C_BUKA_, __isi, _C_TUTUP_);
 		else
 			fprintf(_open, "%c%c%c%s%c%d%c%c", _C_ID_, type, ((encrypt_flags) ? '1' : '0'), __elem,
-					_LEN_, *__len, _C_BUKA_, _C_TUTUP_);
+					_LEN_, __len, _C_BUKA_, _C_TUTUP_);
 	}
 	else
 	{
 		char __ftmp[strlen(path) + 4];
-		char *__alen = itoa(*__len);
+		char *__alen = itoa(__len);
 		sprintf(__ftmp, "%s.tmp", _filepath);
 		FILE *_op1 = fopen(__ftmp, "w+");
 		fseek(_open, 0, 0);
@@ -1367,7 +1361,7 @@ void nadd_data(NDATA * data, const char *path, const char *elem, const short typ
 		for (; _t < offset; _t++)
 			putc(getc(_open), _op1);
 		putc(_C_ID_, _op1);
-		putc((char)*__type, _op1);
+		putc((char)type, _op1);
 		putc(((encrypt_flags) ? '1' : '0'), _op1);
 		register int _a = 0;
 		for (; __elem[_a] != '\0'; _a++)
@@ -1398,10 +1392,7 @@ void nadd_data(NDATA * data, const char *path, const char *elem, const short typ
 		*_errnum = N_VAL;
 	if (__isi && __isi != _temp)
 		free(__isi);
-	free(__len);
 	free(__elem);
-	free(__type);
-	// printf("%c %d", getc(_open), ftell(_open));
 }
 
 // getting a content value from specified path

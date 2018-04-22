@@ -166,10 +166,72 @@ JNIEXPORT void JNICALL Java_com_mylexz_utils_NodeData_addIntData(JNIEnv *env, jo
 	if(elem == NULL)return;
 	if(path == NULL) dt = NULL;
 	else dt = (*env)->GetStringUTFChars(env, path, 0);
+	__android_log_print(ANDROID_LOG_INFO, "ADDINT", "VALUE DT = %s", (dt)?dt:"NULL");
 	elm = (*env)->GetStringUTFChars(env, elem, 0);
 	NDATA *d = __lNcont(__lncurr, __desc);
-	int val = (int) data;
-	nadd_data(d, dt, elm, INT, &val, ((encrypt_flags)?1:0));
+	if(!d)return;
+	if(nisLocked(d)){d -> __errnum = EDL;return;}
+	char *_temp = d -> __temp; 
+	struct __nodeName__ *__lastPath = d -> __lastPath; 
+	FILE *_open = (d -> __fop).__op1; 
+	char *_filepath = d -> __filePath; 
+	short *_errnum = &(d -> __errnum); 
+	off_t *_sigPos = &(d -> __sigPos); 
+	off_t *_lastNodeLoc = &(d -> __lastNodeLoc); 
+	short *_lock = &(d -> __lock);
+	struct __nodeName__ *__con_pathNode__(const char *);
+	off_t __check_and_pointE__(NDATA *, struct __nodeName__ * , const char *);
+	void __edNum__(char *, short );
+	void __edStr__(char *, short );
+	int __encStr__(int);	
+	struct __nodeName__ *__path = (dt)?__con_pathNode__(dt):NULL;
+	if(__check_and_pointE__(d, __path, elm)){
+		fseek(_open, *_sigPos, 0);
+		*_errnum = EEEx;
+		return;
+	}
+	
+	char __elem[strlen(elm)];
+	strcpy(__elem, elm);
+	__edStr__(__elem, ENC);
+	sprintf(_temp, "%d", (int) data);
+	if (encrypt_flags)__edNum__(_temp, ENC);
+	
+	
+	// writing
+	off_t offset = ftell(_open);
+	if (!__path) fprintf(_open, "%c%c%c%s%c%d%c%s%c", _C_ID_, INT, ((encrypt_flags) ? '1' : '0'), __elem, _LEN_, 1, _C_BUKA_, _temp, _C_TUTUP_);
+	else
+	{
+		char __ftmp[strlen(_filepath) + 4];
+		sprintf(__ftmp, "%s.tmp", _filepath);
+		FILE *_op1 = fopen(__ftmp, "w+");
+		fseek(_open, 0, 0);
+		off_t _t = 0;
+		for (; _t < offset; _t++)
+			putc(getc(_open), _op1);
+		putc(_C_ID_, _op1);
+		putc(INT, _op1);
+		putc(((encrypt_flags) ? '1' : '0'), _op1);
+		register int _a = 0;
+		for (; __elem[_a] != '\0'; _a++)
+			putc(__elem[_a], _op1);
+		putc(_LEN_, _op1);
+		putc('1', _op1);
+		putc(_C_BUKA_, _op1);
+		_a = 0;
+		for (; _temp[_a] != '\0'; _a++) putc(_temp[_a], _op1);
+		putc(_C_TUTUP_, _op1);
+		fseek(_open, offset, 0);
+		while ((_a = getc(_open)) != -1)
+			putc(_a, _op1);
+		fclose(_open);
+		fclose(_op1);
+		rename(__ftmp, _filepath);
+		(d->__fop).__op1 = _open = fopen(_filepath, "r+");
+	}
+	fseek(_open, *_sigPos, 0);
+	*_errnum = NE;
 	if(dt) (*env)->ReleaseStringUTFChars(env, path, dt);
 	(*env)->ReleaseStringUTFChars(env, elem, elm);
  }
@@ -184,7 +246,66 @@ JNIEXPORT void JNICALL Java_com_mylexz_utils_NodeData_addLongData(JNIEnv *env, j
 	else dt = (*env)->GetStringUTFChars(env, path, 0);
 	elm = (*env)->GetStringUTFChars(env, elem, 0);
 	NDATA *d = __lNcont(__lncurr, __desc);
-	nadd_data(d, dt, elm, LONG, &data, ((encrypt_flags)?1:0));
+	if(!d)return;
+	if(nisLocked(d)){d -> __errnum = EDL;return;}
+	char *_temp = d -> __temp; 
+	struct __nodeName__ *__lastPath = d -> __lastPath; 
+	FILE *_open = (d -> __fop).__op1; 
+	char *_filepath = d -> __filePath; 
+	short *_errnum = &(d -> __errnum); 
+	off_t *_sigPos = &(d -> __sigPos); 
+	off_t *_lastNodeLoc = &(d -> __lastNodeLoc); 
+	short *_lock = &(d -> __lock);
+	struct __nodeName__ *__con_pathNode__(const char *);
+	off_t __check_and_pointE__(NDATA *, struct __nodeName__ * , const char *);
+	void __edNum__(char *, short );
+	void __edStr__(char *, short );
+	int __encStr__(int);	
+	struct __nodeName__ *__path = (dt)?__con_pathNode__(dt):NULL;
+	if(__check_and_pointE__(d, __path, elm)){
+		fseek(_open, *_sigPos, 0);
+		*_errnum = EEEx;
+		return;
+	}
+	char __elem[strlen(elm)];
+	strcpy(__elem, elm);
+	__edStr__(__elem, ENC);
+	sprintf(_temp, "%lld", (long long int) data);
+	if (encrypt_flags)__edNum__(_temp, ENC);
+	// writing
+	off_t offset = ftell(_open);
+	if (!__path) fprintf(_open, "%c%c%c%s%c%d%c%s%c", _C_ID_, LONG, ((encrypt_flags) ? '1' : '0'), __elem, _LEN_, 1, _C_BUKA_, _temp, _C_TUTUP_);
+	else
+	{
+		char __ftmp[strlen(_filepath) + 4];
+		sprintf(__ftmp, "%s.tmp", _filepath);
+		FILE *_op1 = fopen(__ftmp, "w+");
+		fseek(_open, 0, 0);
+		off_t _t = 0;
+		for (; _t < offset; _t++)
+			putc(getc(_open), _op1);
+		putc(_C_ID_, _op1);
+		putc(LONG, _op1);
+		putc(((encrypt_flags) ? '1' : '0'), _op1);
+		register int _a = 0;
+		for (; __elem[_a] != '\0'; _a++)
+			putc(__elem[_a], _op1);
+		putc(_LEN_, _op1);
+		putc('1', _op1);
+		putc(_C_BUKA_, _op1);
+		_a = 0;
+		for (; _temp[_a] != '\0'; _a++) putc(_temp[_a], _op1);
+		putc(_C_TUTUP_, _op1);
+		fseek(_open, offset, 0);
+		while ((_a = getc(_open)) != -1)
+			putc(_a, _op1);
+		fclose(_open);
+		fclose(_op1);
+		rename(__ftmp, _filepath);
+		(d->__fop).__op1 = _open = fopen(_filepath, "r+");
+	}
+	fseek(_open, *_sigPos, 0);
+	*_errnum = NE;
 	if(dt) (*env)->ReleaseStringUTFChars(env, path, dt);
 	(*env)->ReleaseStringUTFChars(env, elem, elm);
 }
@@ -199,8 +320,70 @@ JNIEXPORT void JNICALL Java_com_mylexz_utils_NodeData_addCharData(JNIEnv *env, j
 	else dt = (*env)->GetStringUTFChars(env, path, 0);
 	elm = (*env)->GetStringUTFChars(env, elem, 0);
 	NDATA *d = __lNcont(__lncurr, __desc);
-	char val = (char) data;
-	nadd_data(d, dt, elm, CHR, &val, ((encrypt_flags)?1:0));
+	
+	if(!d)return;
+	if(nisLocked(d)){d -> __errnum = EDL;return;}
+	char *_temp = d -> __temp; 
+	struct __nodeName__ *__lastPath = d -> __lastPath; 
+	FILE *_open = (d -> __fop).__op1; 
+	char *_filepath = d -> __filePath; 
+	short *_errnum = &(d -> __errnum); 
+	off_t *_sigPos = &(d -> __sigPos); 
+	off_t *_lastNodeLoc = &(d -> __lastNodeLoc); 
+	short *_lock = &(d -> __lock);
+	struct __nodeName__ *__con_pathNode__(const char *);
+	off_t __check_and_pointE__(NDATA *, struct __nodeName__ * , const char *);
+	void __edNum__(char *, short );
+	void __edStr__(char *, short );
+	int __encStr__(int);	
+	struct __nodeName__ *__path = (dt)?__con_pathNode__(dt):NULL;
+	if(__check_and_pointE__(d, __path, elm)){
+		fseek(_open, *_sigPos, 0);
+		*_errnum = EEEx;
+		return;
+	}
+	
+	char __elem[strlen(elm)];
+	strcpy(__elem, elm);
+	__edStr__(__elem, ENC);
+	char _isi;
+	if (encrypt_flags)_isi = (char) __encStr__((char)data);
+	else _isi = (char) data;
+	
+	
+	// writing
+	off_t offset = ftell(_open);
+	if (!__path) fprintf(_open, "%c%c%c%s%c%d%c%c%c", _C_ID_, CHR, ((encrypt_flags) ? '1' : '0'), __elem, _LEN_, 1, _C_BUKA_, _isi, _C_TUTUP_);
+	else
+	{
+		sprintf(_temp, "%s.tmp", _filepath);
+		FILE *_op1 = fopen(_temp, "w+");
+		fseek(_open, 0, 0);
+		off_t _t = 0;
+		for (; _t < offset; _t++)
+			putc(getc(_open), _op1);
+		putc(_C_ID_, _op1);
+		putc(CHR, _op1);
+		putc(((encrypt_flags) ? '1' : '0'), _op1);
+		register int _a = 0;
+		for (; __elem[_a] != '\0'; _a++)
+			putc(__elem[_a], _op1);
+		putc(_LEN_, _op1);
+		putc('1', _op1);
+		putc(_C_BUKA_, _op1);
+		putc(_isi, _op1);
+		putc(_C_TUTUP_, _op1);
+		fseek(_open, offset, 0);
+		while ((_a = getc(_open)) != -1)
+			putc(_a, _op1);
+		fclose(_open);
+		fclose(_op1);
+		rename(_temp, _filepath);
+		(d->__fop).__op1 = _open = fopen(_filepath, "r+");
+	}
+	fseek(_open, *_sigPos, 0);
+	*_errnum = NE;
+	
 	if(dt) (*env)->ReleaseStringUTFChars(env, path, dt);
 	(*env)->ReleaseStringUTFChars(env, elem, elm);
 }
@@ -215,8 +398,70 @@ JNIEXPORT void JNICALL Java_com_mylexz_utils_NodeData_addBoolData(JNIEnv *env, j
 	else dt = (*env)->GetStringUTFChars(env, path, 0);
 	elm = (*env)->GetStringUTFChars(env, elem, 0);
 	NDATA *d = __lNcont(__lncurr, __desc);
-	short val =  (data)?1:0;
-	nadd_data(d, dt, elm, BOOL, &val, ((encrypt_flags)?1:0));
+	
+	if(!d)return;
+	if(nisLocked(d)){d -> __errnum = EDL;return;}
+	char *_temp = d -> __temp; 
+	struct __nodeName__ *__lastPath = d -> __lastPath; 
+	FILE *_open = (d -> __fop).__op1; 
+	char *_filepath = d -> __filePath; 
+	short *_errnum = &(d -> __errnum); 
+	off_t *_sigPos = &(d -> __sigPos); 
+	off_t *_lastNodeLoc = &(d -> __lastNodeLoc); 
+	short *_lock = &(d -> __lock);
+	struct __nodeName__ *__con_pathNode__(const char *);
+	off_t __check_and_pointE__(NDATA *, struct __nodeName__ * , const char *);
+	int __encNum__(int );
+	void __edStr__(char *, short );
+	int __encStr__(int);	
+	struct __nodeName__ *__path = (dt)?__con_pathNode__(dt):NULL;
+	if(__check_and_pointE__(d, __path, elm)){
+		fseek(_open, *_sigPos, 0);
+		*_errnum = EEEx;
+		return;
+	}
+	
+	char __elem[strlen(elm)];
+	strcpy(__elem, elm);
+	__edStr__(__elem, ENC);
+	char _isi;
+	if (encrypt_flags)_isi = (char) __encNum__((data)?'1':'0');
+	else _isi = (data)?'1':'0';
+	
+	
+	// writing
+	off_t offset = ftell(_open);
+	if (!__path) fprintf(_open, "%c%c%c%s%c%d%c%c%c", _C_ID_, BOOL, ((encrypt_flags) ? '1' : '0'), __elem, _LEN_, 1, _C_BUKA_, _isi, _C_TUTUP_);
+	else
+	{
+		sprintf(_temp, "%s.tmp", _filepath);
+		FILE *_op1 = fopen(_temp, "w+");
+		fseek(_open, 0, 0);
+		off_t _t = 0;
+		for (; _t < offset; _t++)
+			putc(getc(_open), _op1);
+		putc(_C_ID_, _op1);
+		putc(BOOL, _op1);
+		putc(((encrypt_flags) ? '1' : '0'), _op1);
+		register int _a = 0;
+		for (; __elem[_a] != '\0'; _a++)
+			putc(__elem[_a], _op1);
+		putc(_LEN_, _op1);
+		putc('1', _op1);
+		putc(_C_BUKA_, _op1);
+		putc(_isi, _op1);
+		putc(_C_TUTUP_, _op1);
+		fseek(_open, offset, 0);
+		while ((_a = getc(_open)) != -1)
+			putc(_a, _op1);
+		fclose(_open);
+		fclose(_op1);
+		rename(_temp, _filepath);
+		(d->__fop).__op1 = _open = fopen(_filepath, "r+");
+	}
+	fseek(_open, *_sigPos, 0);
+	*_errnum = NE;
+	
 	if(dt) (*env)->ReleaseStringUTFChars(env, path, dt);
 	(*env)->ReleaseStringUTFChars(env, elem, elm);
 }
@@ -231,9 +476,81 @@ JNIEXPORT void JNICALL Java_com_mylexz_utils_NodeData_addStrData(JNIEnv *env, jo
 	else dt = (*env)->GetStringUTFChars(env, path, 0);
 	elm = (*env)->GetStringUTFChars(env, elem, 0);
 	NDATA *d = __lNcont(__lncurr, __desc);
-	const char *cstr = (data!=NULL)?(*env) -> GetStringUTFChars(env, data, 0):NULL;
-	void *mvm = (void *) cstr;
-	nadd_data(d, dt, elm, STR, mvm, ((encrypt_flags)?1:0));
+	const char *cstr = (data!=NULL)?(*env) -> GetStringUTFChars(env, data, 0):NULL;	
+	if(!d)return;
+	if(nisLocked(d)){d -> __errnum = EDL;return;}
+	char *_temp = d -> __temp; 
+	struct __nodeName__ *__lastPath = d -> __lastPath; 
+	FILE *_open = (d -> __fop).__op1; 
+	char *_filepath = d -> __filePath; 
+	short *_errnum = &(d -> __errnum); 
+	off_t *_sigPos = &(d -> __sigPos); 
+	off_t *_lastNodeLoc = &(d -> __lastNodeLoc); 
+	short *_lock = &(d -> __lock);
+	struct __nodeName__ *__con_pathNode__(const char *);
+	off_t __check_and_pointE__(NDATA *, struct __nodeName__ * , const char *);
+	void __edNum__(char *, short );
+	void __edStr__(char *, short );
+	int __encStr__(int);	
+	struct __nodeName__ *__path = (dt)?__con_pathNode__(dt):NULL;
+	if(__check_and_pointE__(d, __path, elm)){
+		fseek(_open, *_sigPos, 0);
+		*_errnum = EEEx;
+		return;
+	}
+	char *__isi;
+	char __elem[strlen(elm)];
+	strcpy(__elem, elm);
+	__edStr__(__elem, ENC);
+	if(cstr){
+		__isi = malloc(strlen(cstr));
+		sprintf(__isi, "%s", cstr);
+		if (encrypt_flags)__edStr__(__isi, ENC);
+	}
+	else
+		__isi = NULL;
+	// writing
+	off_t offset = ftell(_open);
+	if (!__path) 
+		if(cstr) fprintf(_open, "%c%c%c%s%c%d%c%s%c", _C_ID_, STR, ((encrypt_flags) ? '1' : '0'), __elem, _LEN_, strlen(cstr), _C_BUKA_, __isi, _C_TUTUP_);
+		else fprintf(_open, "%c%c%c%s%c%d%c%c", _C_ID_, STR, ((encrypt_flags) ? '1' : '0'), __elem, _LEN_, 0, _C_BUKA_,  _C_TUTUP_);
+	else
+	{
+		char *vt = _temp+strlen(_filepath)+5;
+		sprintf(vt, "%d", (cstr)?strlen(cstr):0);
+		sprintf(_temp, "%s.tmp", _filepath);
+		FILE *_op1 = fopen(_temp, "w+");
+		fseek(_open, 0, 0);
+		off_t _t = 0;
+		for (; _t < offset; _t++)
+			putc(getc(_open), _op1);
+		putc(_C_ID_, _op1);
+		putc(STR, _op1);
+		putc(((encrypt_flags) ? '1' : '0'), _op1);
+		register int _a = 0;
+		for (; __elem[_a] != '\0'; _a++)
+			putc(__elem[_a], _op1);
+		putc(_LEN_, _op1);
+		_a = 0;
+		for(; vt[_a] != '\0'; _a++)putc(vt[_a], _op1);
+		putc(_C_BUKA_, _op1);
+		if(__isi){
+			_a = 0;
+			for (; __isi[_a] != '\0'; _a++) putc(__isi[_a], _op1);
+		}
+		putc(_C_TUTUP_, _op1);
+		fseek(_open, offset, 0);
+		while ((_a = getc(_open)) != -1)
+			putc(_a, _op1);
+		fclose(_open);
+		fclose(_op1);
+		rename(_temp, _filepath);
+		(d->__fop).__op1 = _open = fopen(_filepath, "r+");
+		
+	}
+	if(__isi) free(__isi);
+	fseek(_open, *_sigPos, 0);
+	*_errnum = NE;
 	if(dt) (*env)->ReleaseStringUTFChars(env, path, dt);
 	(*env)->ReleaseStringUTFChars(env, elem, elm);
 	if(cstr) (*env)->ReleaseStringUTFChars(env, data, cstr);
@@ -249,7 +566,66 @@ JNIEXPORT void JNICALL Java_com_mylexz_utils_NodeData_addDoubleData(JNIEnv *env,
 	else dt = (*env)->GetStringUTFChars(env, path, 0);
 	elm = (*env)->GetStringUTFChars(env, elem, 0);
 	NDATA *d = __lNcont(__lncurr, __desc);
-	nadd_data(d, dt, elm, DOUBLE, &data, ((encrypt_flags)?1:0));
+	if(!d)return;
+	if(nisLocked(d)){d -> __errnum = EDL;return;}
+	char *_temp = d -> __temp; 
+	struct __nodeName__ *__lastPath = d -> __lastPath; 
+	FILE *_open = (d -> __fop).__op1; 
+	char *_filepath = d -> __filePath; 
+	short *_errnum = &(d -> __errnum); 
+	off_t *_sigPos = &(d -> __sigPos); 
+	off_t *_lastNodeLoc = &(d -> __lastNodeLoc); 
+	short *_lock = &(d -> __lock);
+	struct __nodeName__ *__con_pathNode__(const char *);
+	off_t __check_and_pointE__(NDATA *, struct __nodeName__ * , const char *);
+	void __edNum__(char *, short );
+	void __edStr__(char *, short );
+	int __encStr__(int);	
+	struct __nodeName__ *__path = (dt)?__con_pathNode__(dt):NULL;
+	if(__check_and_pointE__(d, __path, elm)){
+		fseek(_open, *_sigPos, 0);
+		*_errnum = EEEx;
+		return;
+	}
+	char __elem[strlen(elm)];
+	strcpy(__elem, elm);
+	__edStr__(__elem, ENC);
+	sprintf(_temp, "%lf", (double) data);
+	if (encrypt_flags)__edNum__(_temp, ENC);
+	// writing
+	off_t offset = ftell(_open);
+	if (!__path) fprintf(_open, "%c%c%c%s%c%d%c%s%c", _C_ID_, DOUBLE, ((encrypt_flags) ? '1' : '0'), __elem, _LEN_, 1, _C_BUKA_, _temp, _C_TUTUP_);
+	else
+	{
+		char __ftmp[strlen(_filepath) + 4];
+		sprintf(__ftmp, "%s.tmp", _filepath);
+		FILE *_op1 = fopen(__ftmp, "w+");
+		fseek(_open, 0, 0);
+		off_t _t = 0;
+		for (; _t < offset; _t++)
+			putc(getc(_open), _op1);
+		putc(_C_ID_, _op1);
+		putc(DOUBLE, _op1);
+		putc(((encrypt_flags) ? '1' : '0'), _op1);
+		register int _a = 0;
+		for (; __elem[_a] != '\0'; _a++)
+			putc(__elem[_a], _op1);
+		putc(_LEN_, _op1);
+		putc('1', _op1);
+		putc(_C_BUKA_, _op1);
+		_a = 0;
+		for (; _temp[_a] != '\0'; _a++) putc(_temp[_a], _op1);
+		putc(_C_TUTUP_, _op1);
+		fseek(_open, offset, 0);
+		while ((_a = getc(_open)) != -1)
+			putc(_a, _op1);
+		fclose(_open);
+		fclose(_op1);
+		rename(__ftmp, _filepath);
+		(d->__fop).__op1 = _open = fopen(_filepath, "r+");
+	}
+	fseek(_open, *_sigPos, 0);
+	*_errnum = NE;
 	if(dt) (*env)->ReleaseStringUTFChars(env, path, dt);
 	(*env)->ReleaseStringUTFChars(env, elem, elm);
 }
