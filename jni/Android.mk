@@ -68,6 +68,7 @@ include $(CLEAR_VARS)
 
 LOCAL_C_EXTENSION := .c
 LOCAL_MODULE    := mNDATA
+LOCAL_LDLIBS 	:= -llog
 LOCAL_SRC_FILES := com_mylexz_utils_NodeData.c NodeData.c cstring.c component.c
 ifeq ($(TARGET_ARCH_ABI),x86)
     LOCAL_CFLAGS += -ffast-math -mtune=atom -mssse3 -mfpmath=sse
