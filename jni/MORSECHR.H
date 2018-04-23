@@ -6,7 +6,7 @@ EXCEPT YOU AS AUTHOR OF THIS FILE
 */
 #include <string.h>
 #include <stdlib.h>
-#include "component.h"
+#include "MyLEXZ-Cutils/component.h"
 /*
 MORSE ARRAY CHARACTERS
 */

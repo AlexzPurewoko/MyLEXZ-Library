@@ -1,4 +1,4 @@
-#include "component.h"
+#include "MyLEXZ-Cutils/component.h"
 /*
 * Convert chacacters into lowerCase
 */

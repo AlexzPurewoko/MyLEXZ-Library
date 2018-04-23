@@ -24,7 +24,7 @@
 #include <errno.h>
 #include <sys/stat.h>
 #include <android/log.h>
-#include "component.h"
+#include "MyLEXZ-Cutils/component.h"
 /*******************************/
 
 /* CONSTANT EXPRESSION */

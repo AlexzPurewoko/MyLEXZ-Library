@@ -14,18 +14,6 @@
 #
 LOCAL_PATH := $(call my-dir)
 
-include $(CLEAR_VARS)
-
-LOCAL_CPP_EXTENSION := .cpp .cc
-LOCAL_MODULE    := hello-jni
-LOCAL_SRC_FILES := hello-jni.cpp
-
-ifeq ($(TARGET_ARCH_ABI),x86)
-    LOCAL_CFLAGS += -ffast-math -mtune=atom -mssse3 -mfpmath=sse
-endif
-
-include $(BUILD_SHARED_LIBRARY)
-
 # sandi
 include $(CLEAR_VARS)
 
@@ -56,7 +44,7 @@ include $(CLEAR_VARS)
 
 LOCAL_C_EXTENSION := .c
 LOCAL_MODULE    := mPDATA
-LOCAL_SRC_FILES := com_mylexz_utils_PrimitiveData.c PrimitiveData.c component.c
+LOCAL_SRC_FILES := com_mylexz_utils_PrimitiveData.c MyLEXZ-Cutils/data_op/PrimitiveData.c component.c
 ifeq ($(TARGET_ARCH_ABI),x86)
     LOCAL_CFLAGS += -ffast-math -mtune=atom -mssse3 -mfpmath=sse
 endif
@@ -69,7 +57,7 @@ include $(CLEAR_VARS)
 LOCAL_C_EXTENSION := .c
 LOCAL_MODULE    := mNDATA
 LOCAL_LDLIBS 	:= -llog
-LOCAL_SRC_FILES := com_mylexz_utils_NodeData.c NodeData.c cstring.c component.c
+LOCAL_SRC_FILES := com_mylexz_utils_NodeData.c MyLEXZ-Cutils/data_op/NodeData.c MyLEXZ-Cutils/array/cstring.c component.c
 ifeq ($(TARGET_ARCH_ABI),x86)
     LOCAL_CFLAGS += -ffast-math -mtune=atom -mssse3 -mfpmath=sse
 endif

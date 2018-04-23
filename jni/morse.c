@@ -1,6 +1,6 @@
 #include <jni.h>
 #include "MORSECHR.H"
-#include "component.h"
+#include "MyLEXZ-Cutils/component.h"
 JNIEXPORT jstring JNICALL Java_com_mylexz_utils_Sandi_ToMorse(JNIEnv *env, jclass thiz, jstring str){
 	char *s = (*env)->GetStringUTFChars(env, str, 0);
 	jsize sz = (*env)->GetStringUTFLength(env, str);
