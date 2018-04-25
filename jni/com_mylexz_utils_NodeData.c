@@ -382,8 +382,17 @@ JNIEXPORT void JNICALL Java_com_mylexz_utils_NodeData_addIntData(JNIEnv *env, jo
 	__android_log_print(ANDROID_LOG_INFO, "ADDINT", "VALUE DT = %s", (dt)?dt:"NULL");
 	elm = (*env)->GetStringUTFChars(env, elem, 0);
 	NDATA *d = __lNcont(__lncurr, __desc);
-	if(!d)return;
-	if(nisLocked(d)){d -> __errnum = EDL;return;}
+	if(!d){
+		if(dt) (*env)->ReleaseStringUTFChars(env, path, dt);
+		(*env)->ReleaseStringUTFChars(env, elem, elm);
+		return;
+	}
+	if(nisLocked(d)){
+		d -> __errnum = EDL;
+		if(dt) (*env)->ReleaseStringUTFChars(env, path, dt);
+		(*env)->ReleaseStringUTFChars(env, elem, elm);
+		return;
+	}
 	char *_temp = d -> __temp; 
 	struct __nodeName__ *__lastPath = d -> __lastPath; 
 	FILE *_open = (d -> __fop).__op1; 
@@ -401,6 +410,8 @@ JNIEXPORT void JNICALL Java_com_mylexz_utils_NodeData_addIntData(JNIEnv *env, jo
 	if(__check_and_pointE__(d, __path, elm)){
 		fseek(_open, *_sigPos, 0);
 		*_errnum = EEEx;
+		if(dt) (*env)->ReleaseStringUTFChars(env, path, dt);
+		(*env)->ReleaseStringUTFChars(env, elem, elm);
 		return;
 	}
 	
@@ -462,8 +473,17 @@ JNIEXPORT void JNICALL Java_com_mylexz_utils_NodeData_addLongData(JNIEnv *env, j
 	else dt = (*env)->GetStringUTFChars(env, path, 0);
 	elm = (*env)->GetStringUTFChars(env, elem, 0);
 	NDATA *d = __lNcont(__lncurr, __desc);
-	if(!d)return;
-	if(nisLocked(d)){d -> __errnum = EDL;return;}
+	if(!d){
+		if(dt) (*env)->ReleaseStringUTFChars(env, path, dt);
+		(*env)->ReleaseStringUTFChars(env, elem, elm);
+		return;
+	}
+	if(nisLocked(d)){
+		d -> __errnum = EDL;
+		if(dt) (*env)->ReleaseStringUTFChars(env, path, dt);
+		(*env)->ReleaseStringUTFChars(env, elem, elm);
+		return;
+	}
 	char *_temp = d -> __temp; 
 	struct __nodeName__ *__lastPath = d -> __lastPath; 
 	FILE *_open = (d -> __fop).__op1; 
@@ -481,6 +501,8 @@ JNIEXPORT void JNICALL Java_com_mylexz_utils_NodeData_addLongData(JNIEnv *env, j
 	if(__check_and_pointE__(d, __path, elm)){
 		fseek(_open, *_sigPos, 0);
 		*_errnum = EEEx;
+		if(dt) (*env)->ReleaseStringUTFChars(env, path, dt);
+		(*env)->ReleaseStringUTFChars(env, elem, elm);
 		return;
 	}
 	char *__elem = malloc(strlen(elm));
@@ -537,9 +559,17 @@ JNIEXPORT void JNICALL Java_com_mylexz_utils_NodeData_addCharData(JNIEnv *env, j
 	else dt = (*env)->GetStringUTFChars(env, path, 0);
 	elm = (*env)->GetStringUTFChars(env, elem, 0);
 	NDATA *d = __lNcont(__lncurr, __desc);
-	
-	if(!d)return;
-	if(nisLocked(d)){d -> __errnum = EDL;return;}
+	if(!d){
+		if(dt) (*env)->ReleaseStringUTFChars(env, path, dt);
+		(*env)->ReleaseStringUTFChars(env, elem, elm);
+		return;
+	}
+	if(nisLocked(d)){
+		d -> __errnum = EDL;
+		if(dt) (*env)->ReleaseStringUTFChars(env, path, dt);
+		(*env)->ReleaseStringUTFChars(env, elem, elm);
+		return;
+	}
 	char *_temp = d -> __temp; 
 	struct __nodeName__ *__lastPath = d -> __lastPath; 
 	FILE *_open = (d -> __fop).__op1; 
@@ -557,6 +587,8 @@ JNIEXPORT void JNICALL Java_com_mylexz_utils_NodeData_addCharData(JNIEnv *env, j
 	if(__check_and_pointE__(d, __path, elm)){
 		fseek(_open, *_sigPos, 0);
 		*_errnum = EEEx;
+		if(dt) (*env)->ReleaseStringUTFChars(env, path, dt);
+		(*env)->ReleaseStringUTFChars(env, elem, elm);
 		return;
 	}
 	
@@ -615,9 +647,17 @@ JNIEXPORT void JNICALL Java_com_mylexz_utils_NodeData_addBoolData(JNIEnv *env, j
 	else dt = (*env)->GetStringUTFChars(env, path, 0);
 	elm = (*env)->GetStringUTFChars(env, elem, 0);
 	NDATA *d = __lNcont(__lncurr, __desc);
-	
-	if(!d)return;
-	if(nisLocked(d)){d -> __errnum = EDL;return;}
+	if(!d){
+		if(dt) (*env)->ReleaseStringUTFChars(env, path, dt);
+		(*env)->ReleaseStringUTFChars(env, elem, elm);
+		return;
+	}
+	if(nisLocked(d)){
+		d -> __errnum = EDL;
+		if(dt) (*env)->ReleaseStringUTFChars(env, path, dt);
+		(*env)->ReleaseStringUTFChars(env, elem, elm);
+		return;
+	}
 	char *_temp = d -> __temp; 
 	struct __nodeName__ *__lastPath = d -> __lastPath; 
 	FILE *_open = (d -> __fop).__op1; 
@@ -629,12 +669,15 @@ JNIEXPORT void JNICALL Java_com_mylexz_utils_NodeData_addBoolData(JNIEnv *env, j
 	struct __nodeName__ *__con_pathNode__(const char *);
 	off_t __check_and_pointE__(NDATA *, struct __nodeName__ * , const char *);
 	int __encNum__(int );
+	void __edNum__(char *, short );
 	void __edStr__(char *, short );
 	int __encStr__(int);	
 	struct __nodeName__ *__path = (dt)?__con_pathNode__(dt):NULL;
 	if(__check_and_pointE__(d, __path, elm)){
 		fseek(_open, *_sigPos, 0);
 		*_errnum = EEEx;
+		if(dt) (*env)->ReleaseStringUTFChars(env, path, dt);
+		(*env)->ReleaseStringUTFChars(env, elem, elm);
 		return;
 	}
 	
@@ -693,9 +736,17 @@ JNIEXPORT void JNICALL Java_com_mylexz_utils_NodeData_addStrData(JNIEnv *env, jo
 	else dt = (*env)->GetStringUTFChars(env, path, 0);
 	elm = (*env)->GetStringUTFChars(env, elem, 0);
 	NDATA *d = __lNcont(__lncurr, __desc);
-	const char *cstr = (data!=NULL)?(*env) -> GetStringUTFChars(env, data, 0):NULL;	
-	if(!d)return;
-	if(nisLocked(d)){d -> __errnum = EDL;return;}
+	if(!d){
+		if(dt) (*env)->ReleaseStringUTFChars(env, path, dt);
+		(*env)->ReleaseStringUTFChars(env, elem, elm);	
+		return;
+	}
+	if(nisLocked(d)){
+		d -> __errnum = EDL;
+		if(dt) (*env)->ReleaseStringUTFChars(env, path, dt);
+		(*env)->ReleaseStringUTFChars(env, elem, elm);
+		return;
+	}
 	char *_temp = d -> __temp; 
 	struct __nodeName__ *__lastPath = d -> __lastPath; 
 	FILE *_open = (d -> __fop).__op1; 
@@ -713,8 +764,11 @@ JNIEXPORT void JNICALL Java_com_mylexz_utils_NodeData_addStrData(JNIEnv *env, jo
 	if(__check_and_pointE__(d, __path, elm)){
 		fseek(_open, *_sigPos, 0);
 		*_errnum = EEEx;
+		if(dt) (*env)->ReleaseStringUTFChars(env, path, dt);
+		(*env)->ReleaseStringUTFChars(env, elem, elm);
 		return;
 	}
+	const char *cstr = (data!=NULL)?(*env) -> GetStringUTFChars(env, data, 0):NULL;	
 	char *__elem = malloc(strlen(elm));
 	strcpy(__elem, elm);
 	__edStr__(__elem, ENC);
@@ -799,8 +853,17 @@ JNIEXPORT void JNICALL Java_com_mylexz_utils_NodeData_addDoubleData(JNIEnv *env,
 	else dt = (*env)->GetStringUTFChars(env, path, 0);
 	elm = (*env)->GetStringUTFChars(env, elem, 0);
 	NDATA *d = __lNcont(__lncurr, __desc);
-	if(!d)return;
-	if(nisLocked(d)){d -> __errnum = EDL;return;}
+	if(!d){
+		if(dt) (*env)->ReleaseStringUTFChars(env, path, dt);
+		(*env)->ReleaseStringUTFChars(env, elem, elm);
+		return;
+	}
+	if(nisLocked(d)){
+		d -> __errnum = EDL;
+		if(dt) (*env)->ReleaseStringUTFChars(env, path, dt);
+		(*env)->ReleaseStringUTFChars(env, elem, elm);
+		return;
+	}
 	char *_temp = d -> __temp; 
 	struct __nodeName__ *__lastPath = d -> __lastPath; 
 	FILE *_open = (d -> __fop).__op1; 
@@ -818,6 +881,8 @@ JNIEXPORT void JNICALL Java_com_mylexz_utils_NodeData_addDoubleData(JNIEnv *env,
 	if(__check_and_pointE__(d, __path, elm)){
 		fseek(_open, *_sigPos, 0);
 		*_errnum = EEEx;
+		if(dt) (*env)->ReleaseStringUTFChars(env, path, dt);
+		(*env)->ReleaseStringUTFChars(env, elem, elm);
 		return;
 	}
 	char *__elem = malloc(strlen(elm));
@@ -870,8 +935,15 @@ JNIEXPORT jint JNICALL Java_com_mylexz_utils_NodeData_getIntData(JNIEnv *env, jo
 	if(fullpath == NULL)return defV;
 	fp = (*env)->GetStringUTFChars(env, fullpath, 0);
 	NDATA *d = __lNcont(__lncurr, __desc);
-	if(!d)return defV;
-	if(nisLocked(d)){d -> __errnum = EDL;return defV;}
+	if(!d){
+		(*env)->ReleaseStringUTFChars(env, fullpath, fp);
+		return defV;
+	}
+	if(nisLocked(d)){
+		d -> __errnum = EDL;
+		(*env)->ReleaseStringUTFChars(env, fullpath, fp);
+		return defV;
+	}
 	char *_temp = d -> __temp; 
 	struct __nodeName__ *__lastPath = d -> __lastPath; 
 	FILE *_open = (d -> __fop).__op1; 
@@ -899,6 +971,7 @@ JNIEXPORT jint JNICALL Java_com_mylexz_utils_NodeData_getIntData(JNIEnv *env, jo
 		fseek(_open, *_sigPos, 0);
 		free(_name);
 		*_errnum = EENF;
+		(*env)->ReleaseStringUTFChars(env, fullpath, fp);
 		return defV;
 	}
 	
@@ -910,6 +983,7 @@ JNIEXPORT jint JNICALL Java_com_mylexz_utils_NodeData_getIntData(JNIEnv *env, jo
 		free(_name);
 		*_errnum = EIAT;
 		fseek(_open, *_sigPos, 0);
+		(*env)->ReleaseStringUTFChars(env, fullpath, fp);
 		return defV;
 	}
 	__mem_rel__(d);
@@ -927,6 +1001,7 @@ JNIEXPORT jint JNICALL Java_com_mylexz_utils_NodeData_getIntData(JNIEnv *env, jo
 		free(_name);
 		*_errnum = N_VAL;
 		fseek(_open, *_sigPos, 0);
+		(*env)->ReleaseStringUTFChars(env, fullpath, fp);
 		return defV;
 	}
 	_y = 0;
@@ -949,8 +1024,15 @@ JNIEXPORT jboolean JNICALL Java_com_mylexz_utils_NodeData_getBooleanData(JNIEnv 
 	if(fullpath == NULL)return defV;
 	fp = (*env)->GetStringUTFChars(env, fullpath, 0);
 	NDATA *d = __lNcont(__lncurr, __desc);
-	if(!d)return defV;
-	if(nisLocked(d)){d -> __errnum = EDL;return defV;}
+	if(!d){
+		(*env)->ReleaseStringUTFChars(env, fullpath, fp);
+		return defV;
+	}
+	if(nisLocked(d)){
+		d -> __errnum = EDL;
+		(*env)->ReleaseStringUTFChars(env, fullpath, fp);
+		return defV;
+	}
 	char *_temp = d -> __temp; 
 	struct __nodeName__ *__lastPath = d -> __lastPath; 
 	FILE *_open = (d -> __fop).__op1; 
@@ -978,6 +1060,7 @@ JNIEXPORT jboolean JNICALL Java_com_mylexz_utils_NodeData_getBooleanData(JNIEnv 
 		fseek(_open, *_sigPos, 0);
 		free(_name);
 		*_errnum = EENF;
+		(*env)->ReleaseStringUTFChars(env, fullpath, fp);
 		return defV;
 	}
 	
@@ -989,6 +1072,7 @@ JNIEXPORT jboolean JNICALL Java_com_mylexz_utils_NodeData_getBooleanData(JNIEnv 
 		free(_name);
 		*_errnum = EIAT;
 		fseek(_open, *_sigPos, 0);
+		(*env)->ReleaseStringUTFChars(env, fullpath, fp);
 		return defV;
 	}
 	__mem_rel__(d);
@@ -1006,6 +1090,7 @@ JNIEXPORT jboolean JNICALL Java_com_mylexz_utils_NodeData_getBooleanData(JNIEnv 
 		free(_name);
 		*_errnum = N_VAL;
 		fseek(_open, *_sigPos, 0);
+		(*env)->ReleaseStringUTFChars(env, fullpath, fp);
 		return defV;
 	}
 	_y = 0;
@@ -1028,8 +1113,15 @@ JNIEXPORT jlong JNICALL Java_com_mylexz_utils_NodeData_getLongData(JNIEnv *env, 
 	if(fullpath == NULL)return defV;
 	fp = (*env)->GetStringUTFChars(env, fullpath, 0);
 	NDATA *d = __lNcont(__lncurr, __desc);
-	if(!d)return defV;
-	if(nisLocked(d)){d -> __errnum = EDL;return defV;}
+	if(!d){
+		(*env)->ReleaseStringUTFChars(env, fullpath, fp);
+		return defV;
+	}
+	if(nisLocked(d)){
+		d -> __errnum = EDL;
+		(*env)->ReleaseStringUTFChars(env, fullpath, fp);
+		return defV;
+	}
 	char *_temp = d -> __temp; 
 	struct __nodeName__ *__lastPath = d -> __lastPath; 
 	FILE *_open = (d -> __fop).__op1; 
@@ -1057,6 +1149,7 @@ JNIEXPORT jlong JNICALL Java_com_mylexz_utils_NodeData_getLongData(JNIEnv *env, 
 		fseek(_open, *_sigPos, 0);
 		free(_name);
 		*_errnum = EENF;
+		(*env)->ReleaseStringUTFChars(env, fullpath, fp);
 		return defV;
 	}
 	
@@ -1068,6 +1161,7 @@ JNIEXPORT jlong JNICALL Java_com_mylexz_utils_NodeData_getLongData(JNIEnv *env, 
 		free(_name);
 		*_errnum = EIAT;
 		fseek(_open, *_sigPos, 0);
+		(*env)->ReleaseStringUTFChars(env, fullpath, fp);
 		return defV;
 	}
 	__mem_rel__(d);
@@ -1085,6 +1179,7 @@ JNIEXPORT jlong JNICALL Java_com_mylexz_utils_NodeData_getLongData(JNIEnv *env, 
 		free(_name);
 		*_errnum = N_VAL;
 		fseek(_open, *_sigPos, 0);
+		(*env)->ReleaseStringUTFChars(env, fullpath, fp);
 		return defV;
 	}
 	_y = 0;
@@ -1107,8 +1202,15 @@ JNIEXPORT jdouble JNICALL Java_com_mylexz_utils_NodeData_getDoubleData(JNIEnv *e
 	if(fullpath == NULL)return defV;
 	fp = (*env)->GetStringUTFChars(env, fullpath, 0);
 	NDATA *d = __lNcont(__lncurr, __desc);
-	if(!d)return defV;
-	if(nisLocked(d)){d -> __errnum = EDL;return defV;}
+	if(!d){
+		(*env)->ReleaseStringUTFChars(env, fullpath, fp);
+		return defV;
+	}
+	if(nisLocked(d)){
+		d -> __errnum = EDL;
+		(*env)->ReleaseStringUTFChars(env, fullpath, fp);
+		return defV;
+	}
 	char *_temp = d -> __temp; 
 	struct __nodeName__ *__lastPath = d -> __lastPath; 
 	FILE *_open = (d -> __fop).__op1; 
@@ -1136,6 +1238,7 @@ JNIEXPORT jdouble JNICALL Java_com_mylexz_utils_NodeData_getDoubleData(JNIEnv *e
 		fseek(_open, *_sigPos, 0);
 		free(_name);
 		*_errnum = EENF;
+		(*env)->ReleaseStringUTFChars(env, fullpath, fp);
 		return defV;
 	}
 	
@@ -1147,6 +1250,7 @@ JNIEXPORT jdouble JNICALL Java_com_mylexz_utils_NodeData_getDoubleData(JNIEnv *e
 		free(_name);
 		*_errnum = EIAT;
 		fseek(_open, *_sigPos, 0);
+		(*env)->ReleaseStringUTFChars(env, fullpath, fp);
 		return defV;
 	}
 	__mem_rel__(d);
@@ -1164,6 +1268,7 @@ JNIEXPORT jdouble JNICALL Java_com_mylexz_utils_NodeData_getDoubleData(JNIEnv *e
 		free(_name);
 		*_errnum = N_VAL;
 		fseek(_open, *_sigPos, 0);
+		(*env)->ReleaseStringUTFChars(env, fullpath, fp);
 		return defV;
 	}
 	_y = 0;
@@ -1186,8 +1291,15 @@ JNIEXPORT jchar JNICALL Java_com_mylexz_utils_NodeData_getCharData(JNIEnv *env, 
 	if(fullpath == NULL)return defV;
 	fp = (*env)->GetStringUTFChars(env, fullpath, 0);
 	NDATA *d = __lNcont(__lncurr, __desc);
-	if(!d)return defV;
-	if(nisLocked(d)){d -> __errnum = EDL;return defV;}
+	if(!d){
+		(*env)->ReleaseStringUTFChars(env, fullpath, fp);
+		return defV;
+	}
+	if(nisLocked(d)){
+		d -> __errnum = EDL;
+		(*env)->ReleaseStringUTFChars(env, fullpath, fp);
+		return defV;
+	}
 	char *_temp = d -> __temp; 
 	struct __nodeName__ *__lastPath = d -> __lastPath; 
 	FILE *_open = (d -> __fop).__op1; 
@@ -1215,6 +1327,7 @@ JNIEXPORT jchar JNICALL Java_com_mylexz_utils_NodeData_getCharData(JNIEnv *env, 
 		fseek(_open, *_sigPos, 0);
 		free(_name);
 		*_errnum = EENF;
+		(*env)->ReleaseStringUTFChars(env, fullpath, fp);
 		return defV;
 	}
 	
@@ -1226,6 +1339,7 @@ JNIEXPORT jchar JNICALL Java_com_mylexz_utils_NodeData_getCharData(JNIEnv *env, 
 		free(_name);
 		*_errnum = EIAT;
 		fseek(_open, *_sigPos, 0);
+		(*env)->ReleaseStringUTFChars(env, fullpath, fp);
 		return defV;
 	}
 	__mem_rel__(d);
@@ -1243,6 +1357,7 @@ JNIEXPORT jchar JNICALL Java_com_mylexz_utils_NodeData_getCharData(JNIEnv *env, 
 		free(_name);
 		*_errnum = N_VAL;
 		fseek(_open, *_sigPos, 0);
+		(*env)->ReleaseStringUTFChars(env, fullpath, fp);
 		return defV;
 	}
 	_y = 0;
@@ -1266,8 +1381,15 @@ JNIEXPORT jstring JNICALL Java_com_mylexz_utils_NodeData_getStringData(JNIEnv *e
 	if(fullpath == NULL)return defV;
 	fp = (*env)->GetStringUTFChars(env, fullpath, 0);
 	NDATA *d = __lNcont(__lncurr, __desc);
-	if(!d)return defV;
-	if(nisLocked(d)){d -> __errnum = EDL;return defV;}
+	if(!d){
+		(*env)->ReleaseStringUTFChars(env, fullpath, fp);
+		return defV;
+	}
+	if(nisLocked(d)){
+		d -> __errnum = EDL;
+		(*env)->ReleaseStringUTFChars(env, fullpath, fp);
+		return defV;
+	}
 	char *_temp = d -> __temp; 
 	struct __nodeName__ *__lastPath = d -> __lastPath; 
 	FILE *_open = (d -> __fop).__op1; 
@@ -1295,6 +1417,7 @@ JNIEXPORT jstring JNICALL Java_com_mylexz_utils_NodeData_getStringData(JNIEnv *e
 		fseek(_open, *_sigPos, 0);
 		free(_name);
 		*_errnum = EENF;
+		(*env)->ReleaseStringUTFChars(env, fullpath, fp);
 		return defV;
 	}
 	
@@ -1306,6 +1429,7 @@ JNIEXPORT jstring JNICALL Java_com_mylexz_utils_NodeData_getStringData(JNIEnv *e
 		free(_name);
 		*_errnum = EIAT;
 		fseek(_open, *_sigPos, 0);
+		(*env)->ReleaseStringUTFChars(env, fullpath, fp);
 		return defV;
 	}
 	__mem_rel__(d);
@@ -1323,6 +1447,7 @@ JNIEXPORT jstring JNICALL Java_com_mylexz_utils_NodeData_getStringData(JNIEnv *e
 		free(_name);
 		*_errnum = N_VAL;
 		fseek(_open, *_sigPos, 0);
+		(*env)->ReleaseStringUTFChars(env, fullpath, fp);
 		return defV;
 	}
 	_y = 0;
@@ -1338,7 +1463,6 @@ JNIEXPORT jstring JNICALL Java_com_mylexz_utils_NodeData_getStringData(JNIEnv *e
 	(*env)->ReleaseStringUTFChars(env, fullpath, fp);
 	return ret;
 }
-
 JNIEXPORT void JNICALL Java_com_mylexz_utils_NodeData_setContentData__Ljava_lang_String_2I(JNIEnv *env, jobject thiz, jstring fullpath, jint data){
 	jint __desc = __getNDesc(env, thiz);
 	if(__desc == -1)return;
@@ -1346,8 +1470,89 @@ JNIEXPORT void JNICALL Java_com_mylexz_utils_NodeData_setContentData__Ljava_lang
 	if(fullpath == NULL)return;
 	fp = (*env)->GetStringUTFChars(env, fullpath, 0);
 	NDATA *d = __lNcont(__lncurr, __desc);
-	int val = (int) data;
-	nset_data(d, fp, &val);
+	if(!d){
+		(*env)->ReleaseStringUTFChars(env, fullpath, fp);
+		return;
+	}
+	if(nisLocked(d)){
+		d -> __errnum = EDL;
+		(*env)->ReleaseStringUTFChars(env, fullpath, fp);
+		return;
+	}
+	char *_temp = d -> __temp; 
+	struct __nodeName__ *__lastPath = d -> __lastPath; 
+	FILE *_open = (d -> __fop).__op1; 
+	char *_filepath = d -> __filePath; 
+	short *_errnum = &(d -> __errnum); 
+	off_t *_sigPos = &(d -> __sigPos); 
+	off_t *_lastNodeLoc = &(d -> __lastNodeLoc); 
+	short *_lock = &(d -> __lock);
+	struct __nodeName__ *__con_pathNode__(const char *);
+	char *__getCon_and_path__(char *);
+	off_t __check_and_pointE__(NDATA *, struct __nodeName__ * , const char *);
+	void __edNum__(char *, short );
+	void __edStr__(char *, short );
+	int __encStr__(int);
+	// get the current name elements and passing into dynamic memory
+	strcpy(_temp, fp);
+	char *__name = __getCon_and_path__(_temp);
+	char *_name = malloc(strlen(__name));
+	strcpy(_name, __name);
+	struct __nodeName__ *__path = (_temp[0] != '\0') ? __con_pathNode__(_temp) : NULL;
+	register int _y, _x;
+	if (!__check_and_pointE__(d , __path, _name))
+	{
+		fseek(_open, *_sigPos, 0);
+		free(_name);
+		*_errnum = EENF;
+		(*env)->ReleaseStringUTFChars(env, fullpath, fp);
+		return;
+	}
+	short _type = getc(_open);
+	short _id = getc(_open);
+	short _en_flags = getc(_open) - '0';
+	if (_type == _ARR_ID_ || _id != INT)
+	{
+		free(_name);
+		*_errnum = EIAT;
+		fseek(_open, *_sigPos, 0);
+		(*env)->ReleaseStringUTFChars(env, fullpath, fp);
+		return;
+	}
+	// convert content into _temp
+	while ((_x = getc(_open)) != _LEN_);
+	off_t _p0 = ftell(_open);
+	_y = 0;
+	while ((_x = getc(_open)) != _C_TUTUP_);
+	off_t _p2 = ftell(_open);
+	
+	sprintf(_temp, "%d", (int)data);
+	__edNum__(_temp, ENC);
+	char *__ftmp = malloc(strlen(_filepath) + 4);
+	sprintf(__ftmp, "%s.tmp", _filepath);
+	// printf("%s", __ftmp);
+	FILE *_op1 = fopen(__ftmp, "w+");
+	fseek(_open, 0, 0);
+	off_t _t = 0;
+	for (; _t < _p0; _t++)
+		putc(getc(_open), _op1);
+	_y = 0;
+	putc('1', _op1);
+	putc(_C_BUKA_, _op1);
+	_y = 0;
+	for (; (_x = _temp[_y]) != '\0'; _y++)
+		putc(_x, _op1);
+	fseek(_open, _p2 - 1, 0);
+	while ((_x = getc(_open)) != -1)
+		putc(_x, _op1);
+	fclose(_open);
+	fclose(_op1);
+	rename(__ftmp, _filepath);
+	(d ->__fop).__op1 = _open = fopen(_filepath, "r+");
+	fseek(_open, *_sigPos, 0);
+	free(__ftmp);
+	free(_name);
+	*_errnum = NE;
 	(*env)->ReleaseStringUTFChars(env, fullpath, fp);
 }
 
@@ -1358,8 +1563,89 @@ JNIEXPORT void JNICALL Java_com_mylexz_utils_NodeData_setContentData__Ljava_lang
 	if(fullpath == NULL)return;
 	fp = (*env)->GetStringUTFChars(env, fullpath, 0);
 	NDATA *d = __lNcont(__lncurr, __desc);
-	long long val = (long long) data;
-	nset_data(d, fp, &val);
+	if(!d){
+		(*env)->ReleaseStringUTFChars(env, fullpath, fp);
+		return;
+	}
+	if(nisLocked(d)){
+		d -> __errnum = EDL;
+		(*env)->ReleaseStringUTFChars(env, fullpath, fp);
+		return;
+	}
+	char *_temp = d -> __temp; 
+	struct __nodeName__ *__lastPath = d -> __lastPath; 
+	FILE *_open = (d -> __fop).__op1; 
+	char *_filepath = d -> __filePath; 
+	short *_errnum = &(d -> __errnum); 
+	off_t *_sigPos = &(d -> __sigPos); 
+	off_t *_lastNodeLoc = &(d -> __lastNodeLoc); 
+	short *_lock = &(d -> __lock);
+	struct __nodeName__ *__con_pathNode__(const char *);
+	char *__getCon_and_path__(char *);
+	off_t __check_and_pointE__(NDATA *, struct __nodeName__ * , const char *);
+	void __edNum__(char *, short );
+	void __edStr__(char *, short );
+	int __encStr__(int);
+	// get the current name elements and passing into dynamic memory
+	strcpy(_temp, fp);
+	char *__name = __getCon_and_path__(_temp);
+	char *_name = malloc(strlen(__name));
+	strcpy(_name, __name);
+	struct __nodeName__ *__path = (_temp[0] != '\0') ? __con_pathNode__(_temp) : NULL;
+	register int _y, _x;
+	if (!__check_and_pointE__(d , __path, _name))
+	{
+		fseek(_open, *_sigPos, 0);
+		free(_name);
+		*_errnum = EENF;
+		(*env)->ReleaseStringUTFChars(env, fullpath, fp);
+		return;
+	}
+	short _type = getc(_open);
+	short _id = getc(_open);
+	short _en_flags = getc(_open) - '0';
+	if (_type == _ARR_ID_ || _id != LONG)
+	{
+		free(_name);
+		*_errnum = EIAT;
+		fseek(_open, *_sigPos, 0);
+		(*env)->ReleaseStringUTFChars(env, fullpath, fp);
+		return;
+	}
+	// convert content into _temp
+	while ((_x = getc(_open)) != _LEN_);
+	off_t _p0 = ftell(_open);
+	_y = 0;
+	while ((_x = getc(_open)) != _C_TUTUP_);
+	off_t _p2 = ftell(_open);
+	
+	sprintf(_temp, "%lld", (long long int)data);
+	__edNum__(_temp, ENC);
+	char *__ftmp = malloc(strlen(_filepath) + 4);
+	sprintf(__ftmp, "%s.tmp", _filepath);
+	// printf("%s", __ftmp);
+	FILE *_op1 = fopen(__ftmp, "w+");
+	fseek(_open, 0, 0);
+	off_t _t = 0;
+	for (; _t < _p0; _t++)
+		putc(getc(_open), _op1);
+	_y = 0;
+	putc('1', _op1);
+	putc(_C_BUKA_, _op1);
+	_y = 0;
+	for (; (_x = _temp[_y]) != '\0'; _y++)
+		putc(_x, _op1);
+	fseek(_open, _p2 - 1, 0);
+	while ((_x = getc(_open)) != -1)
+		putc(_x, _op1);
+	fclose(_open);
+	fclose(_op1);
+	rename(__ftmp, _filepath);
+	(d ->__fop).__op1 = _open = fopen(_filepath, "r+");
+	fseek(_open, *_sigPos, 0);
+	free(__ftmp);
+	free(_name);
+	*_errnum = NE;
 	(*env)->ReleaseStringUTFChars(env, fullpath, fp);
 }
 
@@ -1370,8 +1656,89 @@ JNIEXPORT void JNICALL Java_com_mylexz_utils_NodeData_setContentData__Ljava_lang
 	if(fullpath == NULL)return;
 	fp = (*env)->GetStringUTFChars(env, fullpath, 0);
 	NDATA *d = __lNcont(__lncurr, __desc);
-	double val = (double) data;
-	nset_data(d, fp, &val);
+	if(!d){
+		(*env)->ReleaseStringUTFChars(env, fullpath, fp);
+		return;
+	}
+	if(nisLocked(d)){
+		d -> __errnum = EDL;
+		(*env)->ReleaseStringUTFChars(env, fullpath, fp);
+		return;
+	}
+	char *_temp = d -> __temp; 
+	struct __nodeName__ *__lastPath = d -> __lastPath; 
+	FILE *_open = (d -> __fop).__op1; 
+	char *_filepath = d -> __filePath; 
+	short *_errnum = &(d -> __errnum); 
+	off_t *_sigPos = &(d -> __sigPos); 
+	off_t *_lastNodeLoc = &(d -> __lastNodeLoc); 
+	short *_lock = &(d -> __lock);
+	struct __nodeName__ *__con_pathNode__(const char *);
+	char *__getCon_and_path__(char *);
+	off_t __check_and_pointE__(NDATA *, struct __nodeName__ * , const char *);
+	void __edNum__(char *, short );
+	void __edStr__(char *, short );
+	int __encStr__(int);
+	// get the current name elements and passing into dynamic memory
+	strcpy(_temp, fp);
+	char *__name = __getCon_and_path__(_temp);
+	char *_name = malloc(strlen(__name));
+	strcpy(_name, __name);
+	struct __nodeName__ *__path = (_temp[0] != '\0') ? __con_pathNode__(_temp) : NULL;
+	register int _y, _x;
+	if (!__check_and_pointE__(d , __path, _name))
+	{
+		fseek(_open, *_sigPos, 0);
+		free(_name);
+		*_errnum = EENF;
+		(*env)->ReleaseStringUTFChars(env, fullpath, fp);
+		return;
+	}
+	short _type = getc(_open);
+	short _id = getc(_open);
+	short _en_flags = getc(_open) - '0';
+	if (_type == _ARR_ID_ || _id != DOUBLE)
+	{
+		free(_name);
+		*_errnum = EIAT;
+		fseek(_open, *_sigPos, 0);
+		(*env)->ReleaseStringUTFChars(env, fullpath, fp);
+		return;
+	}
+	// convert content into _temp
+	while ((_x = getc(_open)) != _LEN_);
+	off_t _p0 = ftell(_open);
+	_y = 0;
+	while ((_x = getc(_open)) != _C_TUTUP_);
+	off_t _p2 = ftell(_open);
+	
+	sprintf(_temp, "%lf", (double)data);
+	__edNum__(_temp, ENC);
+	char *__ftmp = malloc(strlen(_filepath) + 4);
+	sprintf(__ftmp, "%s.tmp", _filepath);
+	// printf("%s", __ftmp);
+	FILE *_op1 = fopen(__ftmp, "w+");
+	fseek(_open, 0, 0);
+	off_t _t = 0;
+	for (; _t < _p0; _t++)
+		putc(getc(_open), _op1);
+	_y = 0;
+	putc('1', _op1);
+	putc(_C_BUKA_, _op1);
+	_y = 0;
+	for (; (_x = _temp[_y]) != '\0'; _y++)
+		putc(_x, _op1);
+	fseek(_open, _p2 - 1, 0);
+	while ((_x = getc(_open)) != -1)
+		putc(_x, _op1);
+	fclose(_open);
+	fclose(_op1);
+	rename(__ftmp, _filepath);
+	(d ->__fop).__op1 = _open = fopen(_filepath, "r+");
+	fseek(_open, *_sigPos, 0);
+	free(__ftmp);
+	free(_name);
+	*_errnum = NE;
 	(*env)->ReleaseStringUTFChars(env, fullpath, fp);
 }
 
@@ -1382,9 +1749,96 @@ JNIEXPORT void JNICALL Java_com_mylexz_utils_NodeData_setContentData__Ljava_lang
 	if(fullpath == NULL)return;
 	fp = (*env)->GetStringUTFChars(env, fullpath, 0);
 	NDATA *d = __lNcont(__lncurr, __desc);
-	const char *val = (*env) -> GetStringUTFChars(env, data, 0);
-	void *mvm = (void *) val;
-	nset_data(d, fp, mvm);
+	if(!d){
+		(*env)->ReleaseStringUTFChars(env, fullpath, fp);
+		return;
+	}
+	if(nisLocked(d)){
+		d -> __errnum = EDL;
+		(*env)->ReleaseStringUTFChars(env, fullpath, fp);
+		return;
+	}
+	char *_temp = d -> __temp; 
+	struct __nodeName__ *__lastPath = d -> __lastPath; 
+	FILE *_open = (d -> __fop).__op1; 
+	char *_filepath = d -> __filePath; 
+	short *_errnum = &(d -> __errnum); 
+	off_t *_sigPos = &(d -> __sigPos); 
+	off_t *_lastNodeLoc = &(d -> __lastNodeLoc); 
+	short *_lock = &(d -> __lock);
+	struct __nodeName__ *__con_pathNode__(const char *);
+	char *__getCon_and_path__(char *);
+	off_t __check_and_pointE__(NDATA *, struct __nodeName__ * , const char *);
+	void __edNum__(char *, short );
+	void __edStr__(char *, short );
+	int __encStr__(int);
+	// get the current name elements and passing into dynamic memory
+	strcpy(_temp, fp);
+	char *__name = __getCon_and_path__(_temp);
+	char *_name = malloc(strlen(__name));
+	strcpy(_name, __name);
+	struct __nodeName__ *__path = (_temp[0] != '\0') ? __con_pathNode__(_temp) : NULL;
+	register int _y, _x;
+	if (!__check_and_pointE__(d , __path, _name))
+	{
+		fseek(_open, *_sigPos, 0);
+		free(_name);
+		*_errnum = EENF;
+		(*env)->ReleaseStringUTFChars(env, fullpath, fp);
+		return;
+	}
+	short _type = getc(_open);
+	short _id = getc(_open);
+	short _en_flags = getc(_open) - '0';
+	if (_type == _ARR_ID_ || _id != STR)
+	{
+		free(_name);
+		*_errnum = EIAT;
+		fseek(_open, *_sigPos, 0);
+		(*env)->ReleaseStringUTFChars(env, fullpath, fp);
+		return;
+	}
+	// convert content into _temp
+	while ((_x = getc(_open)) != _LEN_);
+	off_t _p0 = ftell(_open);
+	_y = 0;
+	while ((_x = getc(_open)) != _C_TUTUP_);
+	off_t _p2 = ftell(_open);
+	
+	const char *val = (data)?(*env) -> GetStringUTFChars(env, data, 0):NULL;
+	char *__ftmp = malloc(strlen(_filepath) + 4);
+	sprintf(__ftmp, "%s.tmp", _filepath);
+	FILE *_op1 = fopen(__ftmp, "w+");
+	fseek(_open, 0, 0);
+	off_t _t = 0;
+	for (; _t < _p0; _t++)
+		putc(getc(_open), _op1);
+	_y = 0;
+	if(val){
+		sprintf(_temp, "%d", strlen(val));
+		for(; _temp[_y] != '\0'; _y++)putc(_temp[_y], _op1);
+	}
+	else putc('0', _op1);
+	putc(_C_BUKA_, _op1);
+	if(val){
+		if(_en_flags){
+			_y = strlen(val) - 1;
+			for(; _y >= 0; _y--)putc(__encStr__(val[_y]), _op1);
+		}
+		else
+			for(_y = 0; val[_y] != '\0'; _y++)putc(val[_y], _op1);
+	}
+	fseek(_open, _p2 - 1, 0);
+	while ((_x = getc(_open)) != -1)
+		putc(_x, _op1);
+	fclose(_open);
+	fclose(_op1);
+	rename(__ftmp, _filepath);
+	(d ->__fop).__op1 = _open = fopen(_filepath, "r+");
+	fseek(_open, *_sigPos, 0);
+	free(__ftmp);
+	free(_name);
+	*_errnum = NE;
 	(*env)->ReleaseStringUTFChars(env, fullpath, fp);
 	(*env)->ReleaseStringUTFChars(env, data, val);
 }
@@ -1396,8 +1850,85 @@ JNIEXPORT void JNICALL Java_com_mylexz_utils_NodeData_setContentData__Ljava_lang
 	if(fullpath == NULL)return;
 	fp = (*env)->GetStringUTFChars(env, fullpath, 0);
 	NDATA *d = __lNcont(__lncurr, __desc);
-	short val = (short) ((data)?TRUE:FALSE);
-	nset_data(d, fp, &val);
+	if(!d){
+		(*env)->ReleaseStringUTFChars(env, fullpath, fp);
+		return;
+	}
+	if(nisLocked(d)){
+		d -> __errnum = EDL;
+		(*env)->ReleaseStringUTFChars(env, fullpath, fp);
+		return;
+	}
+	char *_temp = d -> __temp; 
+	struct __nodeName__ *__lastPath = d -> __lastPath; 
+	FILE *_open = (d -> __fop).__op1; 
+	char *_filepath = d -> __filePath; 
+	short *_errnum = &(d -> __errnum); 
+	off_t *_sigPos = &(d -> __sigPos); 
+	off_t *_lastNodeLoc = &(d -> __lastNodeLoc); 
+	short *_lock = &(d -> __lock);
+	struct __nodeName__ *__con_pathNode__(const char *);
+	char *__getCon_and_path__(char *);
+	off_t __check_and_pointE__(NDATA *, struct __nodeName__ * , const char *);
+	void __edNum__(char *, short );
+	void __edStr__(char *, short );
+	int __encStr__(int);
+	// get the current name elements and passing into dynamic memory
+	strcpy(_temp, fp);
+	char *__name = __getCon_and_path__(_temp);
+	char *_name = malloc(strlen(__name));
+	strcpy(_name, __name);
+	struct __nodeName__ *__path = (_temp[0] != '\0') ? __con_pathNode__(_temp) : NULL;
+	register int _y, _x;
+	if (!__check_and_pointE__(d , __path, _name))
+	{
+		fseek(_open, *_sigPos, 0);
+		free(_name);
+		*_errnum = EENF;
+		(*env)->ReleaseStringUTFChars(env, fullpath, fp);
+		return;
+	}
+	short _type = getc(_open);
+	short _id = getc(_open);
+	short _en_flags = getc(_open) - '0';
+	if (_type == _ARR_ID_ || _id != BOOL)
+	{
+		free(_name);
+		*_errnum = EIAT;
+		fseek(_open, *_sigPos, 0);
+		(*env)->ReleaseStringUTFChars(env, fullpath, fp);
+		return;
+	}
+	// convert content into _temp
+	while ((_x = getc(_open)) != _LEN_);
+	off_t _p0 = ftell(_open);
+	_y = 0;
+	while ((_x = getc(_open)) != _C_TUTUP_);
+	off_t _p2 = ftell(_open);
+	
+	int res = __encNum__((data)?'1':'0');
+	char *__ftmp = malloc(strlen(_filepath) + 4);
+	sprintf(__ftmp, "%s.tmp", _filepath);
+	FILE *_op1 = fopen(__ftmp, "w+");
+	fseek(_open, 0, 0);
+	off_t _t = 0;
+	for (; _t < _p0; _t++)
+		putc(getc(_open), _op1);
+	_y = 0;
+	putc('1', _op1);
+	putc(_C_BUKA_, _op1);
+	putc((char)res, _op1);
+	fseek(_open, _p2 - 1, 0);
+	while ((_x = getc(_open)) != -1)
+		putc(_x, _op1);
+	fclose(_open);
+	fclose(_op1);
+	rename(__ftmp, _filepath);
+	(d ->__fop).__op1 = _open = fopen(_filepath, "r+");
+	fseek(_open, *_sigPos, 0);
+	free(__ftmp);
+	free(_name);
+	*_errnum = NE;
 	(*env)->ReleaseStringUTFChars(env, fullpath, fp);
 }
 
@@ -1408,8 +1939,85 @@ JNIEXPORT void JNICALL Java_com_mylexz_utils_NodeData_setContentData__Ljava_lang
 	if(fullpath == NULL)return;
 	fp = (*env)->GetStringUTFChars(env, fullpath, 0);
 	NDATA *d = __lNcont(__lncurr, __desc);
-	char val = (char) data;
-	nset_data(d, fp, &val);
+	if(!d){
+		(*env)->ReleaseStringUTFChars(env, fullpath, fp);
+		return;
+	}
+	if(nisLocked(d)){
+		d -> __errnum = EDL;
+		(*env)->ReleaseStringUTFChars(env, fullpath, fp);
+		return;
+	}
+	char *_temp = d -> __temp; 
+	struct __nodeName__ *__lastPath = d -> __lastPath; 
+	FILE *_open = (d -> __fop).__op1; 
+	char *_filepath = d -> __filePath; 
+	short *_errnum = &(d -> __errnum); 
+	off_t *_sigPos = &(d -> __sigPos); 
+	off_t *_lastNodeLoc = &(d -> __lastNodeLoc); 
+	short *_lock = &(d -> __lock);
+	struct __nodeName__ *__con_pathNode__(const char *);
+	char *__getCon_and_path__(char *);
+	off_t __check_and_pointE__(NDATA *, struct __nodeName__ * , const char *);
+	void __edNum__(char *, short );
+	void __edStr__(char *, short );
+	int __encStr__(int);
+	// get the current name elements and passing into dynamic memory
+	strcpy(_temp, fp);
+	char *__name = __getCon_and_path__(_temp);
+	char *_name = malloc(strlen(__name));
+	strcpy(_name, __name);
+	struct __nodeName__ *__path = (_temp[0] != '\0') ? __con_pathNode__(_temp) : NULL;
+	register int _y, _x;
+	if (!__check_and_pointE__(d , __path, _name))
+	{
+		fseek(_open, *_sigPos, 0);
+		free(_name);
+		*_errnum = EENF;
+		(*env)->ReleaseStringUTFChars(env, fullpath, fp);
+		return;
+	}
+	short _type = getc(_open);
+	short _id = getc(_open);
+	short _en_flags = getc(_open) - '0';
+	if (_type == _ARR_ID_ || _id != CHR)
+	{
+		free(_name);
+		*_errnum = EIAT;
+		fseek(_open, *_sigPos, 0);
+		(*env)->ReleaseStringUTFChars(env, fullpath, fp);
+		return;
+	}
+	// convert content into _temp
+	while ((_x = getc(_open)) != _LEN_);
+	off_t _p0 = ftell(_open);
+	_y = 0;
+	while ((_x = getc(_open)) != _C_TUTUP_);
+	off_t _p2 = ftell(_open);
+	
+	int res = __encStr__((char)data);
+	char *__ftmp = malloc(strlen(_filepath) + 4);
+	sprintf(__ftmp, "%s.tmp", _filepath);
+	FILE *_op1 = fopen(__ftmp, "w+");
+	fseek(_open, 0, 0);
+	off_t _t = 0;
+	for (; _t < _p0; _t++)
+		putc(getc(_open), _op1);
+	_y = 0;
+	putc('1', _op1);
+	putc(_C_BUKA_, _op1);
+	putc((char)res, _op1);
+	fseek(_open, _p2 - 1, 0);
+	while ((_x = getc(_open)) != -1)
+		putc(_x, _op1);
+	fclose(_open);
+	fclose(_op1);
+	rename(__ftmp, _filepath);
+	(d ->__fop).__op1 = _open = fopen(_filepath, "r+");
+	fseek(_open, *_sigPos, 0);
+	free(__ftmp);
+	free(_name);
+	*_errnum = NE;
 	(*env)->ReleaseStringUTFChars(env, fullpath, fp);
 }
 JNIEXPORT void JNICALL Java_com_mylexz_utils_NodeData_deleteData(JNIEnv *env, jobject thiz, jstring fullpath){
