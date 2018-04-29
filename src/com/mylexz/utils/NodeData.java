@@ -1,28 +1,74 @@
-package com.mylexz.utils;
-import java.util.*;
-import android.content.*;
-import java.io.*;
-import javax.crypto.EncryptedPrivateKeyInfo;
+/********************** NodeData.java **********************/
+/*
+ * Copyright (C) 2018 by Alexzander Purwoko Widiantoro
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *      http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ *
+ * Redistribution and use in source and binary forms, with or without
+ * modification, are permitted provided that the following conditions
+ * are met:
+ * 1. Redistributions of source code must retain the above copyright
+ *    notice, this list of conditions and the following disclaimer.
+ * 2. Redistributions in binary form must reproduce the above copyright
+ *    notice, this list of conditions and the following disclaimer in the
+ *    documentation and/or other materials provided with the distribution.
+ * 3. Neither the name of the University nor the names of its contributors
+ *    may be used to endorse or promote products derived from this software
+ *    without specific prior written permission.
+ *
+ * THIS SOFTWARE IS PROVIDED BY THE REGENTS AND CONTRIBUTORS ``AS IS'' AND
+ * ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
+ * IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE
+ * ARE DISCLAIMED.  IN NO EVENT SHALL THE REGENTS OR CONTRIBUTORS BE LIABLE
+ * FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL
+ * DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS
+ * OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION)
+ * HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT
+ * LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY
+ * OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
+ * SUCH DAMAGE.
+ */
+package com.mylexz.utils; // Current package
+import java.util.*; // for including Array List Class
+import android.content.*; // for including Context class
+import java.io.*; // for including File operation class
 
 public class NodeData
 {	
+	/*****
+		* This class is include any several function into managing your data(String, Integer, Boolean, Character, Long, Double)
+		* The operation is similar to NodeData.c that included from MyLEXZ-Cutils repository, because the method is implemented from this.
+		* But, for fixing any memory management problems, I should move method from parent general methods into child method(JNI Method) for
+		* directly operate and save the memory.
+		* Don't worry about the memory, this class is useless memory, because only reclaime 1K - 1.5K memory for buffer.
+	*****/
+	// for Loading Libraries
 	static {
 		System.loadLibrary("mNDATA");
 	}
+	// Used as second parameters on listContents(), for filtering a list of content in a node
 	public static enum Filter {
-		NODE_ONLY,
-		ARRAY_ONLY,
-		DATA_ONLY,
-		ARRAY_AND_DATA,
-		ARRAY_AND_NODE,
-		DATA_AND_NODE,
-		NO_FILTERS
-		
-		
+		NODE_ONLY, // Only shows a list of 'node' names in a node elements
+		ARRAY_ONLY, // Only shows a list of 'array' names in a node element
+		DATA_ONLY, // Only shows a list of 'data' names in a node element
+		ARRAY_AND_DATA, // Shows a list of 'array' and 'data' names in a node element
+		ARRAY_AND_NODE, // Shows a list of 'array' and 'node' names in a node element
+		DATA_AND_NODE, // Shows a list of 'data' and 'node' names in a node element
+		NO_FILTERS // Shows a full list with no filters in a node element
 	}
-	private int __id = -1;
-	private String __filepath = "";
-	private String __signature = "";
+	private int __id = -1; // for a current class position, this field is only used as native, indicate -1 for non-initialized class
+	private String __filepath = ""; // for store the current filepath to the file
+	private String __signature = ""; // signature, define its own file, security checking
 	private String s_tmp = "";
 	private int type = 0;
 	private List<String> mlist;
@@ -38,8 +84,8 @@ public class NodeData
 	public static final int ID_NODE = '(';
 	public static final int ID_ARRAY = '>';
 	public static final int ID_DATA = '<';
-	public static final int MODE_PRIVATE 	= 0x000001;
-	public static final int MODE_PUBLIC 	= 0x000010;
+	public static final int MODE_PRIVATE 	= 0x000001; // MODE_PRIVATE, The Data file is placed on internal storage
+	public static final int MODE_PUBLIC 	= 0x000010; // MODE_PUBLIC, The Data file is placed on External mountable storage
 	public NodeData(Context c, String nameFile, String signature, int mode){
 		File path;
 		String fpath = null;
@@ -68,7 +114,6 @@ public class NodeData
 		__signature = DEFAULT_SIGNATURE;
 		mlist = mTemp = new ArrayList<String>();
 	}
-	// const char *nameFile, const char *signature
 	public native void open();
 	public native int close();
 	public native void addNode(String path, String node_name);
