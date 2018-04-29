@@ -2071,19 +2071,543 @@ JNIEXPORT void JNICALL Java_com_mylexz_utils_NodeData_addIntArray(JNIEnv *env, j
 	else dt = (*env)->GetStringUTFChars(env, path, 0);
 	elm = (*env)->GetStringUTFChars(env, name, 0);
 	NDATA *d = __lNcont(__lncurr, __desc);
-	if(data){
-		jsize len = (*env)->GetArrayLength(env, data);
-		jint *a = (*env)->GetIntArrayElements(env, data, 0);
-		nadd_arr(d, dt, elm, INT, a, len, ((encrypt_flags)?1:0));
+	jsize size = ((data)? (*env)->GetArrayLength(env, data): 0);
+	if(!d){
+		if(dt) (*env)->ReleaseStringUTFChars(env, path, dt);
+		(*env)->ReleaseStringUTFChars(env, name, elm);
+		return;
+	}
+	if(nisLocked(d)){
+		d -> __errnum = EDL;
+		if(dt) (*env)->ReleaseStringUTFChars(env, path, dt);
+		(*env)->ReleaseStringUTFChars(env, name, elm);
+		return;
+	}
+	char *_temp = d -> __temp; 
+	struct __nodeName__ *__lastPath = d -> __lastPath; 
+	FILE *_open = (d -> __fop).__op1; 
+	char *_filepath = d -> __filePath; 
+	short *_errnum = &(d -> __errnum); 
+	off_t *_sigPos = &(d -> __sigPos); 
+	off_t *_lastNodeLoc = &(d -> __lastNodeLoc); 
+	short *_lock = &(d -> __lock);
+	struct __nodeName__ *__con_pathNode__(const char *);
+	off_t __check_and_pointE__(NDATA *, struct __nodeName__ * , const char *);
+	void __edStr__(char *, short );
+	int __encStr__(int);
+	void __edNum__(char *, short );
+	struct __nodeName__ *__path = (dt)?__con_pathNode__(dt):NULL;
+	if(__check_and_pointE__(d, __path, elm)){
+		fseek(_open, *_sigPos, 0);
+		*_errnum = EEEx;
+		if(dt) (*env)->ReleaseStringUTFChars(env, path, dt);
+		(*env)->ReleaseStringUTFChars(env, name, elm);
+		return;
+	}
+	strcpy(_temp, elm);
+	__edStr__(_temp, ENC);
+	register int z, _y, x;
+	off_t offset = ftell(_open);
+	if (!dt)
+	{
+		fprintf(_open, "%c%c%d%s%c%d%c", _ARR_ID_, INT, encrypt_flags, _temp, _LEN_, size, _C_BUKA_);
+		jint *a = NULL;
+		if(data) a = (*env)->GetIntArrayElements(env, data, 0);
+		for (x = 0; x < size; x++)
+		{
+			sprintf(_temp, "%d", ((int) a[x]));
+			if (encrypt_flags)__edNum__(_temp, ENC);
+			for (_y = 0; _temp[_y] != '\0'; _y++)
+				putc(_temp[_y], _open);
+			if (x != size - 1) putc(_ARR_SEP_, _open);
+		}
+		putc(_C_TUTUP_, _open);
 		(*env)->ReleaseIntArrayElements(env, data, a, 0);
 	}
-	else 
-		nadd_arr(d, dt, elm, INT, NULL, 0, ((encrypt_flags)?1:0));
+	else
+	{
+		char *__tpath = malloc(strlen(_filepath) + 4);
+		sprintf(__tpath, "%s.tmp", _filepath);
+		FILE *_op1 = fopen(__tpath, "w+");
+		fseek(_open, 0, 0);
+		off_t t = 0;
+		for (; t < offset; t++)
+			putc(getc(_open), _op1);
+		// the header
+		putc(_ARR_ID_, _op1);
+		putc(INT, _op1);
+		putc(((encrypt_flags)?'1' : '0'), _op1);
+		_y = 0;
+		for (; _temp[_y] != '\0'; _y++)
+			putc(_temp[_y], _op1);
+		putc(_LEN_, _op1);
+		sprintf(_temp, "%d", size);
+		for (_y = 0; _temp[_y] != '\0'; _y++)
+			putc(_temp[_y], _op1);
+		putc(_C_BUKA_, _op1);
+		jint *a = NULL;
+		if(data) a = (*env)->GetIntArrayElements(env, data, 0);
+		for (x = 0; x < size; x++)
+		{
+			sprintf(_temp, "%d", ((int) a[x]));
+			if (encrypt_flags)__edNum__(_temp, ENC);
+			for (_y = 0; _temp[_y] != '\0'; _y++)
+				putc(_temp[_y], _op1);
+			if (x != size - 1) putc(_ARR_SEP_, _op1);
+		}
+		putc(_C_TUTUP_, _op1);
+		while ((_y = getc(_open)) != -1)
+			putc(_y, _op1);
+		fclose(_op1);
+		fclose(_open);
+		rename(__tpath, _filepath);
+		(d ->__fop).__op1 = _open = fopen(_filepath, "r+");
+		free(__tpath);
+		if(a) (*env)->ReleaseIntArrayElements(env, data, a, 0);
+	}
+	fseek(_open, *_sigPos, 0);
+	*_errnum = NE;
 	if(dt) (*env)->ReleaseStringUTFChars(env, path, dt);
 	(*env)->ReleaseStringUTFChars(env, name, elm);
 
 }
+JNIEXPORT void JNICALL Java_com_mylexz_utils_NodeData_addCharArray(JNIEnv *env, jobject thiz, jstring path, jstring name, jcharArray data, jboolean encrypt_flags){
+	jint __desc = __getNDesc(env, thiz);
+	if(__desc == -1)return;
+	const char *elm;
+	const char *dt;
+	if(name == NULL)return;
+	if(path == NULL) dt = NULL;
+	else dt = (*env)->GetStringUTFChars(env, path, 0);
+	elm = (*env)->GetStringUTFChars(env, name, 0);
+	NDATA *d = __lNcont(__lncurr, __desc);
+	jsize size = ((data)? (*env)->GetArrayLength(env, data): 0);
+	if(!d){
+		if(dt) (*env)->ReleaseStringUTFChars(env, path, dt);
+		(*env)->ReleaseStringUTFChars(env, name, elm);
+		return;
+	}
+	if(nisLocked(d)){
+		d -> __errnum = EDL;
+		if(dt) (*env)->ReleaseStringUTFChars(env, path, dt);
+		(*env)->ReleaseStringUTFChars(env, name, elm);
+		return;
+	}
+	char *_temp = d -> __temp; 
+	struct __nodeName__ *__lastPath = d -> __lastPath; 
+	FILE *_open = (d -> __fop).__op1; 
+	char *_filepath = d -> __filePath; 
+	short *_errnum = &(d -> __errnum); 
+	off_t *_sigPos = &(d -> __sigPos); 
+	off_t *_lastNodeLoc = &(d -> __lastNodeLoc); 
+	short *_lock = &(d -> __lock);
+	struct __nodeName__ *__con_pathNode__(const char *);
+	off_t __check_and_pointE__(NDATA *, struct __nodeName__ * , const char *);
+	void __edStr__(char *, short );
+	int __encStr__(int);
+	int __encNum__(int);
+	void __edNum__(char *, short );
+	struct __nodeName__ *__path = (dt)?__con_pathNode__(dt):NULL;
+	if(__check_and_pointE__(d, __path, elm)){
+		fseek(_open, *_sigPos, 0);
+		*_errnum = EEEx;
+		if(dt) (*env)->ReleaseStringUTFChars(env, path, dt);
+		(*env)->ReleaseStringUTFChars(env, name, elm);
+		return;
+	}
+	strcpy(_temp, elm);
+	__edStr__(_temp, ENC);
+	register int z, _y, x;
+	off_t offset = ftell(_open);
+	if (!dt)
+	{
+		fprintf(_open, "%c%c%d%s%c%d%c", _ARR_ID_, CHR, encrypt_flags, _temp, _LEN_, size, _C_BUKA_);
+		jchar *a = NULL;
+		if(data) a = (*env)->GetCharArrayElements(env, data, 0);
+		int nbl;
+		for (x = 0; x < size; x++)
+		{
+			nbl = (encrypt_flags)? __encStr__((char)a[x]):(char)a[x];
+			putc((char)nbl, _open);
+			if (x != size - 1) putc(_ARR_SEP_, _open);
+		}
+		putc(_C_TUTUP_, _open);
+		(*env)->ReleaseCharArrayElements(env, data, a, 0);
+	}
+	else
+	{
+		char *__tpath = malloc(strlen(_filepath) + 4);
+		sprintf(__tpath, "%s.tmp", _filepath);
+		FILE *_op1 = fopen(__tpath, "w+");
+		fseek(_open, 0, 0);
+		off_t t = 0;
+		for (; t < offset; t++)
+			putc(getc(_open), _op1);
+		// the header
+		putc(_ARR_ID_, _op1);
+		putc(CHR, _op1);
+		putc(((encrypt_flags)?'1' : '0'), _op1);
+		_y = 0;
+		for (; _temp[_y] != '\0'; _y++)
+			putc(_temp[_y], _op1);
+		putc(_LEN_, _op1);
+		sprintf(_temp, "%d", size);
+		for (_y = 0; _temp[_y] != '\0'; _y++)
+			putc(_temp[_y], _op1);
+		putc(_C_BUKA_, _op1);
+		jchar *a = NULL;
+		if(data) a = (*env)->GetCharArrayElements(env, data, 0);
+		int nbl;
+		for (x = 0; x < size; x++)
+		{
+			nbl = (encrypt_flags)? __encStr__((char)(a[x])):(char)a[x];
+			putc((char)nbl, _op1);
+			if (x != size - 1) putc(_ARR_SEP_, _op1);
+		}
+		putc(_C_TUTUP_, _op1);
+		while ((_y = getc(_open)) != -1)
+			putc(_y, _op1);
+		fclose(_op1);
+		fclose(_open);
+		rename(__tpath, _filepath);
+		(d ->__fop).__op1 = _open = fopen(_filepath, "r+");
+		free(__tpath);
+		if(a) (*env)->ReleaseCharArrayElements(env, data, a, 0);
+	}
+	fseek(_open, *_sigPos, 0);
+	*_errnum = NE;
+	if(dt) (*env)->ReleaseStringUTFChars(env, path, dt);
+	(*env)->ReleaseStringUTFChars(env, name, elm);
+}
 
+JNIEXPORT void JNICALL Java_com_mylexz_utils_NodeData_addDoubleArray(JNIEnv *env, jobject thiz, jstring path, jstring name, jdoubleArray data, jboolean encrypt_flags){
+	jint __desc = __getNDesc(env, thiz);
+	if(__desc == -1)return;
+	const char *elm;
+	const char *dt;
+	if(name == NULL)return;
+	if(path == NULL) dt = NULL;
+	else dt = (*env)->GetStringUTFChars(env, path, 0);
+	elm = (*env)->GetStringUTFChars(env, name, 0);
+	NDATA *d = __lNcont(__lncurr, __desc);
+	jsize size = ((data)? (*env)->GetArrayLength(env, data): 0);
+	if(!d){
+		if(dt) (*env)->ReleaseStringUTFChars(env, path, dt);
+		(*env)->ReleaseStringUTFChars(env, name, elm);
+		return;
+	}
+	if(nisLocked(d)){
+		d -> __errnum = EDL;
+		if(dt) (*env)->ReleaseStringUTFChars(env, path, dt);
+		(*env)->ReleaseStringUTFChars(env, name, elm);
+		return;
+	}
+	char *_temp = d -> __temp; 
+	struct __nodeName__ *__lastPath = d -> __lastPath; 
+	FILE *_open = (d -> __fop).__op1; 
+	char *_filepath = d -> __filePath; 
+	short *_errnum = &(d -> __errnum); 
+	off_t *_sigPos = &(d -> __sigPos); 
+	off_t *_lastNodeLoc = &(d -> __lastNodeLoc); 
+	short *_lock = &(d -> __lock);
+	struct __nodeName__ *__con_pathNode__(const char *);
+	off_t __check_and_pointE__(NDATA *, struct __nodeName__ * , const char *);
+	void __edStr__(char *, short );
+	int __encStr__(int);
+	void __edNum__(char *, short );
+	struct __nodeName__ *__path = (dt)?__con_pathNode__(dt):NULL;
+	if(__check_and_pointE__(d, __path, elm)){
+		fseek(_open, *_sigPos, 0);
+		*_errnum = EEEx;
+		if(dt) (*env)->ReleaseStringUTFChars(env, path, dt);
+		(*env)->ReleaseStringUTFChars(env, name, elm);
+		return;
+	}
+	strcpy(_temp, elm);
+	__edStr__(_temp, ENC);
+	register int z, _y, x;
+	off_t offset = ftell(_open);
+	if (!dt)
+	{
+		fprintf(_open, "%c%c%d%s%c%d%c", _ARR_ID_, DOUBLE, encrypt_flags, _temp, _LEN_, size, _C_BUKA_);
+		jdouble *a = NULL;
+		if(data) a = (*env)->GetDoubleArrayElements(env, data, 0);
+		for (x = 0; x < size; x++)
+		{
+			sprintf(_temp, "%llf", (double)a[x]);
+			if (encrypt_flags)__edNum__(_temp, ENC);
+			for (_y = 0; _temp[_y] != '\0'; _y++)
+				putc(_temp[_y], _open);
+			if (x != size - 1) putc(_ARR_SEP_, _open);
+		}
+		putc(_C_TUTUP_, _open);
+		(*env)->ReleaseDoubleArrayElements(env, data, a, 0);
+	}
+	else
+	{
+		char *__tpath = malloc(strlen(_filepath) + 4);
+		sprintf(__tpath, "%s.tmp", _filepath);
+		FILE *_op1 = fopen(__tpath, "w+");
+		fseek(_open, 0, 0);
+		off_t t = 0;
+		for (; t < offset; t++)
+			putc(getc(_open), _op1);
+		// the header
+		putc(_ARR_ID_, _op1);
+		putc(DOUBLE, _op1);
+		putc(((encrypt_flags)?'1' : '0'), _op1);
+		_y = 0;
+		for (; _temp[_y] != '\0'; _y++)
+			putc(_temp[_y], _op1);
+		putc(_LEN_, _op1);
+		sprintf(_temp, "%d", size);
+		for (_y = 0; _temp[_y] != '\0'; _y++)
+			putc(_temp[_y], _op1);
+		putc(_C_BUKA_, _op1);
+		jdouble *a = NULL;
+		if(data) a = (*env)->GetDoubleArrayElements(env, data, 0);
+		for (x = 0; x < size; x++)
+		{
+			sprintf(_temp, "%llf", (double)a[x]);
+			if (encrypt_flags)__edNum__(_temp, ENC);
+			for (_y = 0; _temp[_y] != '\0'; _y++)
+				putc(_temp[_y], _op1);
+			if (x != size - 1) putc(_ARR_SEP_, _op1);
+		}
+		putc(_C_TUTUP_, _op1);
+		while ((_y = getc(_open)) != -1)
+			putc(_y, _op1);
+		fclose(_op1);
+		fclose(_open);
+		rename(__tpath, _filepath);
+		(d ->__fop).__op1 = _open = fopen(_filepath, "r+");
+		free(__tpath);
+		if(a) (*env)->ReleaseDoubleArrayElements(env, data, a, 0);
+	}
+	fseek(_open, *_sigPos, 0);
+	*_errnum = NE;
+	if(dt) (*env)->ReleaseStringUTFChars(env, path, dt);
+	(*env)->ReleaseStringUTFChars(env, name, elm);
+}
+
+JNIEXPORT void JNICALL Java_com_mylexz_utils_NodeData_addLongArray(JNIEnv *env, jobject thiz, jstring path, jstring name, jlongArray data, jboolean encrypt_flags){
+	jint __desc = __getNDesc(env, thiz);
+	if(__desc == -1)return;
+	const char *elm;
+	const char *dt;
+	if(name == NULL)return;
+	if(path == NULL) dt = NULL;
+	else dt = (*env)->GetStringUTFChars(env, path, 0);
+	elm = (*env)->GetStringUTFChars(env, name, 0);
+	NDATA *d = __lNcont(__lncurr, __desc);
+	jsize size = ((data)? (*env)->GetArrayLength(env, data): 0);
+	if(!d){
+		if(dt) (*env)->ReleaseStringUTFChars(env, path, dt);
+		(*env)->ReleaseStringUTFChars(env, name, elm);
+		return;
+	}
+	if(nisLocked(d)){
+		d -> __errnum = EDL;
+		if(dt) (*env)->ReleaseStringUTFChars(env, path, dt);
+		(*env)->ReleaseStringUTFChars(env, name, elm);
+		return;
+	}
+	char *_temp = d -> __temp; 
+	struct __nodeName__ *__lastPath = d -> __lastPath; 
+	FILE *_open = (d -> __fop).__op1; 
+	char *_filepath = d -> __filePath; 
+	short *_errnum = &(d -> __errnum); 
+	off_t *_sigPos = &(d -> __sigPos); 
+	off_t *_lastNodeLoc = &(d -> __lastNodeLoc); 
+	short *_lock = &(d -> __lock);
+	struct __nodeName__ *__con_pathNode__(const char *);
+	off_t __check_and_pointE__(NDATA *, struct __nodeName__ * , const char *);
+	void __edStr__(char *, short );
+	int __encStr__(int);
+	void __edNum__(char *, short );
+	struct __nodeName__ *__path = (dt)?__con_pathNode__(dt):NULL;
+	if(__check_and_pointE__(d, __path, elm)){
+		fseek(_open, *_sigPos, 0);
+		*_errnum = EEEx;
+		if(dt) (*env)->ReleaseStringUTFChars(env, path, dt);
+		(*env)->ReleaseStringUTFChars(env, name, elm);
+		return;
+	}
+	strcpy(_temp, elm);
+	__edStr__(_temp, ENC);
+	register int z, _y, x;
+	off_t offset = ftell(_open);
+	if (!dt)
+	{
+		fprintf(_open, "%c%c%d%s%c%d%c", _ARR_ID_, LONG, encrypt_flags, _temp, _LEN_, size, _C_BUKA_);
+		jlong *a = NULL;
+		if(data) a = (*env)->GetLongArrayElements(env, data, 0);
+		for (x = 0; x < size; x++)
+		{
+			sprintf(_temp, "%lld", ((long long) a[x]));
+			if (encrypt_flags)__edNum__(_temp, ENC);
+			for (_y = 0; _temp[_y] != '\0'; _y++)
+				putc(_temp[_y], _open);
+			if (x != size - 1) putc(_ARR_SEP_, _open);
+		}
+		putc(_C_TUTUP_, _open);
+		(*env)->ReleaseLongArrayElements(env, data, a, 0);
+	}
+	else
+	{
+		char *__tpath = malloc(strlen(_filepath) + 4);
+		sprintf(__tpath, "%s.tmp", _filepath);
+		FILE *_op1 = fopen(__tpath, "w+");
+		fseek(_open, 0, 0);
+		off_t t = 0;
+		for (; t < offset; t++)
+			putc(getc(_open), _op1);
+		// the header
+		putc(_ARR_ID_, _op1);
+		putc(LONG, _op1);
+		putc(((encrypt_flags)?'1' : '0'), _op1);
+		_y = 0;
+		for (; _temp[_y] != '\0'; _y++)
+			putc(_temp[_y], _op1);
+		putc(_LEN_, _op1);
+		sprintf(_temp, "%d", size);
+		for (_y = 0; _temp[_y] != '\0'; _y++)
+			putc(_temp[_y], _op1);
+		putc(_C_BUKA_, _op1);
+		jlong *a = NULL;
+		if(data) a = (*env)->GetLongArrayElements(env, data, 0);
+		for (x = 0; x < size; x++)
+		{
+			sprintf(_temp, "%lld", ((long long) a[x]));
+			if (encrypt_flags)__edNum__(_temp, ENC);
+			for (_y = 0; _temp[_y] != '\0'; _y++)
+				putc(_temp[_y], _op1);
+			if (x != size - 1) putc(_ARR_SEP_, _op1);
+		}
+		putc(_C_TUTUP_, _op1);
+		while ((_y = getc(_open)) != -1)
+			putc(_y, _op1);
+		fclose(_op1);
+		fclose(_open);
+		rename(__tpath, _filepath);
+		(d ->__fop).__op1 = _open = fopen(_filepath, "r+");
+		free(__tpath);
+		if(a) (*env)->ReleaseLongArrayElements(env, data, a, 0);
+	}
+	fseek(_open, *_sigPos, 0);
+	*_errnum = NE;
+	if(dt) (*env)->ReleaseStringUTFChars(env, path, dt);
+	(*env)->ReleaseStringUTFChars(env, name, elm);
+}
+
+JNIEXPORT void JNICALL Java_com_mylexz_utils_NodeData_addBooleanArray(JNIEnv *env, jobject thiz, jstring path, jstring name, jbooleanArray data, jboolean encrypt_flags){
+	jint __desc = __getNDesc(env, thiz);
+	if(__desc == -1)return;
+	const char *elm;
+	const char *dt;
+	if(name == NULL)return;
+	if(path == NULL) dt = NULL;
+	else dt = (*env)->GetStringUTFChars(env, path, 0);
+	elm = (*env)->GetStringUTFChars(env, name, 0);
+	NDATA *d = __lNcont(__lncurr, __desc);
+	jsize size = ((data)? (*env)->GetArrayLength(env, data): 0);
+	if(!d){
+		if(dt) (*env)->ReleaseStringUTFChars(env, path, dt);
+		(*env)->ReleaseStringUTFChars(env, name, elm);
+		return;
+	}
+	if(nisLocked(d)){
+		d -> __errnum = EDL;
+		if(dt) (*env)->ReleaseStringUTFChars(env, path, dt);
+		(*env)->ReleaseStringUTFChars(env, name, elm);
+		return;
+	}
+	char *_temp = d -> __temp; 
+	struct __nodeName__ *__lastPath = d -> __lastPath; 
+	FILE *_open = (d -> __fop).__op1; 
+	char *_filepath = d -> __filePath; 
+	short *_errnum = &(d -> __errnum); 
+	off_t *_sigPos = &(d -> __sigPos); 
+	off_t *_lastNodeLoc = &(d -> __lastNodeLoc); 
+	short *_lock = &(d -> __lock);
+	struct __nodeName__ *__con_pathNode__(const char *);
+	off_t __check_and_pointE__(NDATA *, struct __nodeName__ * , const char *);
+	void __edStr__(char *, short );
+	int __encStr__(int);
+	int __encNum__(int);
+	void __edNum__(char *, short );
+	struct __nodeName__ *__path = (dt)?__con_pathNode__(dt):NULL;
+	if(__check_and_pointE__(d, __path, elm)){
+		fseek(_open, *_sigPos, 0);
+		*_errnum = EEEx;
+		if(dt) (*env)->ReleaseStringUTFChars(env, path, dt);
+		(*env)->ReleaseStringUTFChars(env, name, elm);
+		return;
+	}
+	strcpy(_temp, elm);
+	__edStr__(_temp, ENC);
+	register int z, _y, x;
+	off_t offset = ftell(_open);
+	if (!dt)
+	{
+		fprintf(_open, "%c%c%d%s%c%d%c", _ARR_ID_, BOOL, encrypt_flags, _temp, _LEN_, size, _C_BUKA_);
+		jboolean *a = NULL;
+		if(data) a = (*env)->GetBooleanArrayElements(env, data, 0);
+		int nbl;
+		for (x = 0; x < size; x++)
+		{
+			nbl = (encrypt_flags)? __encNum__((a[x])?'1':'0'):(a[x])?'1':'0';
+			putc((char)nbl, _open);
+			if (x != size - 1) putc(_ARR_SEP_, _open);
+		}
+		putc(_C_TUTUP_, _open);
+		(*env)->ReleaseBooleanArrayElements(env, data, a, 0);
+	}
+	else
+	{
+		char *__tpath = malloc(strlen(_filepath) + 4);
+		sprintf(__tpath, "%s.tmp", _filepath);
+		FILE *_op1 = fopen(__tpath, "w+");
+		fseek(_open, 0, 0);
+		off_t t = 0;
+		for (; t < offset; t++)
+			putc(getc(_open), _op1);
+		// the header
+		putc(_ARR_ID_, _op1);
+		putc(BOOL, _op1);
+		putc(((encrypt_flags)?'1' : '0'), _op1);
+		_y = 0;
+		for (; _temp[_y] != '\0'; _y++)
+			putc(_temp[_y], _op1);
+		putc(_LEN_, _op1);
+		sprintf(_temp, "%d", size);
+		for (_y = 0; _temp[_y] != '\0'; _y++)
+			putc(_temp[_y], _op1);
+		putc(_C_BUKA_, _op1);
+		jboolean *a = NULL;
+		if(data) a = (*env)->GetBooleanArrayElements(env, data, 0);
+		int nbl;
+		for (x = 0; x < size; x++)
+		{
+			nbl = (encrypt_flags)? __encNum__((a[x])?'1':'0'):(a[x])?'1':'0';
+			putc((char)nbl, _op1);
+			if (x != size - 1) putc(_ARR_SEP_, _op1);
+		}
+		putc(_C_TUTUP_, _op1);
+		while ((_y = getc(_open)) != -1)
+			putc(_y, _op1);
+		fclose(_op1);
+		fclose(_open);
+		rename(__tpath, _filepath);
+		(d ->__fop).__op1 = _open = fopen(_filepath, "r+");
+		free(__tpath);
+		if(a) (*env)->ReleaseIntArrayElements(env, data, a, 0);
+	}
+	fseek(_open, *_sigPos, 0);
+	*_errnum = NE;
+	if(dt) (*env)->ReleaseStringUTFChars(env, path, dt);
+	(*env)->ReleaseStringUTFChars(env, name, elm);
+}
 JNIEXPORT void JNICALL Java_com_mylexz_utils_NodeData_addStringArray(JNIEnv *env, jobject thiz, jstring path, jstring name, jobjectArray data, jboolean encrypt_flags){
 	jint __desc = __getNDesc(env, thiz);
 	if(__desc == -1)return;
@@ -2096,8 +2620,17 @@ JNIEXPORT void JNICALL Java_com_mylexz_utils_NodeData_addStringArray(JNIEnv *env
 	NDATA *d = __lNcont(__lncurr, __desc);
 	
 	jsize size = ((data)? (*env)->GetArrayLength(env, data): 0);
-	if(!d)return;
-	if(nisLocked(d)){d -> __errnum = EDL;return;}
+	if(!d){
+		if(dt) (*env)->ReleaseStringUTFChars(env, path, dt);
+		(*env)->ReleaseStringUTFChars(env, name, elm);
+		return;
+	}
+	if(nisLocked(d)){
+		d -> __errnum = EDL;
+		if(dt) (*env)->ReleaseStringUTFChars(env, path, dt);
+		(*env)->ReleaseStringUTFChars(env, name, elm);
+		return;
+	}
 	char *_temp = d -> __temp; 
 	struct __nodeName__ *__lastPath = d -> __lastPath; 
 	FILE *_open = (d -> __fop).__op1; 
@@ -2116,6 +2649,8 @@ JNIEXPORT void JNICALL Java_com_mylexz_utils_NodeData_addStringArray(JNIEnv *env
 	if(__check_and_pointE__(d, __path, elm)){
 		fseek(_open, *_sigPos, 0);
 		*_errnum = EEEx;
+		if(dt) (*env)->ReleaseStringUTFChars(env, path, dt);
+		(*env)->ReleaseStringUTFChars(env, name, elm);
 		return;
 	}
 	strcpy(_temp, elm);
@@ -2196,12 +2731,16 @@ JNIEXPORT void JNICALL Java_com_mylexz_utils_NodeData_addStringArray(JNIEnv *env
 		for(_y = 0; _y < size; _y++){
 			jstr = (jstring) (*env) -> GetObjectArrayElement(env, data, _y);
 			_cstr = (*env) -> GetStringUTFChars(env, jstr, 0);
-			z = strlen(_cstr) - 1;
-			while(z >= 0){
-				x = __encStr__(_cstr[z]);
-				putc(x, _op1);
-				z--;
+			if(encrypt_flags){
+				z = strlen(_cstr) - 1;
+				while(z >= 0){
+					x = __encStr__(_cstr[z]);
+					putc(x, _op1);
+					z--;
+				}
 			}
+			else 
+				for(z = 0; (x = _cstr[z]) != '\0'; z++) putc(x, _op1);
 			(*env) -> ReleaseStringUTFChars(env, jstr, _cstr);
 			if(_y+1 != size)putc(_ARR_SEP_, _op1);
 		}
@@ -2216,107 +2755,7 @@ JNIEXPORT void JNICALL Java_com_mylexz_utils_NodeData_addStringArray(JNIEnv *env
 	(*env)->ReleaseStringUTFChars(env, name, elm);
 }
 
-JNIEXPORT void JNICALL Java_com_mylexz_utils_NodeData_addCharArray(JNIEnv *env, jobject thiz, jstring path, jstring name, jcharArray data, jboolean encrypt_flags){
-	jint __desc = __getNDesc(env, thiz);
-	if(__desc == -1)return;
-	const char *elm;
-	const char *dt;
-	if(name == NULL)return;
-	if(path == NULL) dt = NULL;
-	else dt = (*env)->GetStringUTFChars(env, path, 0);
-	elm = (*env)->GetStringUTFChars(env, name, 0);
-	NDATA *d = __lNcont(__lncurr, __desc);
-	if(data){
-		jsize len = (*env)->GetArrayLength(env, data);
-		jchar *a = (*env)->GetCharArrayElements(env, data, 0);
-		char elmn[len];
-		jint x = 0;
-		for(; x < len; x++)
-			elmn[x] = (char) a[x];
-		elmn[x] = '\0';
-		nadd_arr(d, dt, elm, CHR, (void *) elmn, len, ((encrypt_flags)?1:0));
-		(*env)->ReleaseCharArrayElements(env, data, a, 0);
-	}
-	else 
-		nadd_arr(d, dt, elm, CHR, NULL, 0, ((encrypt_flags)?1:0));
-	if(dt) (*env)->ReleaseStringUTFChars(env, path, dt);
-	(*env)->ReleaseStringUTFChars(env, name, elm);
-}
 
-JNIEXPORT void JNICALL Java_com_mylexz_utils_NodeData_addDoubleArray(JNIEnv *env, jobject thiz, jstring path, jstring name, jdoubleArray data, jboolean encrypt_flags){
-	jint __desc = __getNDesc(env, thiz);
-	if(__desc == -1)return;
-	const char *elm;
-	const char *dt;
-	if(name == NULL)return;
-	if(path == NULL) dt = NULL;
-	else dt = (*env)->GetStringUTFChars(env, path, 0);
-	elm = (*env)->GetStringUTFChars(env, name, 0);
-	NDATA *d = __lNcont(__lncurr, __desc);
-	if(data){
-		jsize len = (*env)->GetArrayLength(env, data);
-		jdouble *a = (*env)->GetDoubleArrayElements(env, data, 0);
-		nadd_arr(d, dt, elm, DOUBLE, a, len, ((encrypt_flags)?1:0));
-		(*env)->ReleaseDoubleArrayElements(env, data, a, 0);
-	}
-	else 
-		nadd_arr(d, dt, elm, DOUBLE, NULL, 0, ((encrypt_flags)?1:0));
-		
-	if(dt) (*env)->ReleaseStringUTFChars(env, path, dt);
-	(*env)->ReleaseStringUTFChars(env, name, elm);
-}
-
-JNIEXPORT void JNICALL Java_com_mylexz_utils_NodeData_addLongArray(JNIEnv *env, jobject thiz, jstring path, jstring name, jlongArray data, jboolean encrypt_flags){
-	jint __desc = __getNDesc(env, thiz);
-	if(__desc == -1)return;
-	const char *elm;
-	const char *dt;
-	if(name == NULL)return;
-	if(path == NULL) dt = NULL;
-	else dt = (*env)->GetStringUTFChars(env, path, 0);
-	elm = (*env)->GetStringUTFChars(env, name, 0);
-	NDATA *d = __lNcont(__lncurr, __desc);
-	if(data){
-		jsize len = (*env)->GetArrayLength(env, data);
-		jlong *a = (*env)->GetLongArrayElements(env, data, 0);
-		long long int sss[len];
-		jint x;
-		for(x = 0; x < len; x++)
-			sss[x] = (long long int) a[x];
-		nadd_arr(d, dt, elm, LONG, sss, len, ((encrypt_flags)?1:0));
-		(*env)->ReleaseLongArrayElements(env, data, a, 0);
-	}
-	else
-		nadd_arr(d, dt, elm, LONG, NULL, 0, ((encrypt_flags)?1:0));
-	if(dt) (*env)->ReleaseStringUTFChars(env, path, dt);
-	(*env)->ReleaseStringUTFChars(env, name, elm);
-}
-
-JNIEXPORT void JNICALL Java_com_mylexz_utils_NodeData_addBooleanArray(JNIEnv *env, jobject thiz, jstring path, jstring name, jbooleanArray data, jboolean encrypt_flags){
-	jint __desc = __getNDesc(env, thiz);
-	if(__desc == -1)return;
-	const char *elm;
-	const char *dt;
-	if(name == NULL)return;
-	if(path == NULL) dt = NULL;
-	else dt = (*env)->GetStringUTFChars(env, path, 0);
-	elm = (*env)->GetStringUTFChars(env, name, 0);
-	NDATA *d = __lNcont(__lncurr, __desc);
-	if(data){
-		jsize len = (*env)->GetArrayLength(env, data);
-		jboolean *a = (*env)->GetBooleanArrayElements(env, data, 0);
-		jint i;
-		short bl[len];
-		for(i = 0; i<len; i++)bl[i] = (a[i])?TRUE:FALSE;
-		nadd_arr(d, dt, elm, BOOL, bl, len, ((encrypt_flags)?1:0));
-		(*env)->ReleaseBooleanArrayElements(env, data, a, 0);
-	}
-	else 
-		nadd_arr(d, dt, elm, BOOL, NULL, 0, ((encrypt_flags)?1:0));
-	if(dt) (*env)->ReleaseStringUTFChars(env, path, dt);
-	(*env)->ReleaseStringUTFChars(env, name, elm);
-
-}
 JNIEXPORT jintArray JNICALL Java_com_mylexz_utils_NodeData_getIntArray(JNIEnv *env, jobject thiz, jstring fullpath){
 	jint __desc = __getNDesc(env, thiz);
 	if(__desc == -1)return NULL;
